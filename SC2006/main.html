@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+<html>
+
+<head>
+    <title>Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- jsFiddle will insert css and js -->
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+</head>
+
+<body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises
+      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+      -->
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWCnWvnjeAk5IAR910vcq5BuAs7xqRiO0&callback=initMap"
+        defer></script>
+    <script>
+        // Initialize and add the map
+        let infoWindow, marker, map;
+        function initMap() {
+            // The location of sg
+            const sg = { lat: 1.3472892422936993, lng: 103.68084315437358 };
+            // The map, centered at sg
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 19,
+                center: sg,
+                zoomControl: true,
+                // gestureHandling: "cooperative",
+            });
+            var currentLocatoin = { lat: 1.3472892422936993, lng: 103.68084315437358 };
+            infoWindow = new google.maps.InfoWindow();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+
+                        // infoWindow.setPosition(pos);
+                        // infoWindow.setContent("Location found.");
+                        // infoWindow.open(map);
+                        map.setCenter(pos);
+                        addMarker(position.coords.latitude, position.coords.longitude);
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    }
+                );
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function addMarker(lat, lng) {
+            var marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(
+                browserHasGeolocation
+                    ? "Error: The Geolocation service failed."
+                    : "Error: Your browser doesn't support geolocation."
+            );
+            infoWindow.open(map);
+        }
+
+        async function getData() {
+            const response = await fetch("https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details", {
+                method: "GET",
+                mode: 'no-cors',
+                headers: { "AccessKey": "d42d13f1-6cfa-489b-9940-508afe48dcf8", "Token": "2AQ9zga5m9@Hs-JH2XRKVxQb9Gu27TjpG4+8GdJ443E8j2qaDaKk-dgG9KTsfY494d41Qmfa8s184RW-fcD99sCh4rAtffpPGfrc", "Content-type": "application/json;charset=UTF-8" },
+            })
+                .then(response => console.log(response))
+                .then(json => console.log(json))
+                .catch(err => console.log(err));
+        }
+
+        // async function getData() {
+        //     let request = await new XMLHttpRequest();
+        //     request.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details", false);
+        //     request.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
+        //     request.setRequestHeader("Token", "2AQ9zga5m9@Hs-JH2XRKVxQb9Gu27TjpG4+8GdJ443E8j2qaDaKk-dgG9KTsfY494d41Qmfa8s184RW-fcD99sCh4rAtffpPGfrc");
+        //     request.send();
+        //     request.onload = () => {
+        //         console.log(request);
+        //         if (request.status == 200) {
+        //             console.log(JSON.parse(request.response));
+        //         } else {
+        //             console.log(`error ${request.status} ${request.statusText}`);
+        //         }
+        //     }
+        // }
+
+        window.initMap = initMap;
+
+        getData();
+    </script>
+</body>
+
+</html>
