@@ -30,22 +30,23 @@
     <script src="./js/svy21.js"></script>
     <script>
         var cv = new SVY21();
-        var coorArr = [];
 
         getData();
         // Initialize and add the map
         let infoWindow, marker, map;
         function initMap() {
             // The location of sg
-            const sg = { lat: 1.3472892422936993, lng: 103.68084315437358 };
+            const sg = { lat: 1.3318066965765096, lng: 103.71498878810786 };
             // The map, centered at sg
             map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 19,
+                zoom: 15, //was 19
                 center: sg,
                 zoomControl: true,
                 // gestureHandling: "cooperative",
             });
-            var currentLocatoin = { lat: 1.3472892422936993, lng: 103.68084315437358 };
+            // var currentLocatoin = { lat: 1.3472892422936993, lng: 103.68084315437358 };
+            var currentLocatoin = { lat: 1.3318066965765096, lng: 103.71498878810786 };
+
             infoWindow = new google.maps.InfoWindow();
 
             if (navigator.geolocation) {
@@ -124,48 +125,25 @@
                                 if (preCoor == coordinate) {
                                     continue;
                                 } else {
-                                    coorArr.push(coordinate);
                                     preCoor = coordinate;
                                 }
 
                                 var strArr = coordinate.split(",")
-                                var latlng = cv.computeLatLon(strArr[0], strArr[1]);
+                                var latlng = cv.computeLatLon(strArr[1], strArr[0]);
                                 addCarparkMarker(latlng.lat, latlng.lon);
 
                             }
                         }
                     }
                 }
-                // for (var i in coorArr) {
-                //     // console.log(coorArr[i]);
-                //     convertToLatLng(coorArr[i]);
-                // }
             });
 
             xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
             xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-            xhr.setRequestHeader("Token", "NfEqcdd8f+XdfN4jzjj9yd90955H4fjeMGD8B88NEa6vBAp80464wfe98-d2NSC-qztR6kzMnQvbmB45dP3CfPZ-dJYa8DBG-U+x");
+            xhr.setRequestHeader("Token", "8Q0814zsGqmYB6Xb9c4fcu4-Y8m+a61cdvQ89GH22cr@aE8DB883220nuYgnFk31aMZ@feAUPf5X6D07j88bBZ4+PDG3+8aHMNrf");
 
             xhr.send();
         }
-
-        function convertToLatLng(coor) {
-            console.log(coor);
-            var strArr = coor.split(",");
-            // var xhr = new XMLHttpRequest();
-
-            // xhr.addEventListener("readystatechange", function () {
-            //     if (this.readyState === 4 && this.status == 200) {
-            //         const resultJson = JSON.parse(this.responseText);
-            //         console.log(resultJson);
-            //         // addCarparkMarker(latlng.lat, latlng.lon);
-            //     }
-            // });
-
-            // xhr.open("GET", `https://developers.onemap.sg/commonapi/convert/3857to4326?Y=${strArr[1]}&X=${strArr[0]}`);
-            // xhr.send();
-        }
-
 
         window.initMap = initMap;
 
