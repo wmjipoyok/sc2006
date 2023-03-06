@@ -30,25 +30,24 @@
     <script src="./js/svy21.js"></script>
     <script>
         var cv = new SVY21();
+        var prev_infowindow = false;
 
         getData();
         // Initialize and add the map
         let infoWindow, marker, map;
         function initMap() {
-            // The location of sg
+            // The location of sg (default value if fail to retrieve user's location)
             const sg = { lat: 1.3318066965765096, lng: 103.71498878810786 };
-            // The map, centered at sg
+            // The map, centered to sg by default
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 15, //was 19
                 center: sg,
                 zoomControl: true,
-                // gestureHandling: "cooperative",
             });
-            // var currentLocatoin = { lat: 1.3472892422936993, lng: 103.68084315437358 };
-            var currentLocatoin = { lat: 1.3318066965765096, lng: 103.71498878810786 };
 
             infoWindow = new google.maps.InfoWindow();
 
+            //get user currect location
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
@@ -57,9 +56,7 @@
                             lng: position.coords.longitude,
                         };
 
-                        // infoWindow.setPosition(pos);
-                        // infoWindow.setContent("Location found.");
-                        // infoWindow.open(map);
+                        //set user's locaton to the map center & add the red market to the map
                         map.setCenter(pos);
                         addMarker(position.coords.latitude, position.coords.longitude);
                     },
@@ -73,6 +70,7 @@
             }
         }
 
+        //for center red marker
         function addMarker(lat, lng) {
             var marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
@@ -80,20 +78,48 @@
             });
         }
 
-        function addCarparkMarker(lat, lng) {
+        //for carpark marker
+        function addCarparkMarker(lat, lng, data) {
             const iconImg = {
                 url: "../img/carpark-marker.png",
                 scaledSize: new google.maps.Size(50, 40), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
                 anchor: new google.maps.Point(0, 0) // anchor
             }
+
             var marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 map: map,
                 icon: iconImg,
             });
+
+            const contentString = `Name: ${camelize(data["ppName"])}`;
+
+            const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                ariaLabel: "car park",
+            });
+
+            marker.addListener("click", () => {
+                if (prev_infowindow) {
+                    prev_infowindow.close();
+                }
+                prev_infowindow = infowindow;
+                infowindow.open({
+                    anchor: marker,
+                    map,
+                });
+            });
         }
 
+        //convert to camel case 
+        function camelize(str) {
+            return (" " + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
+                return " " + chr.toUpperCase();
+            });
+        }
+
+        //handle get user location fail
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(
@@ -104,6 +130,7 @@
             infoWindow.open(map);
         }
 
+        //api call to get car park info list
         function getData() {
             // if u wanna access the api, search "Run" in your laptop and run the code below:
             // "chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security"
@@ -130,8 +157,7 @@
 
                                 var strArr = coordinate.split(",")
                                 var latlng = cv.computeLatLon(strArr[1], strArr[0]);
-                                addCarparkMarker(latlng.lat, latlng.lon);
-
+                                addCarparkMarker(latlng.lat, latlng.lon, resultJson.Result[i]);
                             }
                         }
                     }
