@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", event => {
     const app = firebase.app();
 });
@@ -7,7 +8,7 @@ function googleLogin() {
 
     firebase.auth().signInWithPopup(provider)
         .then(result => {
-            const user = result.user;
+            // const user = result.user;
             // document.write(`Hello ${user.displayName}`);
             // console.log(user);
             window.location.href = "main.html";

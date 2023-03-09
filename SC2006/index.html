@@ -42,6 +42,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -60,6 +61,94 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+  </script>
+
+  <script>
+    function getEmailInput() {
+      let emailTb = document.getElementById("exampleInputEmail");
+      let passwordTb = document.getElementById("exampleInputPassword");
+      var emailError = document.getElementById("emailError");
+      var passwordError = document.getElementById("passwordError");
+      var emailInput = document.getElementById("exampleInputEmail");
+      var passwordInput = document.getElementById("exampleInputPassword");
+      let email = document.getElementById("exampleInputEmail").value;
+      let password = document.getElementById("exampleInputPassword").value;
+      console.log("email: " + email + ", password: " + password);
+      if (!email) {
+        getEmailError();
+      } else {
+        clearEmailError();
+      }
+
+      if (!password) {
+        getPasswordError();
+      } else {
+        clearPasswordError();
+      }
+
+      if (email && password) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in
+            var user = userCredential.user;
+            window.location.href = "main.html";
+          })
+          .catch((error) => {
+            console.log(error.code);
+            switch (error.code) {
+              case "auth/invalid-email":
+                getEmailError(error.code);
+                break;
+              case "auth/user-not-found":
+                getEmailError(error.code);
+                break;
+              case "auth/wrong-password":
+                getPasswordError(error.code);
+                break;
+            }
+          });
+      }
+    }
+
+    function getEmailError(errorMsg) {
+      let emailTb = document.getElementById("exampleInputEmail");
+      var emailError = document.getElementById("emailError");
+      if (errorMsg) {
+        errorMsg = errorMsg.substring(5);
+        errorMsg = errorMsg.replace(/-/g, " ");
+        emailError.innerHTML = errorMsg;
+      }
+
+      emailError.removeAttribute("hidden");
+      emailTb.style.borderColor = "red";
+    }
+
+    function getPasswordError(errorMsg) {
+      let passwordTb = document.getElementById("exampleInputPassword");
+      var passwordError = document.getElementById("passwordError");
+      if (errorMsg) {
+        errorMsg = errorMsg.substring(5);
+        errorMsg = errorMsg.replace(/-/g, " ");
+        passwordError.innerHTML = errorMsg;
+      }
+
+      passwordError.removeAttribute("hidden");
+      passwordTb.style.borderColor = "red";
+    }
+
+    function clearEmailError() {
+      let emailTb = document.getElementById("exampleInputEmail");
+      var emailError = document.getElementById("emailError");
+      emailError.setAttribute("hidden", true);
+      emailTb.style.borderColor = "";
+    }
+
+    function clearPasswordError() {
+      let passwordTb = document.getElementById("exampleInputPassword");
+      var passwordError = document.getElementById("passwordError");
+      passwordError.setAttribute("hidden", true);
+      passwordTb.style.borderColor = "";
+    }
   </script>
 
   <div class="container">
@@ -82,19 +171,24 @@
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" id="exampleInputEmail"
                         aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <div id="emailError" style="padding-left: 20px; color:red" hidden>Email cannot be empty</div>
                     </div>
+
+
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" id="exampleInputPassword"
                         placeholder="Password">
+                      <div id="passwordError" style="padding-left: 20px; color:red" hidden>Password cannot be empty
+                      </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="customCheck">
                         <label class="custom-control-label" for="customCheck">Remember
                           Me</label>
                       </div>
-                    </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    </div> -->
+                    <a href="#" class="btn btn-primary btn-user btn-block" onclick="getEmailInput()">
                       Login
                     </a>
                     <hr>
@@ -123,7 +217,6 @@
     </div>
 
   </div>
-
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -133,6 +226,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
 </body>
 
 </html>
