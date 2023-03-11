@@ -11,6 +11,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!-- jsFiddle will insert css and js -->
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <script src="./js/common.js"></script>
 </head>
 
 <body>
@@ -93,7 +94,7 @@
                 icon: iconImg,
             });
 
-            const contentString = `Name: ${camelize(data["ppName"])}`;
+            const contentString = `Name: ${titleize(data["ppName"])}`;
 
             const infowindow = new google.maps.InfoWindow({
                 content: contentString,
@@ -112,12 +113,7 @@
             });
         }
 
-        //convert to camel case 
-        function camelize(str) {
-            return (" " + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
-                return " " + chr.toUpperCase();
-            });
-        }
+
 
         //handle get user location fail
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -166,7 +162,7 @@
 
             xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
             xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-            xhr.setRequestHeader("Token", "1VC3qRRT9bQdcS4v-4qd2M1BFH-1RP64m2fjf-0d6f4-z6uDf5rvsZa+f+md6h9fe6a6Pd04cU4zff0djA9KHfaDP732f97d4d36");
+            xhr.setRequestHeader("Token", "FAWJf4pfCJeRstUJ8hZXaJy9s7-72qtfXAp3yn4fvTcS2-V8WfQ--w7Mf-kFMHd086fE-Uw5J7Ve4431NxE8fGcUbcr8J-0De309");
 
             xhr.send();
         }

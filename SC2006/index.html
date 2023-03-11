@@ -12,12 +12,8 @@
   <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
   <script defer src="/__/firebase/9.17.1/firebase-database-compat.js"></script>
   <script defer src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
-  <script defer src="/__/firebase/9.17.1/firebase-functions-compat.js"></script>
   <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
   <script defer src="/__/firebase/9.17.1/firebase-storage-compat.js"></script>
-  <script defer src="/__/firebase/9.17.1/firebase-analytics-compat.js"></script>
-  <script defer src="/__/firebase/9.17.1/firebase-remote-config-compat.js"></script>
-  <script defer src="/__/firebase/9.17.1/firebase-performance-compat.js"></script>
   <!-- 
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
@@ -33,10 +29,93 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <script src="./js/app.js"></script>
+  <script src="./js/common.js"></script>
 </head>
+<script>
+  function getEmailInput() {
+    let email = document.getElementById("exampleInputEmail").value;
+    let password = document.getElementById("exampleInputPassword").value;
+    if (!email) {
+      getEmailError();
+    } else {
+      clearEmailError();
+    }
+
+    if (!password) {
+      getPasswordError();
+    } else {
+      clearPasswordError();
+    }
+
+    if (email && password) {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signed in
+          var user = userCredential.user;
+          window.location.href = "main.html";
+        })
+        .catch((error) => {
+          switch (error.code) {
+            case "auth/invalid-email":
+              getEmailError(error.code);
+              break;
+            case "auth/user-not-found":
+              getEmailError(error.code);
+              break;
+            case "auth/wrong-password":
+              getPasswordError(error.code);
+              break;
+          }
+        });
+    }
+  }
+
+  function getEmailError(errorMsg) {
+    let emailTb = document.getElementById("exampleInputEmail");
+    var emailError = document.getElementById("emailError");
+    if (errorMsg) {
+      const eMsg = reformatErrorStr(errorMsg);
+      emailError.innerHTML = eMsg;
+    }
+
+    emailError.removeAttribute("hidden");
+    emailTb.style.borderColor = "red";
+  }
+
+  function getPasswordError(errorMsg) {
+    let passwordTb = document.getElementById("exampleInputPassword");
+    var passwordError = document.getElementById("passwordError");
+    if (errorMsg) {
+      const eMsg = reformatErrorStr(errorMsg);
+      passwordError.innerHTML = eMsg;
+    }
+
+    passwordError.removeAttribute("hidden");
+    passwordTb.style.borderColor = "red";
+  }
+
+  function clearEmailError() {
+    let emailTb = document.getElementById("exampleInputEmail");
+    var emailError = document.getElementById("emailError");
+    emailError.setAttribute("hidden", true);
+    emailTb.style.borderColor = "";
+  }
+
+  function clearPasswordError() {
+    let passwordTb = document.getElementById("exampleInputPassword");
+    var passwordError = document.getElementById("passwordError");
+    passwordError.setAttribute("hidden", true);
+    passwordTb.style.borderColor = "";
+  }
+
+  function goResetPwPage() {
+    window.location.href = "forgot-password.html";
+  }
+
+</script>
 
 <body class="bg-gradient-primary">
-  <script src="./js/app.js"></script>
 
   <script type="module">
     // Import the functions you need from the SDKs you need
@@ -47,7 +126,7 @@
     // https://firebase.google.com/docs/web/setup#available-libraries
 
     // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional 
     const firebaseConfig = {
       apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
       authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -63,93 +142,7 @@
     const analytics = getAnalytics(app);
   </script>
 
-  <script>
-    function getEmailInput() {
-      let emailTb = document.getElementById("exampleInputEmail");
-      let passwordTb = document.getElementById("exampleInputPassword");
-      var emailError = document.getElementById("emailError");
-      var passwordError = document.getElementById("passwordError");
-      var emailInput = document.getElementById("exampleInputEmail");
-      var passwordInput = document.getElementById("exampleInputPassword");
-      let email = document.getElementById("exampleInputEmail").value;
-      let password = document.getElementById("exampleInputPassword").value;
-      console.log("email: " + email + ", password: " + password);
-      if (!email) {
-        getEmailError();
-      } else {
-        clearEmailError();
-      }
 
-      if (!password) {
-        getPasswordError();
-      } else {
-        clearPasswordError();
-      }
-
-      if (email && password) {
-        firebase.auth().signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Signed in
-            var user = userCredential.user;
-            window.location.href = "main.html";
-          })
-          .catch((error) => {
-            console.log(error.code);
-            switch (error.code) {
-              case "auth/invalid-email":
-                getEmailError(error.code);
-                break;
-              case "auth/user-not-found":
-                getEmailError(error.code);
-                break;
-              case "auth/wrong-password":
-                getPasswordError(error.code);
-                break;
-            }
-          });
-      }
-    }
-
-    function getEmailError(errorMsg) {
-      let emailTb = document.getElementById("exampleInputEmail");
-      var emailError = document.getElementById("emailError");
-      if (errorMsg) {
-        errorMsg = errorMsg.substring(5);
-        errorMsg = errorMsg.replace(/-/g, " ");
-        emailError.innerHTML = errorMsg;
-      }
-
-      emailError.removeAttribute("hidden");
-      emailTb.style.borderColor = "red";
-    }
-
-    function getPasswordError(errorMsg) {
-      let passwordTb = document.getElementById("exampleInputPassword");
-      var passwordError = document.getElementById("passwordError");
-      if (errorMsg) {
-        errorMsg = errorMsg.substring(5);
-        errorMsg = errorMsg.replace(/-/g, " ");
-        passwordError.innerHTML = errorMsg;
-      }
-
-      passwordError.removeAttribute("hidden");
-      passwordTb.style.borderColor = "red";
-    }
-
-    function clearEmailError() {
-      let emailTb = document.getElementById("exampleInputEmail");
-      var emailError = document.getElementById("emailError");
-      emailError.setAttribute("hidden", true);
-      emailTb.style.borderColor = "";
-    }
-
-    function clearPasswordError() {
-      let passwordTb = document.getElementById("exampleInputPassword");
-      var passwordError = document.getElementById("passwordError");
-      passwordError.setAttribute("hidden", true);
-      passwordTb.style.borderColor = "";
-    }
-  </script>
 
   <div class="container">
 
@@ -201,7 +194,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                    <a class="small" href="forgot-password.html" click="goResetPwPage()">Forgot Password?</a>
                   </div>
                   <div class="text-center">
                     <a class="small" href="register.html">Create an Account!</a>
