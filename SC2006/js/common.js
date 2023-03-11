@@ -6,8 +6,10 @@ function titleize(str) {
 }
 
 function reformatErrorStr(messageStr) {
-    messageStr = messageStr.substring(5);
+    if (messageStr.includes("auth/")) {
+        messageStr = messageStr.substring(5);
+    }
     messageStr = messageStr.replace(/-/g, " ");
-    messageStr = titleize(messageStr);
-    return messageStr;
+    var str = messageStr.charAt(0).toUpperCase() + messageStr.slice(1);
+    return str;
 }
