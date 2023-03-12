@@ -17,3 +17,35 @@ html {
     height: 100%;
     width: 100%;
 }
+
+/* Styling for the nav bar */
+.nav-link {
+    text-decoration: none; /* remove underline */
+    color: #333; /* set link color */
+    display: inline-block; /* display as block element */
+    padding: 10px 15px; /* add some padding */
+    border-radius: 5px; /* add some rounded corners */
+    background-color: #f2f2f2; /* add a background color */
+  }
+  
+  .nav-link:hover {
+    background-color: #ddd; /* change background color on hover */
+  }
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  nav li a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  
