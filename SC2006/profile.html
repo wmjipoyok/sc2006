@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Profile Page</title>
-    <link rel="stylesheet" href="./css/styles.css">
-  </head>
-  <body>
-    <nav>
-		<ul>
-			<li><a href="main.html" class="nav-link">Main</a></li>
-		</ul>
-	</nav>
-    <h1>Profile Page</h1>
-    <div id="user-profile">
-      <h2>User Profile</h2>
-      <p>Name: <span id="user-name"></span></p>
-      <p>Email: <span id="user-email"></span></p>
-    </div>
-    <div id="user-cars">
-      <h2>User Cars</h2>
-      <ul id="car-list"></ul>
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"></script>
-    <script src="profile.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile Page</title>
+        <link rel="stylesheet" href="./css/styles.css">
+    </head>
+
+    <body>
+        <nav>
+            <ul>
+                <li><a href="main.html" class="nav-link">Main</a></li>
+            </ul>
+        </nav>
+
+        <h1>Profile Page</h1>
+
+        <div id="user-profile">
+            <h2>User Profile</h2>
+            <p>Name: <span id="user-name"></span></p>
+            <p>Email: <span id="user-email"></span></p>
+        </div>
+
+        <div id="user-cars">
+            <h2>User Cars</h2>
+            <ul id="car-list"></ul>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"></script>
+        <script src="profile.js"></script>
+    </body>
 </html>
