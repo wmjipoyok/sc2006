@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Register</title>
+    <title>Register</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,6 +22,7 @@
 
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-firestore-compat.js">//to store user info</script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     <script src="./js/app.js"></script>
     <script src="./js/common.js"></script>
@@ -54,12 +55,28 @@
 
 <script>
     function signUpWithEmailPassword() {
+        var fnameTb = document.getElementById("registerFName");
+        var lnameTb = document.getElementById("registerLName");
         var emailTb = document.getElementById("registerEmail");
         var regPwTb = document.getElementById("registerPassword");
         var repeatPwTb = document.getElementById("repeatPassword");
+        var fname = fnameTb.value;
+        var lname = lnameTb.value;
         var email = emailTb.value;
         var regPw = regPwTb.value;
         var repeatPw = repeatPwTb.value;
+        
+        if (!fname) {
+            getFNameError();
+        } else {
+            clearFNameError();
+        }
+
+        if (!lname) {
+            getLNameError();
+        } else {
+            clearLNameError();
+        }
 
         if (!email) {
             getEmailError();
@@ -79,7 +96,7 @@
             clearRepPasswordError();
         }
 
-        if (email && regPw && repeatPw) {
+        if (fname && lname && email && regPw && repeatPw) {
             if (regPw === repeatPw) {
                 // [START auth_signup_password]
                 console.log("email: " + email + ", password: " + regPw);
@@ -110,11 +127,59 @@
                         }
                     });
                 // [END auth_signup_password]
+                //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
+                const db = firebase.firestore();
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        // User is signed in.
+                        console.log('Authenticated user:', user);
+                        db.collection("Users").doc(user.uid).set({
+                            //setting user details
+                            Email: email,
+                            FirstName: fname,
+                            LastName: lname
+                        })
+                        .then(() => {
+                            console.log("User document created succesesfully");
+                        })
+                        .catch((error) => {
+                            console.error("Error creating user document: ", error);
+                        });
+                        //END storing users in DB
+                    } else {
+                        console.log('No authenticated user found.');
+                    }
+                    });
+                
             } else {
                 getPasswordError("Password not match");
                 getRepPwError("Password not match");
             }
         }
+    }
+
+    function getFNameError(errorMsg) { //FIRST NAME
+        let fnameTb = document.getElementById("registerFName");
+        var fnameError = document.getElementById("regFnError");
+        if (errorMsg) {
+            const eMsg = reformatErrorStr(errorMsg);
+            fnameError.innerHTML = eMsg;
+        }
+
+        fnameError.removeAttribute("hidden");
+        fnameTb.style.borderColor = "red";
+    }
+
+    function getLNameError(errorMsg) { //LAST NAME
+        let lnameTb = document.getElementById("registerLName");
+        var lnameError = document.getElementById("regLnError");
+        if (errorMsg) {
+            const eMsg = reformatErrorStr(errorMsg);
+            emailError.innerHTML = eMsg;
+        }
+
+        lnameError.removeAttribute("hidden");
+        lnameTb.style.borderColor = "red";
     }
 
     function getEmailError(errorMsg) {
@@ -151,6 +216,20 @@
 
         repPwError.removeAttribute("hidden");
         repPwTb.style.borderColor = "red";
+    }
+
+    function clearFNameError() { //FIRST NAME
+        let fnameTb = document.getElementById("registerFName");
+        var fnameError = document.getElementById("regFnError");
+        fnameError.setAttribute("hidden", true);
+        fnameTb.style.borderColor = "";
+    }
+
+    function clearLNameError() { //LAST NAME
+        let lnameTb = document.getElementById("registerLName");
+        var lnameError = document.getElementById("regLnError");
+        lnameError.setAttribute("hidden", true);
+        lnameTb.style.borderColor = "";
     }
 
     function clearEmailError() {
@@ -202,6 +281,26 @@
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
                             <form class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="registerFName" placeholder="First name">
+                                            <div id="regFnError" style="padding-left: 20px; color:red" hidden>First name 
+                                                cannot be empty
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="registerLName" placeholder="Last name">
+                                            <div id="regLnError" style="padding-left: 20px; color:red" hidden>Last name 
+                                                cannot be empty
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-user" id="registerEmail"
                                         placeholder="Email Address">
@@ -213,8 +312,9 @@
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="registerPassword" placeholder="Password">
-                                            <duv id="regPwError" style="padding-left: 20px; color:red" hidden>Password
+                                            <div id="regPwError" style="padding-left: 20px; color:red" hidden>Password
                                                 cannot be empty
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
