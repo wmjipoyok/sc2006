@@ -1,0 +1,55 @@
+<!-- Checking if API return locations -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="demo">
+        <script type="text/javascript" src="json/carparkAPIdetails.json"></script>
+        <script type="text/javascript" src="js/extractJSON.js"> </script>
+        <button type="button" onclick="lol()">Change Content</button>
+    </div>
+
+   
+
+    <!-- 
+    <script>
+        
+
+        function locationapi(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.withCredentials = true;
+
+            xhttp.onreadystatechange = function(){
+                if (this.readyState === 4 && this.status == 200) {
+                    const resultJson = JSON.parse(this.responseText);
+                    //console.log(resultJson);
+
+                    saveText(JSON.stringify(resultJson), "carparkAPIdetails.json");
+                    for(var key in resultJson.Result){
+                        console.log(key, resultJson.Result[key].ppName, "(",resultJson.Result[key].ppCode,")", resultJson.Result[key].geometries[0]);
+                    }
+                    
+                }        
+            }
+
+            xhttp.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
+            xhttp.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
+            xhttp.setRequestHeader("Token", "p46yUSEfd3YqH6F1na49gR@89VYMbXSh8s8-h49t1v98yr2m-zHWeWxv4ffUQr7cwjfuHv1vft8PcPn7rP79E8BP+-D972629--8");
+            xhttp.send();
+
+            
+        };
+
+
+    </script>
+    -->
+    
+</body>
+
+</html>
