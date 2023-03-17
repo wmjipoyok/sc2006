@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>  
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+        <title>Car Details</title>
+
+        <style>
+           img{
+                width: 100%;
+                height: auto;
+           }
+           body {text-align: center;}
+            
+        </style>
+    </head>
+    <body>
+        <div id = "CarImage">
+            <!-- testing image --> 
+            <img src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16" alt="Image of Car">
+        </div> 
+
+        <div id = "CarBrand">
+            <h1>Brand</h1>
+        </div>
+
+        <div id = "CarModel">
+            <h1>Model</h1>
+        </div>
+
+        <div id = CarSpecification>
+            <h4>Seats</h4>
+            <h4>Price/Day</h4>
+        </div>
+
+        <div id = "CarRating">
+            <h4>Star Rating</h4>
+        </div>
+        
+        <div id = "CarDescription">
+            <p>Description</p>
+        </div>
+
+        <div id = "Booking">
+            <h4>Trip Start</h4>
+            <input type="datetime-local" id="StartTrip">
+
+            <h4>Trip End</h4>
+            <input type="datetime-local" id="EndTrip"> 
+            
+            <button id = "Book">BOOK</button> <br><br>
+        </div>
+
+
+        <script type="module">
+
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+            import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+            import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
+            import { collection, addDoc, getDocs, Timestamp  } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
+                authDomain: "fir-c9c47.firebaseapp.com",
+                databaseURL: "https://fir-c9c47.firebaseio.com",
+                projectId: "fir-c9c47",
+                storageBucket: "fir-c9c47.appspot.com",
+                messagingSenderId: "732611892783",
+                appId: "1:732611892783:web:518baf14f8076858af18da",
+                storageBucket: "gs://fir-c9c47.appspot.com"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            // Initialize Cloud Firestore
+            const db = getFirestore(app);
+
+            // Initialize Cloud Storage
+            const storage = getStorage(app);
+            const storageRef = ref(storage);
+
+
+
+            //buttons
+            var bookBtn = document.querySelector("#Book");
+
+
+            //functions           
+            async function BookCar()
+            {
+                //get date and time selected by user
+                var StartTrip = document.getElementById("StartTrip").value;
+                var EndTrip = document.getElementById("EndTrip").value;
+
+                //add into db, under "Bookings" Collection => need to change to users collection
+                try {
+                const docRef = await addDoc(collection(db, "Bookings"), {
+                    
+                    Start: StartTrip,
+                    End: EndTrip
+
+                });
+                console.log("Document written with ID: ", docRef.id);
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                }
+            
+            }
+
+            //book button event listener
+            bookBtn.addEventListener('click', BookCar);
+            
+            
+            /*
+            //writing into db
+            try {
+                const docRef = await addDoc(collection(db, "TestCars"), {
+                    first: "Alan",
+                    last: "Mathison",
+                    born: 1912
+            });
+            console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+            */
+
+            //reading from db
+            /*
+            const querySnapshot = await getDocs(collection(db, "TestCars"));
+            querySnapshot.forEach((doc) => {
+                console.log(`${doc.id} => ${doc.data()}`);
+            });
+            */
+           
+
+
+        </script>
+
+
+    </body>
+</html>
