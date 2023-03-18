@@ -1,0 +1,19 @@
+/* Styling for the car-booking-page */
+.container{
+    display: flex;
+    margin-top: 80px;
+  }
+  
+  .imgCar,.text{
+    flex-basis: 50%;
+  }
+  
+  .imgCar img{
+    width: 100%;
+    padding-left: 20%;
+  }
+  
+  .text{
+    padding-left: 20%;
+  }
+  

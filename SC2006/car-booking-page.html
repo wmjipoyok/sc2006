@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>  
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="stylesheet" href="./css/car-booking-page-style.css"> 
+        <script type="module" src="./js/carbookingpage.js"> </script>      
+        <title>Car Details</title>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <!-- Load image of selected car --> 
+            <div class = "imgCar"> 
+                <img src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16" alt="Image of Car">
+            </div> 
+
+            <div class="text">
+                <div id = "CarBrand">
+                    <h1 id="Make">Brand</h1>
+                    <h2 id="Model">Model</h2>
+                </div>
+
+                <div id = "CarRating">
+                    <h4>Star Rating</h4>
+                </div>
+
+                <div id = CarSpecification>
+                    <h4>Seats</h4>
+                    <h4>Price/Day</h4>
+                </div>
+        
+                <div id = "CarDescription">
+                    <p>Description</p>
+                </div>
+
+                <div id = "Booking">
+                    <h4>Trip Start</h4>
+                    <input type="datetime-local" id="StartTrip">
+
+                    <h4>Trip End</h4>
+                    <input type="datetime-local" id="EndTrip"> <br><br><br>
+            
+                    <button id = "bookBtn">BOOK</button> 
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="./js/carbookingpage.js"> </script>
+    </body>
+</html>
