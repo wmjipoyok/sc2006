@@ -1,22 +1,22 @@
 /* 
    * Optional: Makes the sample page fill the window. 
    */
-body,
+/* body,
 html {
   height: 85% !important;
   width: 99.5% !important;
   padding-left: 10px !important;
 }
-
+ */
 
 /* 
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
-#map {
+/* #map {
   height: 100% !important;
   width: 100% !important;
-}
+} */
 
 /* Styling for the nav bar */
 .nav-link {
@@ -30,8 +30,6 @@ html {
   /* add some padding */
   border-radius: 5px;
   /* add some rounded corners */
-  background-color: #f2f2f2;
-  /* add a background color */
 }
 
 .nav-link:hover {
@@ -54,4 +52,3 @@ nav li a {
   text-decoration: none;
   color: black;
 }
-
