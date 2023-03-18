@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Profile Page</title>
-        <link rel="stylesheet" href="./css/styles.css">
 
-        <!-- Custom fonts for this template-->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="./css/styles.css">
 
-        <!-- Custom styles for this template-->
-        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
-        <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
-        <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script> 
-        <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
-        <script src="/__/firebase/init.js?useEmulator=true"></script>
-    </head>
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+    <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script> 
+    <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js?useEmulator=true"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
 
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-            authDomain: "sc2006-1d9b8.firebaseapp.com",
-            projectId: "sc2006-1d9b8",
-            storageBucket: "sc2006-1d9b8.appspot.com",
-            messagingSenderId: "18363617474",
-            appId: "1:18363617474:web:de5535d545b6169e532b5b",
-            measurementId: "G-NCKVJ8K4JJ"
-        };
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
 
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+        authDomain: "sc2006-1d9b8.firebaseapp.com",
+        projectId: "sc2006-1d9b8",
+        storageBucket: "sc2006-1d9b8.appspot.com",
+        messagingSenderId: "18363617474",
+        appId: "1:18363617474:web:de5535d545b6169e532b5b",
+        measurementId: "G-NCKVJ8K4JJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+</script>
 
     
     
 
 
-    <body>
-        
-        <nav>
+<body id="page-top">
+    <!-- <nav>
             <ul>
                 <li><a href="main.html" class="nav-link">Main</a></li>
             </ul>
-        </nav>
+        </nav> -->
 
-        <h1><span style="color:black">Profile Page</span></h1>
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" style="width:100%; height:900px;">
+                <div id="nav-content"></div>
+                <div class="container-fluid">
+                    <h1><span style="color:black">Profile Page</span></h1>
 
         <div id="user-profile">
             
@@ -87,7 +93,20 @@
                 icon in the card header can be clicked on in order to toggle a dropdown menu.
             </div>
         </div>  
-        
+    </div>
+</div>
+</div>
+</div>
+<!-- Logout Modal-->
+<div id="logout-model"></div>
+
+        <script>
+            $(function () {
+                $("#nav-content").load("nav.html");
+                $("#logout-model").load("logout-model.html");
+            });
+        </script>
+
     </body>
 
     <script>
