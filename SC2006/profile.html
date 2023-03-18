@@ -59,91 +59,92 @@
                 <div class="container-fluid">
                     <h1><span style="color:black">Profile Page</span></h1>
 
-        <div id="user-profile">
-            
-            <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span></p>
-            <p style="color: black"><b>Last name:</b> <span id="user-lname" style="color: #262626"></span></p>
-            <p style="color: black"><b>Email:</b> <span id="user-email" style="color: #262626"></span></p>
-        </div>
-
-        <!-- Dropdown Card Example -->
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Car Rented</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <div id="user-profile">
+                        
+                        <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span></p>
+                        <p style="color: black"><b>Last name:</b> <span id="user-lname" style="color: #262626"></span></p>
+                        <p style="color: black"><b>Email:</b> <span id="user-email" style="color: #262626"></span></p>
                     </div>
+
+                    <!-- Dropdown Card Example -->
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Car Rented</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                    aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Dropdown Header:</div>
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            Dropdown menus can be placed in the card header in order to extend the functionality
+                            of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
+                            icon in the card header can be clicked on in order to toggle a dropdown menu.
+                        </div>
+                    </div>  
                 </div>
             </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                Dropdown menus can be placed in the card header in order to extend the functionality
-                of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
-                icon in the card header can be clicked on in order to toggle a dropdown menu.
-            </div>
-        </div>  
+        </div>
     </div>
-</div>
-</div>
-</div>
-<!-- Logout Modal-->
-<div id="logout-model"></div>
 
-        <script>
-            $(function () {
-                $("#nav-content").load("nav.html");
-                $("#logout-model").load("logout-model.html");
-            });
-        </script>
-
-    </body>
+    <!-- Logout Modal-->
+    <div id="logout-model"></div>
 
     <script>
-        const db = firebase.firestore();
-
-        //get user's ID
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                // User is signed in.
-                const userID = user.uid;
-                //console.log("UID: ", userID); DEBUG
-
-                //get user's doc from "Users" collection
-                db.collection("Users").doc(userID).get().then((doc) => {
-                if (doc.exists) {
-                    //retrieve user data from doc
-                    const userData = doc.data();
-                    const firstName = userData.FirstName;
-                    const lastName = userData.LastName;
-                    const email = userData.Email;
-
-                    //update DOM with retrieved data
-                    document.getElementById("user-fname").innerHTML = firstName;
-                    document.getElementById("user-lname").innerHTML = lastName;
-                    document.getElementById("user-email").innerHTML = email;
-                } else {
-                    console.log("No such document!", doc);
-                }
-                }).catch((error) => {
-                console.log("Error getting document:", error);
-                });
-            }
-            else {
-                // User is signed out.
-                console.log(firebase.auth().currentUser);
-            }
-        })
-        
+        $(function () {
+            $("#nav-content").load("nav.html");
+            $("#logout-model").load("logout-model.html");
+        });
     </script>
+
+</body>
+
+<script>
+    const db = firebase.firestore();
+
+    //get user's ID
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            // User is signed in.
+            const userID = user.uid;
+            //console.log("UID: ", userID); DEBUG
+
+            //get user's doc from "Users" collection
+            db.collection("Users").doc(userID).get().then((doc) => {
+            if (doc.exists) {
+                //retrieve user data from doc
+                const userData = doc.data();
+                const firstName = userData.FirstName;
+                const lastName = userData.LastName;
+                const email = userData.Email;
+
+                //update DOM with retrieved data
+                document.getElementById("user-fname").innerHTML = firstName;
+                document.getElementById("user-lname").innerHTML = lastName;
+                document.getElementById("user-email").innerHTML = email;
+            } else {
+                console.log("No such document!", doc);
+            }
+            }).catch((error) => {
+            console.log("Error getting document:", error);
+            });
+        }
+        else {
+            // User is signed out.
+            console.log(firebase.auth().currentUser);
+        }
+    })
+    
+</script>
 </html>
