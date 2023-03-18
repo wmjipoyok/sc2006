@@ -13,9 +13,38 @@
 
         <!-- Custom styles for this template-->
         <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+        <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script> 
+        <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+        <script src="/__/firebase/init.js?useEmulator=true"></script>
     </head>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+            authDomain: "sc2006-1d9b8.firebaseapp.com",
+            projectId: "sc2006-1d9b8",
+            storageBucket: "sc2006-1d9b8.appspot.com",
+            messagingSenderId: "18363617474",
+            appId: "1:18363617474:web:de5535d545b6169e532b5b",
+            measurementId: "G-NCKVJ8K4JJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
+    
+    
+
+
     <body>
+        
         <nav>
             <ul>
                 <li><a href="main.html" class="nav-link">Main</a></li>
@@ -26,8 +55,9 @@
 
         <div id="user-profile">
             
-            <p style="color: black"><b>Name:</b> <span id="user-name" style="color: #262626">Example</span></p>
-            <p style="color: black"><b>Email:</b> <span id="user-email" style="color: #262626">example@gmail.com</span></p>
+            <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span></p>
+            <p style="color: black"><b>Last name:</b> <span id="user-lname" style="color: #262626"></span></p>
+            <p style="color: black"><b>Email:</b> <span id="user-email" style="color: #262626"></span></p>
         </div>
 
         <!-- Dropdown Card Example -->
@@ -56,10 +86,45 @@
                 of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
                 icon in the card header can be clicked on in order to toggle a dropdown menu.
             </div>
-        </div>
-
-        <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"></script>
-        <script src="js/profile.js"></script>
+        </div>  
+        
     </body>
+
+    <script>
+        const db = firebase.firestore();
+
+        //get user's ID
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in.
+                const userID = user.uid;
+                //console.log("UID: ", userID); DEBUG
+
+                //get user's doc from "Users" collection
+                db.collection("Users").doc(userID).get().then((doc) => {
+                if (doc.exists) {
+                    //retrieve user data from doc
+                    const userData = doc.data();
+                    const firstName = userData.FirstName;
+                    const lastName = userData.LastName;
+                    const email = userData.Email;
+
+                    //update DOM with retrieved data
+                    document.getElementById("user-fname").innerHTML = firstName;
+                    document.getElementById("user-lname").innerHTML = lastName;
+                    document.getElementById("user-email").innerHTML = email;
+                } else {
+                    console.log("No such document!", doc);
+                }
+                }).catch((error) => {
+                console.log("Error getting document:", error);
+                });
+            }
+            else {
+                // User is signed out.
+                console.log(firebase.auth().currentUser);
+            }
+        })
+        
+    </script>
 </html>
