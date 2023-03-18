@@ -4,7 +4,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, addDoc, getDocs, Timestamp  } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, addDoc, getDocs, Timestamp , query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -39,7 +39,26 @@ var bookBtn = document.querySelector("#bookBtn");
 bookBtn.addEventListener('click', BookCar);
 
 
-//functions           
+//functions 
+async function retrieveCarDetails(){
+
+    const q = query(collection(db, "Cars"), where("Brand", "==", "Honda"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+
+        //console.log(doc.id, " => ", doc.data());
+        
+        var make = doc.data().Brand;
+        var model = doc.data().Model
+        document.getElementById("Make").innerHTML = make;
+        document.getElementById("Model").innerHTML = model;
+    }); 
+}
+
+       
+
+
 async function BookCar()
 {
     //get date and time selected by user
@@ -57,7 +76,12 @@ async function BookCar()
     } catch (e) {
             console.error("Error adding document: ", e);
     }
+
+    const querySnapshot = await getDocs(collection(db, "Cars"));
+    querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
             
+    })
 }
 
     
