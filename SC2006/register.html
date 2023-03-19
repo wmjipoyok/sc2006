@@ -108,6 +108,62 @@
                         var sucMsg = document.getElementById("successMsg");
                         regForm.setAttribute("hidden", true);
                         sucMsg.removeAttribute("hidden");
+
+                        //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
+                        const db = firebase.firestore();
+
+                        /*
+                        var authid = userCredential.uid;
+                        var docRef = db.collection("Users").doc(authid);
+
+                        docRef.get().then((doc) => { //checking if doc already exists, so wont overwrite old docs
+                            if (doc.exists) {
+                                console.log("Document already exists, skipping write.");
+                            } else {
+                                console.log("Document does not exist, writing new data");
+                                console.log('Authenticated user:', userCredential);
+                                
+                        
+                                db.collection("Users").doc(authid).set({
+                                        //setting user details
+                                        Email: email,
+                                        FirstName: fname,
+                                        LastName: lname
+                                })
+                                .then(() => {
+                                    console.log("User document created succesesfully");
+                                })
+                                .catch((error) => {
+                                    console.error("Error creating user document: ", error);
+                                });
+                                //END storing users in DB
+                            }
+                        }).catch((error) => {
+                            console.log("Error checking if document exists", error);
+                        });*/
+
+                        firebase.auth().onAuthStateChanged(user => {
+                        if (user) {
+                            // User is signed in.
+                            console.log('Authenticated user:', user);
+                            db.collection("Users").doc(user.uid).set({
+                                //setting user details
+                                Email: email,
+                                FirstName: fname,
+                                LastName: lname
+                            })
+                            .then(() => {
+                                console.log("User document created succesesfully");
+                            })
+                            .catch((error) => {
+                                console.error("Error creating user document: ", error);
+                            });
+                            //END storing users in DB
+                        } else {
+                            console.log('No authenticated user found.');
+                        }
+                        }); //END ACTUAL
+
                     })
                     .catch((error) => {
                         var errorCode = error.code;
@@ -127,29 +183,7 @@
                         }
                     });
                 // [END auth_signup_password]
-                //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
-                const db = firebase.firestore();
-                firebase.auth().onAuthStateChanged(function(user) {
-                    if (user) {
-                        // User is signed in.
-                        console.log('Authenticated user:', user);
-                        db.collection("Users").doc(user.uid).set({
-                            //setting user details
-                            Email: email,
-                            FirstName: fname,
-                            LastName: lname
-                        })
-                        .then(() => {
-                            console.log("User document created succesesfully");
-                        })
-                        .catch((error) => {
-                            console.error("Error creating user document: ", error);
-                        });
-                        //END storing users in DB
-                    } else {
-                        console.log('No authenticated user found.');
-                    }
-                    });
+                
                 
             } else {
                 getPasswordError("Password not match");
