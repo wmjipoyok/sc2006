@@ -23,6 +23,8 @@ html {
   height: 900px;
 }
 
+#logo {}
+
 /* Styling for the nav bar */
 .nav-link {
   text-decoration: none;
