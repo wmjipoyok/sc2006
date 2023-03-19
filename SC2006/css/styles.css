@@ -13,12 +13,15 @@ html {
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
-/* #map {
-  height: 100% !important;
-  width: 100% !important;
-} */
+#map {
+  width: 100%;
+  height: 750px
+}
 
-#content {}
+#content {
+  width: 100%;
+  height: 900px;
+}
 
 /* Styling for the nav bar */
 .nav-link {

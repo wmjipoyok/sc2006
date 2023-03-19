@@ -19,10 +19,6 @@
     <!-- jsFiddle will insert css and js -->
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
     <script src="./js/common.js"></script>
-
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWCnWvnjeAk5IAR910vcq5BuAs7xqRiO0&callback=initMap"
-        defer></script>
     <script src="./js/svy21.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
@@ -30,11 +26,11 @@
 <body id="page-top">
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content" style="width:100%; height:900px;">
+            <div id="content">
                 <div id="nav-content"></div>
                 <div class="container-fluid">
                     <h4>Choose a car park to start renting cars</h4>
-                    <div id="map" style="width: 100%; height: 750px"></div>
+                    <div id="map"></div>
                 </div>
             </div>
         </div>
@@ -120,8 +116,8 @@
             });
 
             const contentString = `Name: ${titleize(data["ppName"])} 
-                                    <div style="margin-top: 5px;"><a href="#" class="btn btn-info btn-sm">
-                                        <span class="text"><a href="">View Car List</a></span></div>`;
+                                    <div style="margin-top: 5px;"><a href="car-list.html?lat=${lat}&lng=${lng}&name=${data["ppName"]}" class="btn btn-info btn-sm">
+                                        <span class="text">View Car List</span></div>`;
 
             const infowindow = new google.maps.InfoWindow({
                 content: contentString,
@@ -198,6 +194,9 @@
 
 
     </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWCnWvnjeAk5IAR910vcq5BuAs7xqRiO0&callback=initMap"></script>
 </body>
 
 </html>
