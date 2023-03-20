@@ -23,7 +23,9 @@ html {
   height: 900px;
 }
 
-#logo {}
+#logo:hover {
+  background-color: transparent !important;
+}
 
 /* Styling for the nav bar */
 .nav-link {
