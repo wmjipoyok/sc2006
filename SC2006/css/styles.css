@@ -15,12 +15,12 @@ html {
  */
 #map {
   width: 100%;
-  height: 750px
+  height: 520px
 }
 
 #content {
   width: 100%;
-  height: 900px;
+  height: 600px;
 }
 
 #logo:hover {
@@ -47,6 +47,7 @@ html {
 
 .nav-link:hover {
   background-color: #ddd;
+  height: 4rem !important;
   /* change background color on hover */
 }
 
