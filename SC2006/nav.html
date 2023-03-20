@@ -15,6 +15,11 @@
     <!-- Custom styles for this template-->
     <link href="./css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+
+    <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
+    <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js?useEmulator=true"></script>
 </head>
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-3 static-top shadow">
@@ -58,7 +63,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User Name</span>
+                <span id="nav-name" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                 <img class="img-profile rounded-circle" src="img/profile.png">
             </a>
 
@@ -82,3 +87,37 @@
         <!-- Can add more links here for extensibility to more pages next time -->
     </ul>
 </nav>
+
+<script>
+    const db = firebase.firestore();
+
+    //get user's ID
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            // User is signed in.
+            const userID = user.uid;
+            //console.log("UID: ", userID); DEBUG
+
+            //get user's doc from "Users" collection
+            db.collection("Users").doc(userID).get().then((doc) => {
+            if (doc.exists) {
+                //retrieve user data from doc
+                const userData = doc.data();
+                const firstName = userData.FirstName;
+
+                //update DOM with retrieved data
+                document.getElementById("nav-name").innerHTML = firstName;
+            } else {
+                console.log("No such document!", doc);
+            }
+            }).catch((error) => {
+            console.log("Error getting document:", error);
+            });
+        }
+        else {
+            // User is signed out.
+            console.log(firebase.auth().currentUser);
+        }
+    })
+    
+</script>
