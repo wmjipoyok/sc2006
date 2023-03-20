@@ -5,8 +5,8 @@ As Google Chrome is enforcing Same-origin policy, it is blocking access to our U
 To solve this, we can launch an instance of Google Chrome that disables this security check. Run the terminal command below.
 
 
-For Mabook Users:
+For Mabook Users: <br />
 open -na Google\ Chrome --args --user-data-dir=$HOME/Developer/chrome-dev-session --disable-web-security --disable-site-isolation-trials
 
-For Windows Users:
+For Windows Users: <br />
 chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
