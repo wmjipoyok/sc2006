@@ -17,18 +17,140 @@
 
     <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
     <!-- jsFiddle will insert css and js -->
-    <script src="./js/common.js"></script>
-    <script src="./js/svy21.js"></script>
+    <script src="./js/common.js" type="text/javascript"></script>
+    <script src="./js/svy21.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <scrip src="./js/message.js" type="text/javascript"></scrip>
+
+    <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 </head>
 
 <body id="page-top">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+            authDomain: "sc2006-1d9b8.firebaseapp.com",
+            projectId: "sc2006-1d9b8",
+            storageBucket: "sc2006-1d9b8.appspot.com",
+            messagingSenderId: "18363617474",
+            appId: "1:18363617474:web:de5535d545b6169e532b5b",
+            measurementId: "G-NCKVJ8K4JJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+
+        function requestPermission() {
+            // console.log('Requesting permission...');
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    // console.log('Notification permission granted.');
+                    messaging.getToken({ vapidKey: 'BIKm-OqsfzgKZhCH9oczK00Gq8gHLwLzvSKlrD3H1A0FuNKZW3x-D9xPoRbNbpnRTbVW5XL7c9AJVODdoV_pLAI' })
+                        .then((currentToken) => {
+                            if (currentToken) {
+                                localStorage.setItem("currToken", currentToken);
+                            } else {
+                                console.log("cannot get notification token");
+                            }
+                        })
+                        .catch((err) => {
+                            console.log('An error occurred while retrieving token. ', err);
+                        });
+                } else {
+                    console.log("do not have permission");
+                }
+            })
+        }
+
+        requestPermission();
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                var uid = user.uid;
+                localStorage.setItem("userId", uid);
+                // console.log(user);
+                // ...
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
+
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            const userId = localStorage.getItem("userId");
+
+            if (userId == payload.data.ownerId && notiCount) {
+                if (notiCount) {
+                    if (notiCount.style.visibility == 'hidden') {
+                        notiCount.style.visibility = 'visible';
+                    }
+                    notiCount.innerHTML = parseInt(notiCount.innerHTML) + 1;
+                    const alerts = document.getElementById('alertContainer');
+                    const carId = '123';
+                    const username = 'user123';
+                    var currentdate = new Date();
+                    alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${carId}">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="small text-gray-500">${currentdate.toLocaleString()}</div>
+                        <span class="font-weight-bold">A new booking request from ${username}!</span>
+                    </div>
+                </a>`
+
+                }
+
+            }
+        });
+
+
+    </script>
+
+    <script>
+        function sendMessage() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === XMLHttpRequest.DONE && this.status == 200) {
+
+                }
+            });
+
+
+            var data = {
+                'to': localStorage.getItem("currToken"),
+                'data': {
+                    'renterId': "Firebase Renter Id",
+                    'ownerId': "fp0IRnlEpORBpCeZ7jtmR0nrKw93",
+                    'carId': "Firebase Car Id"
+                }
+            }
+
+            xhr.open('POST', "https://fcm.googleapis.com/fcm/send", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bENkRgqPANjMwEuYQWPxl9EC0-0S5FU4KfDPK_Yucd3-oZy2UsDPMdx6l5AHfL5dvWCi5wbBrV6vDxOGNUwLoCWrQtZecCJmA3R7Zf8ful8xNNNYW4cCX__4yVfSaCxSTyvIBa8');
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <div id="nav-content"></div>
                 <div class="container-fluid">
                     <!-- <h4>Choose a car park to start renting cars</h4> -->
+                    <button onclick="sendMessage()">For Send Message Test</button>
                     <div id="map"></div>
                 </div>
             </div>
@@ -42,6 +164,8 @@
 
     <!--The div element for the map -->
 
+
+
     <script>
         $(function () {
             $("#nav-content").load("nav.html");
@@ -49,7 +173,6 @@
         });
         var cv = new SVY21();
         var prev_infowindow = false;
-
         getData();
         // Initialize and add the map
         let infoWindow, marker, map;
@@ -184,7 +307,7 @@
 
             xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
             xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-            xhr.setRequestHeader("Token", "RfaE69M69a9-DfK4db8j598cf9GdB6Vrb1Tafcfdb4f-8VYad09fy-CK81025r+qaKd8b4GVJJcTpV4+-md8awMT8qeahdXecP3r");
+            xhr.setRequestHeader("Token", "8My2jZuKTB8W249P8T1M7-yS4d-Gc-p9E6-t370C9Jfj-9-Qj8EgBVca@jY3tq9Wb8mtcMje4aD-eS1RQ5kh-QfjXn2c9v9rdJ59");
 
             xhr.send();
         }

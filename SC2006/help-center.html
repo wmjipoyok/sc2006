@@ -39,59 +39,74 @@
                     <div class="row">
 
                         <div class="col-xl-4 col-md-6 mb-4" style="height:200px;">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <div class="row no-gutters">
-                                        <div class="col mr-2" style="text-align:center; ">
-                                            <i class="fas fa-rocket fa-2x" style="margin-bottom: 10px;"></i>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800 ">
-                                                User Log In</div>
+                            <a href="#" data-toggle="modal" data-target="#userLoginModal">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body d-flex align-items-center justify-content-center">
+                                        <div class="row no-gutters">
+
+                                            <div class="col mr-2" style="text-align:center; ">
+
+                                                <i class="fas fa-rocket fa-2x" style="margin-bottom: 10px;"></i>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 ">
+                                                    User Login</div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
                         <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2" style="text-align:center;">
-                                            <i class="fas fa-address-card fa-2x" style="margin-bottom: 10px;"></i>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
-                                                User Registration</div>
+                            <a href="#" data-toggle="modal" data-target="#registerModal">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body d-flex align-items-center justify-content-center">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2" style="text-align:center;">
+                                                <i class="fas fa-address-card fa-2x" style="margin-bottom: 10px;"></i>
+                                                <div
+                                                    class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
+                                                    User Registration</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
                         <div class="col-xl-4 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2" style="text-align:center;">
-                                            <i class="fas fa-car fa-2x" style="margin-bottom: 10px;"></i>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
-                                                Rent Car</div>
+                            <a href="#" data-toggle="modal" data-target="#rentCarModal">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body d-flex align-items-center justify-content-center">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2" style="text-align:center;">
+                                                <i class="fas fa-car fa-2x" style="margin-bottom: 10px;"></i>
+                                                <div
+                                                    class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
+                                                    Rent Car</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
                         <div class="col-xl-4 col-md-6 mb-4" style="height:200px;">
-                            <div class=" card border-left-primary shadow h-100 py-2">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2" style="text-align:center;">
-                                            <i class="fas fa-car-side fa-2x" style="margin-bottom: 10px;"></i>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
-                                                Upload for rent</div>
+                            <a href="#" data-toggle="modal" data-target="#uploadCarModal">
+                                <div class=" card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body d-flex align-items-center justify-content-center">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2" style="text-align:center;">
+                                                <i class="fas fa-car-side fa-2x" style="margin-bottom: 10px;"></i>
+                                                <div
+                                                    class="h5 mb-0 font-weight-bold text-gray-800 justify-content-center">
+                                                    Upload for Rent</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
 
@@ -106,6 +121,94 @@
 
     </div>
     <!-- End of Page Wrapper -->
+
+    <!-- Start of user login modal -->
+    <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="userLoginModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">User Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of user login modal -->
+
+    <!-- Start of register modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">User Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of register modal -->
+
+    <!-- Start of rent car modal -->
+    <div class="modal fade" id="rentCarModal" tabindex="-1" role="dialog" aria-labelledby="rentCarModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Rent Car</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of rent car modal -->
+
+    <!-- Start of rent car modal -->
+    <div class="modal fade" id="uploadCarModal" tabindex="-1" role="dialog" aria-labelledby="uploadCarModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Upload for Rent</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of rent car modal -->
 
     <!-- Logout Modal-->
     <div id="logout-model"></div>

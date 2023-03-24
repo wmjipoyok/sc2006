@@ -15,6 +15,7 @@
     <!-- Custom styles for this template-->
     <link href="./css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <script src="./js/common.js"></script>
 </head>
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-3 static-top shadow">
@@ -27,10 +28,10 @@
         <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                onclick="handleAlertCount()" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">1</span>
+                <span class="badge badge-danger badge-counter" id="notiCount" style="visibility: hidden;">0</span>
             </a>
             <!-- Dropdown - Alerts -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -38,18 +39,12 @@
                 <h6 class="dropdown-header">
                     Alerts Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                            <i class="fas fa-file-alt text-white"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">December 12, 2019</div>
-                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                    </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <div id="alertContainer"></div>
+                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
+                <div class="text-center small text-gray-500" style="padding-top: 10px; padding-bottom: 10px;"
+                    id="noAlert">
+                    No Alerts
+                </div>
             </div>
         </li>
 
@@ -82,3 +77,43 @@
         <!-- Can add more links here for extensibility to more pages next time -->
     </ul>
 </nav>
+
+
+<!-- <script>
+    import { getMessaging } from "firebase/messaging";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+        authDomain: "sc2006-1d9b8.firebaseapp.com",
+        projectId: "sc2006-1d9b8",
+        storageBucket: "sc2006-1d9b8.appspot.com",
+        messagingSenderId: "18363617474",
+        appId: "1:18363617474:web:de5535d545b6169e532b5b",
+        measurementId: "G-NCKVJ8K4JJ"
+    };
+
+    function requestPermission() {
+        console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                const app = initializeApp(firebaseConfig);
+                const messaging = getMessaging(app);
+                getToken(messaging, { vapidKey: 'BIKm-OqsfzgKZhCH9oczK00Gq8gHLwLzvSKlrD3H1A0FuNKZW3x-D9xPoRbNbpnRTbVW5XL7c9AJVODdoV_pLAI' })
+                    .then((currentToken) => {
+                        if (currentToken) {
+                            console.log('currentToken: ', currentToken);
+                        } else {
+                            console.log("cannot get token");
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                        // ...
+                    });
+            } else {
+                console.log("do not have permission");
+            }
+        })
+    }
+</script> -->
