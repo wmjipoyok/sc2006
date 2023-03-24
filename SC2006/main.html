@@ -73,6 +73,7 @@
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/firebase.User
                 var uid = user.uid;
+                console.log(user);
                 localStorage.setItem("userId", uid);
                 // console.log(user);
                 // ...
@@ -85,7 +86,7 @@
         messaging.onMessage((payload) => {
             console.log('Message received. ', payload);
             const userId = localStorage.getItem("userId");
-
+            const notiCount = document.getElementById('notiCount');
             if (userId == payload.data.ownerId && notiCount) {
                 if (notiCount) {
                     if (notiCount.style.visibility == 'hidden') {
