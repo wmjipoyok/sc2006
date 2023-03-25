@@ -30,22 +30,16 @@
 
 <body id="page-top">
     <script>
+        // for testing
         function sendMessage() {
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === XMLHttpRequest.DONE && this.status == 200) {
-
-                }
-            });
-
-
             var data = {
                 'to': localStorage.getItem("currToken"),
                 'data': {
-                    'renterId': "Firebase Renter Id",
-                    'ownerId': "fp0IRnlEpORBpCeZ7jtmR0nrKw93",
+                    'renterId': "fp0IRnlEpORBpCeZ7jtmR0nrKw93",
+                    'ownerId': "GWJxVcujYKaOP4BPB2CPocM9dWW2",
                     'carId': "Firebase Car Id"
                 }
             }

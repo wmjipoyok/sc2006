@@ -43,7 +43,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
     getData();
     initMap();
     window.initMap = initMap;
@@ -176,7 +176,7 @@ function getData() {
 
     xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
     xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-    xhr.setRequestHeader("Token", "F4dtkQmtbxy8pV4Scnfc4dGc@f259vdnRHNkv49fjg5f1TRd0v8j8088ckkDJ-vmdfd7-RdE9a268VWrf9X1R6Vcdpf8bPeTfcVa");
+    xhr.setRequestHeader("Token", "mPbaUdax8mcwS-RD3GqcfYsy6yAy2amET41fe-n9Bms5-pKuMrVnYt-eEdRgJ8YbS4f408d@TNpR33UgdDZFafegb6f8n-+DTaa8");
 
     xhr.send();
 }

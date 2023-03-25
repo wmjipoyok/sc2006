@@ -47,7 +47,7 @@ messaging.onMessage((payload) => {
     console.log('Message received. ', payload);
     const userId = localStorage.getItem("userId");
     const notiCount = document.getElementById('notiCount');
-    if (userId == payload.data.ownerId && notiCount) {
+    if ((userId == payload.data.ownerId) && notiCount) {
         if (notiCount) {
             if (notiCount.style.visibility == 'hidden') {
                 notiCount.style.visibility = 'visible';

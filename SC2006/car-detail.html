@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="./css/car-detail.css">
     <script type="module" src="./js/car-detail.js"> </script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
+    <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js?useEmulator=true"></script>
 
     <title>Car Details</title>
 </head>
@@ -31,8 +36,10 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
-                        <div style="text-align: right;"><a href="edit-car.html?carId=Car1"><i
-                                    class="fas fa-edit fa-lg"></i></a></div>
+                        <div style="text-align: right;" id="editBtn" hidden>
+                            <a href="car-form.html?request=edit&carId=9LsizXPDTUvIpePs9igy"><i
+                                    class="fas fa-edit fa-lg"></i></a>
+                        </div>
 
                         <div class="row">
                             <div class="imgCar col-lg-5">
@@ -75,8 +82,6 @@
         </div>
 
         <div id="logout-model"></div>
-
-        <script type="module" src="./js/carbookingpage.js"> </script>
 
         <script>
             $(function () {

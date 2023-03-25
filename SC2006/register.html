@@ -65,7 +65,7 @@
         var email = emailTb.value;
         var regPw = regPwTb.value;
         var repeatPw = repeatPwTb.value;
-        
+
         if (!fname) {
             getFNameError();
         } else {
@@ -112,28 +112,28 @@
                         //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
                         const db = firebase.firestore();
 
-                        
+
 
                         firebase.auth().onAuthStateChanged(user => {
-                        if (user) {
-                            // User is signed in.
-                            console.log('Authenticated user:', user);
-                            db.collection("Users").doc(user.uid).set({
-                                //setting user details
-                                Email: email,
-                                FirstName: fname,
-                                LastName: lname
-                            })
-                            .then(() => {
-                                console.log("User document created succesesfully");
-                            })
-                            .catch((error) => {
-                                console.error("Error creating user document: ", error);
-                            });
-                            //END storing users in DB
-                        } else {
-                            console.log('No authenticated user found.');
-                        }
+                            if (user) {
+                                // User is signed in.
+                                console.log('Authenticated user:', user);
+                                db.collection("Users").doc(user.uid).set({
+                                    //setting user details
+                                    Email: email,
+                                    FirstName: fname,
+                                    LastName: lname
+                                })
+                                    .then(() => {
+                                        console.log("User document created succesesfully");
+                                    })
+                                    .catch((error) => {
+                                        console.error("Error creating user document: ", error);
+                                    });
+                                //END storing users in DB
+                            } else {
+                                console.log('No authenticated user found.');
+                            }
                         }); //END ACTUAL
 
                     })
@@ -155,8 +155,8 @@
                         }
                     });
                 // [END auth_signup_password]
-                
-                
+
+
             } else {
                 getPasswordError("Password not match");
                 getRepPwError("Password not match");
@@ -273,9 +273,8 @@
                     <div class="col-lg-12">
                         <div id="successMsg" class="p-5" hidden>
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4" style="color: green !important">Register Successfully!
-                                    Please
-                                    proceed to login.</h1>
+                                <h1 class="h4 text-gray-900 mb-4" style="color: green !important">
+                                    Registration Successful! <br /> Please proceed to login.</h1>
                             </div>
                             <hr>
                             <div class="text-center">
@@ -290,18 +289,18 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="registerFName" placeholder="First name">
-                                            <div id="regFnError" style="padding-left: 20px; color:red" hidden>First name 
+                                            <input type="text" class="form-control form-control-user" id="registerFName"
+                                                placeholder="First name">
+                                            <div id="regFnError" style="padding-left: 20px; color:red" hidden>First name
                                                 cannot be empty
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="registerLName" placeholder="Last name">
-                                            <div id="regLnError" style="padding-left: 20px; color:red" hidden>Last name 
+                                            <input type="text" class="form-control form-control-user" id="registerLName"
+                                                placeholder="Last name">
+                                            <div id="regLnError" style="padding-left: 20px; color:red" hidden>Last name
                                                 cannot be empty
                                             </div>
                                         </div>

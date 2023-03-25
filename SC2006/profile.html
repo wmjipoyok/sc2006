@@ -16,7 +16,7 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
-    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script> 
+    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
     <script src="/__/firebase/init.js?useEmulator=true"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -41,8 +41,8 @@
     const analytics = getAnalytics(app);
 </script>
 
-    
-    
+
+
 
 
 <body id="page-top">
@@ -60,9 +60,11 @@
                     <h1><span style="color:black">Profile Page</span></h1>
 
                     <div id="user-profile">
-                        
-                        <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span></p>
-                        <p style="color: black"><b>Last name:</b> <span id="user-lname" style="color: #262626"></span></p>
+
+                        <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span>
+                        </p>
+                        <p style="color: black"><b>Last name:</b> <span id="user-lname" style="color: #262626"></span>
+                        </p>
                         <p style="color: black"><b>Email:</b> <span id="user-email" style="color: #262626"></span></p>
                     </div>
 
@@ -92,7 +94,7 @@
                             of a basic card. In this dropdown card example, the Font Awesome vertical ellipsis
                             icon in the card header can be clicked on in order to toggle a dropdown menu.
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,22 +124,22 @@
 
             //get user's doc from "Users" collection
             db.collection("Users").doc(userID).get().then((doc) => {
-            if (doc.exists) {
-                //retrieve user data from doc
-                const userData = doc.data();
-                const firstName = userData.FirstName;
-                const lastName = userData.LastName;
-                const email = userData.Email;
+                if (doc.exists) {
+                    //retrieve user data from doc
+                    const userData = doc.data();
+                    const firstName = userData.FirstName;
+                    const lastName = userData.LastName;
+                    const email = userData.Email;
 
-                //update DOM with retrieved data
-                document.getElementById("user-fname").innerHTML = firstName;
-                document.getElementById("user-lname").innerHTML = lastName;
-                document.getElementById("user-email").innerHTML = email;
-            } else {
-                console.log("No such document!", doc);
-            }
+                    //update DOM with retrieved data
+                    document.getElementById("user-fname").innerHTML = firstName;
+                    document.getElementById("user-lname").innerHTML = lastName;
+                    document.getElementById("user-email").innerHTML = email;
+                } else {
+                    console.log("No such document!", doc);
+                }
             }).catch((error) => {
-            console.log("Error getting document:", error);
+                console.log("Error getting document:", error);
             });
         }
         else {
@@ -145,6 +147,7 @@
             console.log(firebase.auth().currentUser);
         }
     })
-    
+
 </script>
+
 </html>

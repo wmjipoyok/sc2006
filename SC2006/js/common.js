@@ -18,6 +18,7 @@ function logoutHandler() {
     console.log("called");
     localStorage.clear();
     localStorage.getItem("currToken");
+    localStorage.getItem("userId");
 }
 
 function handleAlertCount() {

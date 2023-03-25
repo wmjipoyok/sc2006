@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, addDoc, getDocs, Timestamp , query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, addDoc, getDocs, Timestamp, query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore
-const db = getFirestore(app);
+const db = firebase.firestore();
 
 // Initialize Cloud Storage
 const storage = getStorage(app);
@@ -36,33 +36,39 @@ var bookBtn = document.querySelector("#bookBtn");
 
 //window.onload = retrieveCarDetails();
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     retrieveCarDetails();
- }, false);
+}, false);
 
 //book button event listener
 bookBtn.addEventListener('click', BookCar);
 
 
 //functions 
-async function retrieveCarDetails(){
+async function retrieveCarDetails() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const carId = urlParams.get('carId');
+    db.collection("Cars").doc(carId).get().then((doc) => {
+        if (doc.exists) {
+            var make = doc.data().Brand;
+            var model = doc.data().Model
+            document.getElementById("Make").innerHTML = make;
+            document.getElementById("Model").innerHTML = model;
 
-    const q = query(collection(db, "Cars"), where("Brand", "==", "Honda"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
+            console.log(doc.data().CarOwner);
+            console.log(localStorage.getItem("userId"));
 
-        //console.log(doc.id, " => ", doc.data());
-        
-        var make = doc.data().Brand;
-        var model = doc.data().Model
-        document.getElementById("Make").innerHTML = make;
-        document.getElementById("Model").innerHTML = model;
-    }); 
+            if (doc.data().CarOwner == localStorage.getItem("userId")) {
+                document.getElementById("editBtn").removeAttribute('hidden');
+            }
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
 }
 
-async function BookCar()
-{
+async function BookCar() {
     //get date and time selected by user
     var StartTrip = document.getElementById("StartTrip").value;
     var EndTrip = document.getElementById("EndTrip").value;
@@ -70,23 +76,23 @@ async function BookCar()
     //add into db, under "Bookings" Collection => need to change to users collection
     try {
         const docRef = await addDoc(collection(db, "Bookings"), {
-                    
+
             Start: StartTrip,
             End: EndTrip
         });
         console.log("Document written with ID: ", docRef.id);
     } catch (e) {
-            console.error("Error adding document: ", e);
+        console.error("Error adding document: ", e);
     }
 
     const querySnapshot = await getDocs(collection(db, "Cars"));
     querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}`);
-            
+
     })
 }
 
-    
+
 
 
 
@@ -106,9 +112,9 @@ async function BookCar()
             */
 
             //reading from db
-            /*
-            const querySnapshot = await getDocs(collection(db, "TestCars"));
-            querySnapshot.forEach((doc) => {
-                console.log(`${doc.id} => ${doc.data()}`);
-            });
+/*
+const querySnapshot = await getDocs(collection(db, "TestCars"));
+querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => ${doc.data()}`);
+});
 */
