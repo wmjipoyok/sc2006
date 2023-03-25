@@ -15,81 +15,87 @@
 
 
 
-    <body id="page-top">
+<body id="page-top">
 
-        <!-- Page Wrapper -->
-        <div id="wrapper">
-            <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-                <!-- Main Content -->
-                <div id="content">
+            <!-- Main Content -->
+            <div id="content">
 
-                    <!-- Topbar -->
-                    <div id="nav-content"></div>
-                    <!-- End of Topbar -->
+                <!-- Topbar -->
+                <div id="nav-content"></div>
+                <!-- End of Topbar -->
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
 
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h3 class="h3 mb-0 text-gray-800">Edit Car</h3>
-                        </div>
-
-                        <!-- Form-->
-                        <div class="row">
-
-                            <!--edit image-->
-                            <div class="imgCar col-lg-5">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16"
-                                    alt="Image of Car">
-                            </div>
-
-                            <div class="col-lg-4">
-                                    <!--edit details, change input id and follow Kavis car details stuff-->
-                                <div id="CarBrand">
-                                    <h3>Brand</h3>
-                                    <input type="text"> <br><br>
-                                    <h3>Model</h3>
-                                    <input type="text" id="EndTrip"> <br><br>
-                                </div>
-
-                                <div id=CarSpecification>
-                                    <h3>Seats</h3>
-                                    <input type="text" id="EndTrip"> <br><br>
-                                    <h3>Price/Day</h3>
-                                    <input type="text" id="EndTrip"> <br><br>
-                                </div>
-
-                                <div id="CarDescription">
-                                    <h3>Description</h3>
-                                    <textarea row ="4" cols ="40"> </textarea><br><br>
-                                </div>
-
-                                <!-- Save Button-->
-                                <button id="bookBtn" class="btn btn-danger">Save</button>
-
-                            </div>
-                        </div>
-                            
-                        
-
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h3 class="h3 mb-0 text-gray-800">Edit Car</h3>
                     </div>
+
+                    <!-- Form-->
+                    <div class="row">
+
+                        <!--edit image-->
+                        <div class="imgCar col-lg-5">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16"
+                                alt="Image of Car">
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!--edit details, change input id and follow Kavis car details stuff-->
+                            <div id="CarBrand">
+                                <h3>Brand</h3>
+                                <input type="text"> <br><br>
+                                <h3>Model</h3>
+                                <input type="text" id="EndTrip"> <br><br>
+                            </div>
+
+                            <div id=CarSpecification>
+                                <h3>Seats</h3>
+                                <input type="text" id="EndTrip"> <br><br>
+                                <h3>Price/Day</h3>
+                                <input type="text" id="EndTrip"> <br><br>
+                            </div>
+
+                            <div id="CarDescription">
+                                <h3>Description</h3>
+                                <textarea row="4" cols="40"> </textarea><br><br>
+                            </div>
+
+                            <!-- Save Button-->
+                            <button id="bookBtn" class="btn btn-danger">Save</button>
+
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="logout-model"></div>
+    <div id="logout-model"></div>
 
-        <script type="module" src="./js/carbookingpage.js"> </script>
+    <script type="module" src="./js/carbookingpage.js"> </script>
 
-        <script>
-            $(function () {
-                $("#nav-content").load("nav.html");
-                $("#logout-model").load("logout-model.html");
-            });
+    <script>
+        $(function () {
+            $("#nav-content").load("nav.html");
+            $("#logout-model").load("logout-model.html");
+        });
 
-        </script>
-    </body>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const carId = urlParams.get('carId');
+
+
+
+    </script>
+</body>
 
 </html>
