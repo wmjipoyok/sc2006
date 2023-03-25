@@ -22,13 +22,14 @@ const carId = urlParams.get('carId');
 let carData;
 
 
-async function getCarInfo() {
+function getCarInfo() {
     db.collection("Cars").doc(carId).get().then((doc) => {
         if (doc.exists) {
             const userId = localStorage.getItem("userId");
             if (doc.data().CarOwner == userId) {
                 if (doc.data().Status == 0) {
-                    carData = doc.data;
+                    carData = doc.data();
+
                     document.getElementById("carBrand").setAttribute('value', doc.data().Brand);
                     document.getElementById("carModel").setAttribute('value', doc.data().Model);
                     document.getElementById("carSeats").setAttribute('value', doc.data().Seats);
@@ -57,6 +58,7 @@ window.addEventListener('load', function () {
         $("#nav-content").load("nav.html");
         $("#logout-model").load("logout-model.html");
     });
+
     if (request == 'edit') {
         getCarInfo();
     }
@@ -72,6 +74,8 @@ window.addEventListener('load', function () {
         const carPrice = parseInt(e.target.elements.carPrice.value);
         const carDescription = e.target.elements.carDescription.value;
 
+        console.log(carData);
+
         db.collection("Cars").doc(carId).set({
             Brand: carBrand,
             Model: carModel,
@@ -85,7 +89,8 @@ window.addEventListener('load', function () {
             CarOwner: carData.CarOwner
         })
             .then(() => {
-                console.log("Car information updated successfully!");
+                document.getElementById("successMsg").removeAttribute('hidden');
+                console.log("Car information has been updated!");
             })
             .catch((error) => {
                 console.error("Error updating car information: ", error);
