@@ -149,70 +149,92 @@
     </script>
 
     <script>
-        //js for star ratings
+        const db = firebase.firestore();
 
-        //Rating
-        const rating = 3.3; //hardcoded for now... change this when want to pull from real DB... decimal number from 0-5
+        //get user's ID
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in.
+                const userID = user.uid;
+                //console.log("UID: ", userID); DEBUG
 
-        //Total Stars
-        const starsTotal = 5;
+                //get user's doc from "Users" collection
+                db.collection("Users").doc(userID).get().then((doc) => {
+                if (doc.exists) {
+                    //retrieve user data from doc
+                    const userData = doc.data();
+                    const firstName = userData.FirstName;
+                    const lastName = userData.LastName;
+                    const email = userData.Email;
+                    const rating = userData.Rating;
 
-        //Run getRatings when DOM loads
-        document.addEventListener('DOMContentLoaded', getRatings);
+                    //update DOM with retrieved data
+                    document.getElementById("user-fname").innerHTML = firstName;
+                    document.getElementById("user-lname").innerHTML = lastName;
+                    document.getElementById("user-email").innerHTML = email;
+
+                    //Run getRatings when DOM loads
+                    //document.addEventListener('DOMContentLoaded', getRatings);
+                    getRatings();
+                    //console.log("past call"); //DEBUG
+                } else {
+                    console.log("No such document!", doc);
+                }
+                }).catch((error) => {
+                console.log("Error getting document:", error);
+                });
+            }
+            else {
+                // User is signed out.
+                console.log(firebase.auth().currentUser);
+            }
+        })
         
         //getRatings func
         function getRatings() {
-            //Get percentage
-            const starPercentage = (rating / starsTotal * 100);
-            
-            //Round to nearest 10
-            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+            //console.log("enetered func"); //DEBUG
+            //Total Stars
+            const starsTotal = 5;
 
-            //Set width of stars-inner to percentage
-            document.querySelector('.stars-inner').style.width = starPercentageRounded;
+            //get user's ID
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                // User is signed in.
+                const userID = user.uid;
 
-            //Add number rating
-            document.querySelector('.number-rating').innerHTML = rating;
-        }
-    </script>
+                //get user's doc from "Users" collection
+                db.collection("Users").doc(userID).get().then((doc) => {
+                    if (doc.exists) {
+                    //retrieve user data from doc
+                    const userData = doc.data();
+                    const rating = userData.Rating;
 
-</body>
+                    //Get percentage
+                    const starPercentage = (rating / starsTotal * 100);
 
-<script>
-    const db = firebase.firestore();
+                    //Round to nearest 10
+                    const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
 
-    //get user's ID
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-            // User is signed in.
-            const userID = user.uid;
-            //console.log("UID: ", userID); DEBUG
+                    //Set width of stars-inner to percentage
+                    document.querySelector('.stars-inner').style.width = starPercentageRounded;
 
-            //get user's doc from "Users" collection
-            db.collection("Users").doc(userID).get().then((doc) => {
-            if (doc.exists) {
-                //retrieve user data from doc
-                const userData = doc.data();
-                const firstName = userData.FirstName;
-                const lastName = userData.LastName;
-                const email = userData.Email;
-
-                //update DOM with retrieved data
-                document.getElementById("user-fname").innerHTML = firstName;
-                document.getElementById("user-lname").innerHTML = lastName;
-                document.getElementById("user-email").innerHTML = email;
-            } else {
-                console.log("No such document!", doc);
-            }
-            }).catch((error) => {
-            console.log("Error getting document:", error);
+                    //Add number rating
+                    //console.log(rating); //DEBUG
+                    if(rating != undefined){
+                        document.querySelector('.number-rating').innerHTML = rating;
+                    }
+                    } 
+                    else {
+                    console.log("No such document!", doc);
+                    }
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+                }
             });
         }
-        else {
-            // User is signed out.
-            console.log(firebase.auth().currentUser);
-        }
-    })
-    
-</script>
+    </script>
+</body>
+
+
 </html>
