@@ -8,14 +8,14 @@ import { collection, addDoc, getDocs, Timestamp , query, where } from "https://w
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
-    authDomain: "fir-c9c47.firebaseapp.com",
-    databaseURL: "https://fir-c9c47.firebaseio.com",
-    projectId: "fir-c9c47",
-    storageBucket: "fir-c9c47.appspot.com",
-    messagingSenderId: "732611892783",
-    appId: "1:732611892783:web:518baf14f8076858af18da",
-    storageBucket: "gs://fir-c9c47.appspot.com"
+    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+    authDomain: "sc2006-1d9b8.firebaseapp.com",
+    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "sc2006-1d9b8",
+    storageBucket: "sc2006-1d9b8.appspot.com",
+    messagingSenderId: "18363617474",
+    appId: "1:18363617474:web:de5535d545b6169e532b5b",
+    measurementId: "G-NCKVJ8K4JJ"
 };
 
 // Initialize Firebase
@@ -33,9 +33,7 @@ const storageRef = ref(storage);
 //buttons
 var bookBtn = document.querySelector("#bookBtn");
 
-
-//window.onload = retrieveCarDetails();
-
+//retrieve selected car details on load
 document.addEventListener('DOMContentLoaded', function() {
     retrieveCarDetails();
  }, false);
@@ -45,20 +43,46 @@ bookBtn.addEventListener('click', BookCar);
 
 
 //functions 
-async function retrieveCarDetails(){
+async function retrieveCarDetails()
+{
 
-    const q = query(collection(db, "Cars"), where("Brand", "==", "Honda"));
+    const q = query(collection(db, "Cars"), where("Model", "==", "Vezel"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
 
         //console.log(doc.id, " => ", doc.data());
-        
-        var make = doc.data().Brand;
-        var model = doc.data().Model
-        document.getElementById("Make").innerHTML = make;
-        document.getElementById("Model").innerHTML = model;
+        var carimg = doc.data().Images[0];
+        var brand = doc.data().Brand;
+        var model = doc.data().Model;
+        var rating = doc.data().Rating;
+        var seats = doc.data().Seats;
+        var price = doc.data().Price;
+        var description = doc.data().Description;
+
+        getStarRatings(rating);
+
+        document.getElementById("carimg").src = carimg;
+        document.getElementById("BrandModel").innerHTML = brand + " " + model;
+        //document.getElementById("Model").innerHTML = model;
+        document.getElementById("Seats").innerHTML = seats + " seater";
+        document.getElementById("Price").innerHTML =  "$" + price + "/day";
+        document.getElementById("Description").innerHTML =  description;
+
     }); 
+}
+
+function getStarRatings(rating)
+{
+
+    const starsTotal = 5;
+    const starPercentage = (rating/starsTotal) * 100;
+    const starPercentageRounded = `${Math.round(starPercentage)}%`
+    console.log(starPercentageRounded)
+    
+    document.querySelector('.stars-inner').style.width = starPercentageRounded;
+    document.querySelector('.number-rating').innerHTML = rating;
+
 }
 
 async function BookCar()
@@ -78,12 +102,6 @@ async function BookCar()
     } catch (e) {
             console.error("Error adding document: ", e);
     }
-
-    const querySnapshot = await getDocs(collection(db, "Cars"));
-    querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-            
-    })
 }
 
     
