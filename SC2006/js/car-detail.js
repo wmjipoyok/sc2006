@@ -43,18 +43,11 @@ window.addEventListener('load', function () {
     retrieveCarDetails(carId);
 }, false);
 
-
-
-    //var today = new Date().toISOString().split('T')[0];
-    //document.getElementById("StartTrip")[0].setAttribute('min', today);
-
-
 //buttons
 var bookBtn = document.querySelector("#bookBtn");
 
 //book button event listener
 bookBtn.addEventListener('click', function() { BookCar(carId) });
-
 
 
 //functions 
@@ -101,7 +94,6 @@ function getStarRatings(rating) {
     document.querySelector('.number-rating').innerHTML = rating;
 
 }
-
 
 async function BookCar(carId) {
     //get date and time selected by user
