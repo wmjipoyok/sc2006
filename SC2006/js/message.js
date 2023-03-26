@@ -6,14 +6,14 @@ import { } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-messaging.js
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
-    authDomain: "fir-c9c47.firebaseapp.com",
-    databaseURL: "https://fir-c9c47.firebaseio.com",
-    projectId: "fir-c9c47",
-    storageBucket: "fir-c9c47.appspot.com",
-    messagingSenderId: "732611892783",
-    appId: "1:732611892783:web:518baf14f8076858af18da",
-    storageBucket: "gs://fir-c9c47.appspot.com"
+    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+    authDomain: "sc2006-1d9b8.firebaseapp.com",
+    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "sc2006-1d9b8",
+    storageBucket: "sc2006-1d9b8.appspot.com",
+    messagingSenderId: "18363617474",
+    appId: "1:18363617474:web:de5535d545b6169e532b5b",
+    measurementId: "G-NCKVJ8K4JJ"
 }
 
 const app = initializeApp(firebaseConfig);
