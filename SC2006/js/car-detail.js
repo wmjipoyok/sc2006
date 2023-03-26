@@ -2,7 +2,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, addDoc, getDocs, Timestamp, query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore
-const db = firebase.firestore();
+const db = getFirestore(app);
 
 // Initialize Cloud Storage
 const storage = getStorage(app);
@@ -30,81 +31,123 @@ const storageRef = ref(storage);
 
 
 
-//buttons
-var bookBtn = document.querySelector("#bookBtn");
+//get carID from URL
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const carId = urlParams.get('carId');
+
+
 
 //retrieve selected car details on load
 document.addEventListener('DOMContentLoaded', function () {
-    retrieveCarDetails();
+    retrieveCarDetails(carId);
 }, false);
 
+
+
+    //var today = new Date().toISOString().split('T')[0];
+    //document.getElementById("StartTrip")[0].setAttribute('min', today);
+
+
+//buttons
+var bookBtn = document.querySelector("#bookBtn");
+
 //book button event listener
-bookBtn.addEventListener('click', BookCar);
+bookBtn.addEventListener('click', function() { BookCar(carId) });
+
 
 
 //functions 
-async function retrieveCarDetails() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const carId = urlParams.get('carId');
-    db.collection("Cars").doc(carId).get().then((doc) => {
-        if (doc.exists) {
-            var carimg = doc.data().Images[0];
-            var brand = doc.data().Brand;
-            var model = doc.data().Model;
-            var rating = doc.data().Rating;
-            var seats = doc.data().Seats;
-            var price = doc.data().Price;
-            var description = doc.data().Description;
+async function retrieveCarDetails(carId) {
+    
+    //read db using car's id
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
 
-            getStarRatings(rating);
+    //get individual data from db
+    var carimg = docSnap.data().Images[0];
+    var brand = docSnap.data().Brand;
+    var model = docSnap.data().Model;
+    var rating = docSnap.data().Rating;
+    var seats = docSnap.data().Seats;
+    var price = docSnap.data().Price;
+    var description = docSnap.data().Description;
 
-            document.getElementById("carimg").src = carimg;
-            document.getElementById("BrandModel").innerHTML = brand + " " + model;
-            //document.getElementById("Model").innerHTML = model;
-            document.getElementById("Seats").innerHTML = seats + " seater";
-            document.getElementById("Price").innerHTML = "$" + price + "/day";
-            document.getElementById("Description").innerHTML = description;
+    //function to display stars
+    getStarRatings(rating);
 
-            if (doc.data().CarOwner == localStorage.getItem("userId")) {
-                document.getElementById("editBtn").removeAttribute('hidden');
-            }
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
+    //update fields in the page
+    document.getElementById("carimg").src = carimg;
+    document.getElementById("BrandModel").innerHTML = brand + " " + model;
+    document.getElementById("Seats").innerHTML = seats + " seater";
+    document.getElementById("Price").innerHTML = "$" + price + "/day";
+    document.getElementById("Description").innerHTML = description;
+
+    if (docSnap.data().CarOwner == localStorage.getItem("userId")) {
+        document.getElementById("editBtn").removeAttribute('hidden');
+    }
 }
-
+            
 
 function getStarRatings(rating) {
 
     const starsTotal = 5;
     const starPercentage = (rating / starsTotal) * 100;
     const starPercentageRounded = `${Math.round(starPercentage)}%`
-    console.log(starPercentageRounded)
 
     document.querySelector('.stars-inner').style.width = starPercentageRounded;
     document.querySelector('.number-rating').innerHTML = rating;
 
 }
 
-async function BookCar() {
+
+async function BookCar(carId) {
     //get date and time selected by user
     var StartTrip = document.getElementById("StartTrip").value;
     var EndTrip = document.getElementById("EndTrip").value;
 
-    //add into db, under "Bookings" Collection => need to change to users collection
-    try {
-        const docRef = await addDoc(collection(db, "Bookings"), {
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
 
-            Start: StartTrip,
-            End: EndTrip
+    //get car's status
+    var carStatus = docSnap.data().Status;
+
+    //check if car is in pending or unavailable
+    if(carStatus != 1 || carStatus != 2){
+
+        //update Booking in db
+        try {
+            const docRef = await addDoc(collection(db, "Bookings"), {
+                
+                UserId: localStorage.getItem("userId"),
+                CarId: carId,
+                Start: StartTrip,
+                End: EndTrip
+
         });
-        console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-        console.error("Error adding document: ", e);
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+        
+        //update car's availabilty status
+        try {
+            const carRef = doc(db, "Cars", carId);
+            await updateDoc(carRef, {
+                Status: 1
+        });
+        console.log("Car status updated");
+        } catch (e) {
+            console.error("Error updating status: ", e);
+        }
+        
     }
+
+
+    
 }
+
 
 
 
@@ -127,8 +170,20 @@ async function BookCar() {
 
             //reading from db
 /*
-const querySnapshot = await getDocs(collection(db, "TestCars"));
-querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-});
+        const querySnapshot = await getDocs(collection(db, "TestCars"));
+        querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        });
+*/
+/*
+        //update db
+
+        import { doc, updateDoc } from "firebase/firestore";
+
+        const washingtonRef = doc(db, "cities", "DC");
+
+        // Set the "capital" field of the city 'DC'
+        await updateDoc(washingtonRef, {
+            capital: true
+        });
 */
