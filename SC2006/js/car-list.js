@@ -35,16 +35,17 @@ window.addEventListener('load', function () {
 
 function getCarList() {
     db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).get().then(snapshot => {
-        snapshot.docs.forEach(doc => {
-            if (doc.exists && doc.data().Status == 0) {
-                let data = doc.data();
-                let userName = "-";
-                db.collection("Users").doc(data.CarOwner).get().then((doc) => {
-                    if (doc.exists) {
-                        userName = doc.data().FirstName;
-                    }
+        if (snapshot.docs.length > 0) {
+            snapshot.docs.forEach(doc => {
+                if (doc.exists && doc.data().Status == 0) {
+                    let data = doc.data();
+                    let userName = "-";
+                    db.collection("Users").doc(data.CarOwner).get().then((doc) => {
+                        if (doc.exists) {
+                            userName = doc.data().FirstName;
+                        }
 
-                    document.getElementById("carListContainer").innerHTML += `
+                        document.getElementById("carListContainer").innerHTML += `
                     <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
                         <div class="card border-bottom-primary shadow h-100 py-2">
                             <!-- Link To Car Details-->
@@ -78,10 +79,15 @@ function getCarList() {
                             </a>
                         </div>
                     </div>`
-                });
-
-            }
-
-        })
+                    });
+                }
+            })
+            document.getElementById("loading").setAttribute('hidden', true);
+            document.getElementById("carListContainer").removeAttribute('hidden');
+        } else {
+            document.getElementById("loading").setAttribute('hidden', true);
+            document.getElementById("warningMsg").innerHTML = "No cars available.";
+            document.getElementById("warningMsg").removeAttribute('hidden');
+        }
     })
 }
