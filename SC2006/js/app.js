@@ -10,7 +10,6 @@ function googleLogin() {
         .then(result => {
             // const user = result.user;
             // document.write(`Hello ${user.displayName}`);
-            // console.log(user);
             window.location.href = "main.html";
         })
         .catch(console.log)

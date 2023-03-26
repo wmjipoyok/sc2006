@@ -25,17 +25,18 @@ let carData;
 function getCarInfo() {
     db.collection("Cars").doc(carId).get().then((doc) => {
         if (doc.exists) {
+            carData = doc.data();
             const userId = localStorage.getItem("userId");
             if (doc.data().CarOwner == userId) {
                 if (doc.data().Status == 0) {
-                    carData = doc.data();
-
                     document.getElementById("carBrand").setAttribute('value', doc.data().Brand);
                     document.getElementById("carModel").setAttribute('value', doc.data().Model);
                     document.getElementById("carSeats").setAttribute('value', doc.data().Seats);
                     document.getElementById("carPrice").setAttribute('value', doc.data().Price);
                     document.getElementById("carDescription").innerHTML = doc.data().Description;
                     document.getElementById("carForm").removeAttribute('hidden');
+
+                    console.log(carData.Images.length);
                 } else {
                     document.getElementById("warningMsg").innerHTML = "You only can edit when the car is not in pending or rented status.";
                     document.getElementById("warningMsg").removeAttribute('hidden');
@@ -45,11 +46,29 @@ function getCarInfo() {
                 document.getElementById("warningMsg").removeAttribute('hidden');
             }
 
+            for (let i = 0; i < carData.Images.length; i++) {
+                document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
+                <img src="${carData.Images[i]}" style="width:100%"></div>`
+                document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`
+            }
+
+            document.getElementById("imageContainer").innerHTML += `<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>`
+
+            //append slideshow javasdcript after images finish loading
+            var head = document.getElementsByTagName('HEAD')[0];
+            var script = document.createElement('script');
+            script.src = './js/slideshow.js';
+            head.appendChild(script);
         }
         document.getElementById("carFormContainer").removeAttribute('hidden');
         document.getElementById("loading").setAttribute('hidden', true);
     }).catch((error) => {
         console.log("Error getting document:", error);
+        document.getElementById("loading").setAttribute('hidden', true);
+        document.getElementById("warningMsg").innerHTML = "This page is not available at the moment.";
+        document.getElementById("warningMsg").removeAttribute('hidden');
+        document.getElementById("carFormContainer").removeAttribute('hidden');
     });
 }
 
