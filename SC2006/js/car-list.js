@@ -40,11 +40,11 @@ function getCarList() {
                 if (doc.exists && doc.data().Status == 0) {
                     let data = doc.data();
                     let userName = "-";
-                    db.collection("Users").doc(data.CarOwner).get().then((doc) => {
-                        if (doc.exists) {
-                            userName = doc.data().FirstName;
+                    db.collection("Users").doc(data.CarOwner).get().then((docRef) => {
+                        if (docRef.exists) {
+                            userName = docRef.data().FirstName;
+                            console.log(doc.id);
                         }
-
                         document.getElementById("carListContainer").innerHTML += `
                     <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
                         <div class="card border-bottom-primary shadow h-100 py-2">

@@ -39,7 +39,7 @@ const carId = urlParams.get('carId');
 
 
 //retrieve selected car details on load
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
     retrieveCarDetails(carId);
 }, false);
 
@@ -144,8 +144,6 @@ async function BookCar(carId) {
         
     }
 
-
-    
 }
 
 
