@@ -15,6 +15,8 @@
     <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
     <script src="/__/firebase/init.js?useEmulator=true"></script>
+    
+    <script type="module" src="./js/car-detail.js"> </script>
 
     <title>Car Details</title>
 </head>
@@ -36,11 +38,12 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
+                        <div class="loading" id="loading">Loading&#8230;</div>
                         <div style="text-align: right;" id="editBtn" hidden>
                             <a href="car-form.html?request=edit&carId=9LsizXPDTUvIpePs9igy"><i
                                     class="fas fa-edit fa-lg"></i></a>
                         </div>
-
+                        
                         <div class="row">
                             <div class="imgCar col-lg-5">
                                 <img id="carimg"
@@ -97,7 +100,7 @@
 
 
         </script>
-        <script type="module" src="./js/car-detail.js"> </script>
+        
 
 </body>
 

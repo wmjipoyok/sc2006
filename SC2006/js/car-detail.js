@@ -86,6 +86,8 @@ async function retrieveCarDetails(carId) {
     if (docSnap.data().CarOwner == localStorage.getItem("userId")) {
         document.getElementById("editBtn").removeAttribute('hidden');
     }
+
+    document.getElementById("loading").setAttribute('hidden', true);
 }
             
 
