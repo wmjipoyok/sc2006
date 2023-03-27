@@ -241,8 +241,8 @@
                         <!-- Car 1-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-1" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-1-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -279,8 +279,8 @@
                         <!-- Car 2-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-2" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-2-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -317,8 +317,8 @@
                         <!-- Car 3-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-3" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-3-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -355,8 +355,8 @@
                         <!-- Car 4-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-4" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-4-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -393,8 +393,8 @@
                         <!-- Car 5-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-5" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-5-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -431,8 +431,8 @@
                         <!-- Car 6-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-6" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-6-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -469,8 +469,8 @@
                         <!-- Car 7-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-7" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-7-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -507,8 +507,8 @@
                         <!-- Car 8-->
                         <div class="col-xl-3 col-md-6 mb-4" id="profile-car-8"hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
-                                <!-- Link To Car Details EDIT THIS TO POINT TO NEW DETAIL PAGE WITH DELETE BUTTON added // to front of link-->
-                                <a href="//car-detail.html?carId=9LsizXPDTUvIpePs9igy" style="text-decoration: none">
+                                <!-- Link To Car Details-->
+                                <a id="profile-car-8-link" href="" style="text-decoration: none">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <!--Image-->
@@ -682,12 +682,14 @@
                                         const carPriceID = `profile-car-${carNum}-price`;
                                         const carRatingID = `.stars-inner-car-${carNum}`;
                                         const carSeatsID = `profile-car-${carNum}-seats`;
+                                        const carLinkID = `profile-car-${carNum}-link`;
 
                                         //inserting data into the cards
                                         document.getElementById(carBrandModelID).innerHTML = carBrandModel;
                                         document.getElementById(carImageID).src = carImage;
                                         document.getElementById(carPriceID).innerHTML = `$${carPrice}/day`;
                                         document.getElementById(carSeatsID).innerHTML = `${carSeats} seater`;
+                                        document.getElementById(carLinkID).href = `profile-car-detail.html?carId=${carRef}`;
 
                                         //inserting Rating into the card
                                         const starsTotal = 5;
