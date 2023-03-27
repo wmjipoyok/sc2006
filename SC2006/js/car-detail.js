@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -96,33 +96,44 @@ function getStarRatings(rating) {
 }
 
 async function BookCar(carId) {
+
     //get date and time selected by user
-    var StartTrip = document.getElementById("StartTrip").value;
-    var EndTrip = document.getElementById("EndTrip").value;
+    const StartTrip = document.getElementById("StartTrip").value;
+    const EndTrip = document.getElementById("EndTrip").value;
 
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
 
     //get car's status
-    var carStatus = docSnap.data().Status;
+    const carStatus = docSnap.data().Status;
 
-    //check if car is in pending or unavailable
-    if(carStatus != 1 || carStatus != 2){
+    //check if car is available
+    if(carStatus == 0){
 
         //update Booking in db
         try {
-            const docRef = await addDoc(collection(db, "Bookings"), {
+            const bookingRef = await addDoc(collection(db, "Bookings"), {
                 
                 UserId: localStorage.getItem("userId"),
                 CarId: carId,
                 Start: StartTrip,
                 End: EndTrip
 
-        });
-            console.log("Document written with ID: ", docRef.id);
+            });
+            console.log("Booking written with ID: ", bookingRef.id);
+
+            const userRef = doc(db, "Users", localStorage.getItem("userId"));
+            await updateDoc(userRef, {
+                Booking: arrayUnion(bookingRef.id)
+            });
+            console.log("Booking stored in Users with ID: ");
+
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+
+
+        
 
         
         //update car's availabilty status
