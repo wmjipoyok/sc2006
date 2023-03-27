@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebas
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
 import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -40,6 +40,11 @@ const carId = urlParams.get('carId');
 
 //retrieve selected car details on load
 window.addEventListener('load', function () {
+    $(function () {
+        $("#nav-content").load("nav.html");
+        $("#logout-model").load("logout-model.html");
+    });
+
     retrieveCarDetails(carId);
 }, false);
 
@@ -47,24 +52,25 @@ window.addEventListener('load', function () {
 var bookBtn = document.querySelector("#bookBtn");
 
 //book button event listener
-bookBtn.addEventListener('click', function() { BookCar(carId) });
+bookBtn.addEventListener('click', function () { BookCar(carId) });
 
 
 //functions 
 async function retrieveCarDetails(carId) {
-    
+
     //read db using car's id
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
 
+    const dataSnap = docSnap.data();
     //get individual data from db
-    var carimg = docSnap.data().Images[0];
-    var brand = docSnap.data().Brand;
-    var model = docSnap.data().Model;
-    var rating = docSnap.data().Rating;
-    var seats = docSnap.data().Seats;
-    var price = docSnap.data().Price;
-    var description = docSnap.data().Description;
+    var carimg = dataSnap.Images[0];
+    var brand = dataSnap.Brand;
+    var model = dataSnap.Model;
+    var rating = dataSnap.Rating;
+    var seats = dataSnap.Seats;
+    var price = dataSnap.Price;
+    var description = dataSnap.Description;
 
     //function to display stars
     getStarRatings(rating);
@@ -76,13 +82,17 @@ async function retrieveCarDetails(carId) {
     document.getElementById("Price").innerHTML = "$" + price + "/day";
     document.getElementById("Description").innerHTML = description;
 
-    if (docSnap.data().CarOwner == localStorage.getItem("userId")) {
+    if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 0) {
         document.getElementById("editBtn").removeAttribute('hidden');
+        document.getElementById("delete").removeAttribute('hidden');
+    } else if (dataSnap.Status == 0) {
+        document.getElementById("Booking").removeAttribute('hidden');
     }
 
+    document.getElementById("carInfoContainer").removeAttribute('hidden');
     document.getElementById("loading").setAttribute('hidden', true);
 }
-            
+
 
 function getStarRatings(rating) {
 
@@ -108,17 +118,16 @@ async function BookCar(carId) {
     const carStatus = docSnap.data().Status;
 
     //check if car is available
-    if(carStatus == 0){
+    if (carStatus == 0) {
 
         //update Booking in db
         try {
             const bookingRef = await addDoc(collection(db, "Bookings"), {
-                
+
                 UserId: localStorage.getItem("userId"),
                 CarId: carId,
                 Start: StartTrip,
                 End: EndTrip
-
             });
             console.log("Booking written with ID: ", bookingRef.id);
 
@@ -133,20 +142,20 @@ async function BookCar(carId) {
         }
 
 
-        
 
-        
+
+
         //update car's availabilty status
         try {
             const carRef = doc(db, "Cars", carId);
             await updateDoc(carRef, {
                 Status: 1
-        });
-        console.log("Car status updated");
+            });
+            console.log("Car status updated");
         } catch (e) {
             console.error("Error updating status: ", e);
         }
-        
+
     }
 
 }
