@@ -110,7 +110,7 @@ async function BookCar(carId) {
     //check if car is available
     if(carStatus == 0){
 
-        //update Booking in db
+        //update Booking in db and the BookingId into individual users
         try {
             const bookingRef = await addDoc(collection(db, "Bookings"), {
                 
@@ -131,12 +131,8 @@ async function BookCar(carId) {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-
-
         
-
-        
-        //update car's availabilty status
+        //update car's availabilty status to pending
         try {
             const carRef = doc(db, "Cars", carId);
             await updateDoc(carRef, {
@@ -146,7 +142,9 @@ async function BookCar(carId) {
         } catch (e) {
             console.error("Error updating status: ", e);
         }
-        
+
+        alert("Booking Success!");
+        window.location.href = "profile.html";
     }
 
 }
@@ -169,24 +167,24 @@ async function BookCar(carId) {
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
-            */
+           
 
             //reading from db
-/*
-        const querySnapshot = await getDocs(collection(db, "TestCars"));
-        querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        });
-*/
-/*
-        //update db
 
-        import { doc, updateDoc } from "firebase/firestore";
+            const querySnapshot = await getDocs(collection(db, "TestCars"));
+            querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+            });
 
-        const washingtonRef = doc(db, "cities", "DC");
 
-        // Set the "capital" field of the city 'DC'
-        await updateDoc(washingtonRef, {
-            capital: true
-        });
+            //update db
+
+            import { doc, updateDoc } from "firebase/firestore";
+
+            const washingtonRef = doc(db, "cities", "DC");
+
+            // Set the "capital" field of the city 'DC'
+            await updateDoc(washingtonRef, {
+                capital: true
+            });
 */
