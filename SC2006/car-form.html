@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/car-detail.css">
     <link rel="stylesheet" href="./css/slideshow.css">
+    <link rel="stylesheet" href="./css/car-form.css">
     <script type="module" src="./js/car-form.js"> </script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
@@ -39,7 +40,8 @@
                     <div class="alert alert-light" role="alert" id="warningMsg" hidden></div>
                     <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMsg" hidden>
                         Car information has been updated!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close button" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
                     </div>
 
                     <form id="carForm" hidden>
@@ -51,11 +53,26 @@
                             </div> -->
 
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-                                <div class="slideshow-container imgCar" id="imageContainer"></div>
-                                <br>
+                                <div id="addImage" hidden>
+                                    <div class="input-div">
+                                        <p>Drag & drop images here or <span class="browse">Browse</span>
+                                            <br /> Accept image file type: png, jpeg and jpg
+                                            <br /> Max upload limit: 5
+                                        </p>
+                                        <input type="file" class="file" multiple="multiple"
+                                            accept="image/png, image/jpeg, image/jpg">
+                                    </div>
+                                    <p style="color: red">*Note that the images cannot be changed once the listing has
+                                        been created </p>
+                                </div>
 
-                                <!-- The dots/circles -->
-                                <div style="text-align:center" id="dotContatiner"></div>
+                                <div id="slideshowContainer">
+                                    <div class="slideshow-container imgCar" id="imageContainer"></div>
+                                    <br>
+
+                                    <!-- The dots/circles -->
+                                    <div style="text-align:center" id="dotContatiner"></div>
+                                </div>
                             </div>
 
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">

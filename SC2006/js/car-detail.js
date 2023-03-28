@@ -40,6 +40,7 @@ const carId = urlParams.get('carId');
 
 //retrieve selected car details on load
 window.addEventListener('load', function () {
+    document.getElementById("editCarUrl").href = "car-form.html?request=edit&carId=" + carId;
     $(function () {
         $("#nav-content").load("nav.html");
         $("#logout-model").load("logout-model.html");
@@ -61,8 +62,9 @@ async function retrieveCarDetails(carId) {
     //read db using car's id
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
-
     const dataSnap = docSnap.data();
+
+
     //get individual data from db
     var carimg = dataSnap.Images[0];
     var brand = dataSnap.Brand;
@@ -93,6 +95,9 @@ async function retrieveCarDetails(carId) {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
+function getEditUrl() {
+
+}
 
 function getStarRatings(rating) {
 
