@@ -10,6 +10,7 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/car-detail.css">
+    <link rel="stylesheet" href="./css/slideshow.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
@@ -41,15 +42,17 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid" id="carInfoContainer" hidden>
                     <div style="text-align: right;" id="editBtn" hidden>
-                        <a href="car-form.html?request=edit&carId=9LsizXPDTUvIpePs9igy"><i
-                                class="fas fa-edit fa-lg"></i></a>
+                        <a href="#" id="editCarUrl">
+                            <i class="fas fa-edit fa-lg"></i></a>
                     </div>
 
                     <div class="row">
-                        <div class="imgCar col-lg-5">
-                            <img id="carimg"
-                                src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16"
-                                alt="Image of Car">
+                        <div class="col-lg-5">
+                            <div class="slideshow-container imgCar" id="imageContainer"></div>
+                            <br>
+
+                            <!-- The dots/circles -->
+                            <div style="text-align:center" id="dotContatiner"></div>
                         </div>
                         <div class="col-lg-4">
                             <div id="CarBrandModel">

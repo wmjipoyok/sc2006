@@ -40,6 +40,7 @@ const carId = urlParams.get('carId');
 
 //retrieve selected car details on load
 window.addEventListener('load', function () {
+    document.getElementById("editCarUrl").href = "car-form.html?request=edit&carId=" + carId;
     $(function () {
         $("#nav-content").load("nav.html");
         $("#logout-model").load("logout-model.html");
@@ -61,10 +62,10 @@ async function retrieveCarDetails(carId) {
     //read db using car's id
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
-
     const dataSnap = docSnap.data();
+
+
     //get individual data from db
-    var carimg = dataSnap.Images[0];
     var brand = dataSnap.Brand;
     var model = dataSnap.Model;
     var rating = dataSnap.Rating;
@@ -76,7 +77,6 @@ async function retrieveCarDetails(carId) {
     getStarRatings(rating);
 
     //update fields in the page
-    document.getElementById("carimg").src = carimg;
     document.getElementById("BrandModel").innerHTML = brand + " " + model;
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
@@ -88,6 +88,20 @@ async function retrieveCarDetails(carId) {
     } else if (dataSnap.Status == 0) {
         document.getElementById("Booking").removeAttribute('hidden');
     }
+
+    for (let i = 0; i < dataSnap.Images.length; i++) {
+        document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
+        <img src="${dataSnap.Images[i]}" class="slideshow-img" alt="image"></div>`
+        document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`
+    }
+
+    document.getElementById("imageContainer").innerHTML += `<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>`
+
+    var head = document.getElementsByTagName('HEAD')[0];
+    let jsScript = document.createElement('script');
+    jsScript.src = './js/slideshow.js';
+    head.appendChild(jsScript);
 
     document.getElementById("carInfoContainer").removeAttribute('hidden');
     document.getElementById("loading").setAttribute('hidden', true);
@@ -104,6 +118,13 @@ function getStarRatings(rating) {
     document.querySelector('.number-rating').innerHTML = rating;
 
 }
+
+// function addSlideshowJS() {
+//     var head = document.getElementsByTagName('HEAD')[0];
+//     let jsScript = document.createElement('script');
+//     jsScript.src = './js/slideshow.js';
+//     head.appendChild(jsScript);
+// }
 
 async function BookCar(carId) {
 
