@@ -21,6 +21,7 @@ const request = urlParams.get('request');
 const carId = urlParams.get('carId');
 const imageLimit = 5;
 let imageArray = [];
+let imgToUpload = [];
 let jsScript;
 let carData;
 
@@ -59,6 +60,8 @@ function getCarInfo() {
             //append slideshow javasdcript after images finish loading
             addSlideshowJS();
         }
+        document.getElementById("warningMsg").innerHTML = "Car information not found.";
+        document.getElementById("warningMsg").removeAttribute('hidden');
         document.getElementById("carFormContainer").removeAttribute('hidden');
         document.getElementById("loading").setAttribute('hidden', true);
     }).catch((error) => {
@@ -70,16 +73,6 @@ function getCarInfo() {
     });
 }
 
-
-window.addEventListener("DOMContentLoaded", (event) => {
-    if (request != "edit") {
-        document.getElementById("carFormContainer").removeAttribute('hidden');
-        document.getElementById("carForm").removeAttribute('hidden');
-        document.getElementById("addImage").removeAttribute('hidden');
-        document.getElementById("loading").setAttribute('hidden', true);
-    }
-})
-
 window.addEventListener('load', function () {
     $(function () {
         $("#nav-content").load("nav.html");
@@ -89,6 +82,7 @@ window.addEventListener('load', function () {
     if (request == 'edit') {
         getCarInfo();
     } else {
+        document.getElementById("pageTitle").innerHTML = "Upload Car";
         document.getElementById("carFormContainer").removeAttribute('hidden');
         document.getElementById("carForm").removeAttribute('hidden');
         document.getElementById("addImage").removeAttribute('hidden');
@@ -99,77 +93,137 @@ window.addEventListener('load', function () {
 
         input.addEventListener("change", () => {
             const files = input.files;
-            const spaceAva = imageLimit - $("#imageContainer img").length;
-            let limit;
-            if (spaceAva == 0 && files.length >= imageLimit) {
-                limit = imageLimit;
-            } else if (spaceAva == 0 && files.length < imageLimit) {
-                limit = files.length;
-            } else {
-                limit = spaceAva < files.length ? spaceAva : files.length;
-            }
+            if (files.length > 0) {
+                document.getElementById("slideshowContainer").setAttribute("hidden", true);
+                document.getElementById("imageLoader").removeAttribute("hidden");
 
-            for (let i = 0; i < limit; i++) {
-                imageArray.push(files[i]);
+                const spaceAva = imageLimit - $("#imageContainer img").length;
+                let limit;
+                if (spaceAva == 0 && files.length >= imageLimit) {
+                    limit = imageLimit;
+                } else if (spaceAva == 0 && files.length < imageLimit) {
+                    limit = files.length;
+                } else {
+                    limit = spaceAva < files.length ? spaceAva : files.length;
+                }
+
+                for (let i = 0; i < limit; i++) {
+                    imageArray.push(files[i]);
+                }
+                displayImages();
             }
-            displayImages();
         })
 
         input.addEventListener("drop", (e) => {
-            e.preventDefault();
             const files = e.dataTransfer.files;
-            let limit = files.length >= imageLimit ? imageLimit : files.length;
-            for (let i = 0; i < limit; i++) {
-                if (!files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png")) continue;
-                if (imageArray.every(image => image.name !== files[i].name)) {
-                    imageArray.push(files[i]);
+            if (files.length > 0) {
+                document.getElementById("slideshowContainer").setAttribute("hidden", true);
+                document.getElementById("imageLoader").removeAttribute("hidden");
+                e.preventDefault();
+
+                let limit = files.length >= imageLimit ? imageLimit : files.length;
+                for (let i = 0; i < limit; i++) {
+                    if (!files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png")) continue;
+                    if (imageArray.every(image => image.name !== files[i].name)) {
+                        imageArray.push(files[i]);
+                    }
                 }
+                displayImages();
             }
-            displayImages();
         })
     }
 
     let carForm = document.getElementById("carForm");
     carForm.addEventListener("submit", (e) => {
         e.preventDefault();
+        let dataVal = e.target.elements;
+        const carBrand = dataVal.carBrand.value;
+        const carModel = dataVal.carModel.value;
+        const carSeats = parseInt(dataVal.carSeats.value);
+        const carPrice = parseInt(dataVal.carPrice.value);
+        const carDescription = dataVal.carDescription.value;
+        console.log(imgToUpload);
         // handle submit
+        if (!carBrand) {
+            document.getElementById("carBrand").style.borderColor = "red";
+            document.getElementById("brandError").removeAttribute("hidden");
+            return;
+        } else {
+            document.getElementById("carBrand").style.borderColor = "";
+            document.getElementById("brandError").setAttribute("hidden", true);
+        }
 
-        const carBrand = e.target.elements.carBrand.value;
-        const carModel = e.target.elements.carModel.value;
-        const carSeats = parseInt(e.target.elements.carSeats.value);
-        const carPrice = parseInt(e.target.elements.carPrice.value);
-        const carDescription = e.target.elements.carDescription.value;
+        if (!carModel) {
+            document.getElementById("carModel").style.borderColor = "red";
+            document.getElementById("modelError").removeAttribute("hidden");
+            return;
+        } else {
+            document.getElementById("carModel").style.borderColor = "";
+            document.getElementById("modelError").setAttribute("hidden", true);
 
-        db.collection("Cars").doc(carId).set({
-            Brand: carBrand,
-            Model: carModel,
-            Seats: carSeats,
-            Price: carPrice,
-            Description: carDescription,
-            Status: carData.Status,
-            Images: carData.Images,
-            Rating: carData.Rating,
-            Carpark: carData.Carpark,
-            CarOwner: carData.CarOwner
-        })
-            .then(() => {
-                document.getElementById("successMsg").removeAttribute('hidden');
+        }
+
+        if (!carSeats) {
+            document.getElementById("carSeats").style.borderColor = "red";
+            document.getElementById("seatsError").removeAttribute("hidden");
+            return;
+        } else {
+            document.getElementById("carSeats").style.borderColor = "";
+            document.getElementById("seatsError").setAttribute("hidden", true);
+        }
+
+        if (!carPrice) {
+            document.getElementById("carPrice").style.borderColor = "red";
+            document.getElementById("priceError").removeAttribute("hidden");
+            return;
+        } else {
+            document.getElementById("carPrice").style.borderColor = "";
+            document.getElementById("priceError").setAttribute("hidden", true);
+        }
+
+        if (!carPrice) {
+            document.getElementById("carPrice").style.borderColor = "red";
+            document.getElementById("priceError").removeAttribute("hidden");
+            return;
+        } else {
+            document.getElementById("carPrice").style.borderColor = "";
+            document.getElementById("priceError").setAttribute("hidden", true);
+        }
+
+        if (request == 'edit') {
+            db.collection("Cars").doc(carId).set({
+                Brand: carBrand,
+                Model: carModel,
+                Seats: carSeats,
+                Price: carPrice,
+                Description: carDescription,
+                Status: carData.Status,
+                Images: carData.Images,
+                Rating: carData.Rating,
+                Carpark: carData.Carpark,
+                CarOwner: carData.CarOwner
             })
-            .catch((error) => {
-                console.error("Error updating car information: ", error);
-            });
+                .then(() => {
+                    document.getElementById("successMsg").removeAttribute('hidden');
+                })
+                .catch((error) => {
+                    console.error("Error updating car information: ", error);
+                });
+        }
+
     });
 }, false);
 
 function displayImages() {
-
     if ($("#imageContainer img").length >= imageLimit) {
         document.getElementById("imageContainer").innerHTML = "";
         document.getElementById("dotContatiner").innerHTML = "";
+        imgToUpload = [];
         jsScript.remove();
     }
 
     imageArray.forEach((image, index) => {
+        imgToUpload.push(image);
         var reader = new FileReader();
         reader.onload = function (e) {
             document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
@@ -182,9 +236,12 @@ function displayImages() {
     <a class="next" onclick="plusSlides(1)">&#10095;</a>`
 
     var len = $('script[src="./js/slideshow.js"]').length;
-    if (len == 0) {
-        setTimeout(addSlideshowJS, 2000);
+
+    if (len != 0) {
+        jsScript.remove();
     }
+
+    setTimeout(addSlideshowJS, 2000);
     imageArray = [];
 }
 
@@ -193,7 +250,6 @@ function addSlideshowJS() {
     jsScript = document.createElement('script');
     jsScript.src = './js/slideshow.js';
     head.appendChild(jsScript);
+    document.getElementById("imageLoader").setAttribute("hidden", true);
+    document.getElementById("slideshowContainer").removeAttribute("hidden");
 }
-
-
-
