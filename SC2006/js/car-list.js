@@ -54,7 +54,7 @@ function getCarList() {
                                     <div class="no-gutters align-items-center">
                                         <div class="col-auto" style="margin-bottom: 10px;">
                                             <img src="${data.Images[0]} class="col-auto"
-                                                width="100%">
+                                                style="width:100%; height:150px;">
                                         </div>
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
