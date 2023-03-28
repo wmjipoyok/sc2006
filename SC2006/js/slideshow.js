@@ -1,7 +1,5 @@
 slideIndex = 1;
 
-console.log("slideIndex: " + slideIndex);
-
 showSlides(slideIndex);
 
 // Next/previous controls
