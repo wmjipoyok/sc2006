@@ -204,7 +204,6 @@ function addSlideshowJS() {
     jsScript = document.createElement('script');
     jsScript.src = './js/slideshow.js';
     head.appendChild(jsScript);
-    console.log("hihihihihi");
 }
 
 
