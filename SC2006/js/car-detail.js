@@ -66,7 +66,6 @@ async function retrieveCarDetails(carId) {
 
 
     //get individual data from db
-    var carimg = dataSnap.Images[0];
     var brand = dataSnap.Brand;
     var model = dataSnap.Model;
     var rating = dataSnap.Rating;
@@ -78,7 +77,6 @@ async function retrieveCarDetails(carId) {
     getStarRatings(rating);
 
     //update fields in the page
-    document.getElementById("carimg").src = carimg;
     document.getElementById("BrandModel").innerHTML = brand + " " + model;
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
@@ -91,13 +89,24 @@ async function retrieveCarDetails(carId) {
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
+    for (let i = 0; i < dataSnap.Images.length; i++) {
+        document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
+        <img src="${dataSnap.Images[i]}" class="slideshow-img" alt="image"></div>`
+        document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`
+    }
+
+    document.getElementById("imageContainer").innerHTML += `<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>`
+
+    var head = document.getElementsByTagName('HEAD')[0];
+    let jsScript = document.createElement('script');
+    jsScript.src = './js/slideshow.js';
+    head.appendChild(jsScript);
+
     document.getElementById("carInfoContainer").removeAttribute('hidden');
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
-function getEditUrl() {
-
-}
 
 function getStarRatings(rating) {
 
@@ -109,6 +118,13 @@ function getStarRatings(rating) {
     document.querySelector('.number-rating').innerHTML = rating;
 
 }
+
+// function addSlideshowJS() {
+//     var head = document.getElementsByTagName('HEAD')[0];
+//     let jsScript = document.createElement('script');
+//     jsScript.src = './js/slideshow.js';
+//     head.appendChild(jsScript);
+// }
 
 async function BookCar(carId) {
 

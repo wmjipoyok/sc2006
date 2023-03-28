@@ -30,7 +30,6 @@ function getCarInfo() {
         if (doc.exists) {
             carData = doc.data();
             const userId = localStorage.getItem("userId");
-            console.log(doc.data().CarOwner + " - " + userId);
             if (doc.data().CarOwner == userId) {
                 if (doc.data().Status == 0) {
                     document.getElementById("carBrand").setAttribute('value', doc.data().Brand);
@@ -39,8 +38,6 @@ function getCarInfo() {
                     document.getElementById("carPrice").setAttribute('value', doc.data().Price);
                     document.getElementById("carDescription").innerHTML = doc.data().Description;
                     document.getElementById("carForm").removeAttribute('hidden');
-
-                    console.log(carData.Images.length);
                 } else {
                     document.getElementById("warningMsg").innerHTML = "You only can edit when the car is not in pending or rented status.";
                     document.getElementById("warningMsg").removeAttribute('hidden');
@@ -105,15 +102,12 @@ window.addEventListener('load', function () {
             const spaceAva = imageLimit - $("#imageContainer img").length;
             let limit;
             if (spaceAva == 0 && files.length >= imageLimit) {
-                console.log("spaceAva == 0 && files.length >= imageLimit");
                 limit = imageLimit;
             } else if (spaceAva == 0 && files.length < imageLimit) {
-                console.log("spaceAva == 0 && files.length < imageLimit");
                 limit = files.length;
             } else {
                 limit = spaceAva < files.length ? spaceAva : files.length;
             }
-            console.log("limit: " + limit);
 
             for (let i = 0; i < limit; i++) {
                 imageArray.push(files[i]);
@@ -146,8 +140,6 @@ window.addEventListener('load', function () {
         const carPrice = parseInt(e.target.elements.carPrice.value);
         const carDescription = e.target.elements.carDescription.value;
 
-        console.log(carData);
-
         db.collection("Cars").doc(carId).set({
             Brand: carBrand,
             Model: carModel,
@@ -162,7 +154,6 @@ window.addEventListener('load', function () {
         })
             .then(() => {
                 document.getElementById("successMsg").removeAttribute('hidden');
-                console.log("Car information has been updated!");
             })
             .catch((error) => {
                 console.error("Error updating car information: ", error);
@@ -181,7 +172,6 @@ function displayImages() {
     imageArray.forEach((image, index) => {
         var reader = new FileReader();
         reader.onload = function (e) {
-            console.log(e.target.result);
             document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
         <img src="${e.target.result}" class="slideshow-img" alt="image"></div>`
             document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${index + 1})"></span>`
@@ -192,7 +182,6 @@ function displayImages() {
     <a class="next" onclick="plusSlides(1)">&#10095;</a>`
 
     var len = $('script[src="./js/slideshow.js"]').length;
-    console.log("lennnnnn: " + len);
     if (len == 0) {
         setTimeout(addSlideshowJS, 2000);
     }
