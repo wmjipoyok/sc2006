@@ -139,7 +139,6 @@ function errorHandle(msg) {
 }
 
 function getStarRatings(rating) {
-
     const starsTotal = 5;
     const starPercentage = (rating / starsTotal) * 100;
     const starPercentageRounded = `${Math.round(starPercentage)}%`
@@ -148,13 +147,6 @@ function getStarRatings(rating) {
     document.querySelector('.number-rating').innerHTML = rating;
 
 }
-
-// function addSlideshowJS() {
-//     var head = document.getElementsByTagName('HEAD')[0];
-//     let jsScript = document.createElement('script');
-//     jsScript.src = './js/slideshow.js';
-//     head.appendChild(jsScript);
-// }
 
 function checkBooking() {
     const start = document.getElementById("StartTrip");
@@ -250,9 +242,9 @@ async function BookCar(carId) {
         }
     }
 
-    alert("Booking Successful! Wait for owner to accept."); 
+    alert("Booking Successful! Wait for owner to accept.");
     window.location.href = "bookings.html";
-    
+
 }
 
 function sendMessage(carOwner, bookingId) {
