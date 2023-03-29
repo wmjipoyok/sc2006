@@ -8,16 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/car-detail.css">
     <link rel="stylesheet" href="./css/slideshow.css">
+    <link rel="stylesheet" href="./css/car-form.css">
     <script type="module" src="./js/car-form.js"> </script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-storage-compat.js"></script>
     <script src="/__/firebase/init.js?useEmulator=true"></script>
 
 
-    <title>Edit Car</title>
+    <title id="pageTitle">Edit Car</title>
 </head>
 
 <body id="page-top">
@@ -38,51 +40,74 @@
                 <div class="container-fluid" id="carFormContainer" hidden>
                     <div class="alert alert-light" role="alert" id="warningMsg" hidden></div>
                     <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMsg" hidden>
-                        Car information has been updated!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close button" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
                     </div>
 
                     <form id="carForm" hidden>
                         <div class="row">
-                            <!--edit image-->
-                            <!-- <div class="imgCar col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/fir-c9c47.appspot.com/o/CarImages%2FHonda%2FFit%2F2020-Honda-Fit.jpg?alt=media&token=af6d1619-f155-488f-ba8a-bc90ee9cde16"
-                                    alt="Image of Car">
-                            </div> -->
-
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-                                <div class="slideshow-container imgCar" id="imageContainer"></div>
-                                <br>
+                                <div id="addImage" hidden>
+                                    <div class="input-div" id="imageBox">
+                                        <p>Drag & drop images here or <span class="browse">Browse</span>
+                                            <br /> Accept image file type: png, jpeg and jpg
+                                            <br /> Max upload limit: 5
+                                        </p>
+                                        <input type="file" class="file" multiple="multiple" id="carImages"
+                                            accept="image/png, image/jpeg, image/jpg">
+                                    </div>
+                                    <span>
+                                        <p style="color: blue; padding-bottom:2px; margin-bottom: 0px;">Note that the
+                                            images cannot be changed once the listing has been created </p>
+                                        <p id="imgError" style="color:red" hidden>Image cannot be empty</p>
+                                    </span>
+                                </div>
 
-                                <!-- The dots/circles -->
-                                <div style="text-align:center" id="dotContatiner"></div>
+                                <div class="loadersmall" id="imageLoader" hidden></div>
+                                <div id="slideshowContainer" hidden>
+                                    <div class="slideshow-container imgCar" id="imageContainer"></div>
+                                    <br>
+
+                                    <!-- The dots/circles -->
+                                    <div style="text-align:center" id="dotContatiner"></div>
+                                </div>
+
                             </div>
 
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <!--edit details, change input id and follow Kavis car details stuff-->
                                 <div class="mb-3">
                                     <label for="carBrand" class="form-label">Brand</label>
-                                    <input type="text" class="form-control" id="carBrand" aria-describedby="carBrand"
-                                        required>
+                                    <input type="text" class="form-control" id="carBrand" aria-describedby="carBrand">
+                                    <div id="brandError" style="color:red" hidden>Brand
+                                        cannot be empty
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="carModel" class="form-label">Model</label>
-                                    <input type="text" class="form-control" id="carModel" aria-describedby="carModel"
-                                        required>
+                                    <input type="text" class="form-control" id="carModel" aria-describedby="carModel">
+                                    <div id="modelError" style="color:red" hidden>Model
+                                        cannot be empty
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="carSeats" class="form-label">Seats</label>
                                     <input type="text" class="form-control" id="carSeats" aria-describedby="carSeats"
-                                        required oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                                    <div id="seatsError" style="color:red" hidden>Number of seats
+                                        cannot be empty
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="carPrice" class="form-label">Price per day</label>
                                     <input type="text" class="form-control" id="carPrice" aria-describedby="carPrice"
-                                        required
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                    <div id="priceError" style="color:red" hidden>Price
+                                        cannot be empty
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -93,6 +118,24 @@
 
                                 <!-- Save Button-->
                                 <button type="submit" class="btn btn-primary">Save</button>
+                                <span class="load-wrapp" id="saveLoading" style="visibility: hidden;">
+                                    <span class="load-6">
+                                        <span class="letter-holder">
+                                            <span class="l-1 letter">U</span>
+                                            <span class="l-2 letter">p</span>
+                                            <span class="l-3 letter">l</span>
+                                            <span class="l-4 letter">o</span>
+                                            <span class="l-5 letter">a</span>
+                                            <span class="l-6 letter">d</span>
+                                            <span class="l-7 letter">i</span>
+                                            <span class="l-8 letter">n</span>
+                                            <span class="l-9 letter">g</span>
+                                            <span class="l-10 letter">.</span>
+                                            <span class="l-11 letter">.</span>
+                                            <span class="l-12 letter">.</span>
+                                        </span>
+                                    </span>
+                                </span>
 
                             </div>
                         </div>

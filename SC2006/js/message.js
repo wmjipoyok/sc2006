@@ -47,14 +47,14 @@ messaging.onMessage((payload) => {
     console.log('Message received. ', payload);
     const userId = localStorage.getItem("userId");
     const notiCount = document.getElementById('notiCount');
-    if ((userId == payload.data.ownerId) && notiCount) {
+    if ((userId == payload.data.receiverId) && notiCount) {
         if (notiCount) {
             if (notiCount.style.visibility == 'hidden') {
                 notiCount.style.visibility = 'visible';
             }
             notiCount.innerHTML = parseInt(notiCount.innerHTML) + 1;
             const alerts = document.getElementById('alertContainer');
-            const carId = '123';
+            const carId = payload.data.carId;
             const username = 'user123';
             var currentdate = new Date();
             alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${carId}">

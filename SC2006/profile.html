@@ -221,8 +221,6 @@
             <div id="content" style="width:100%; height:900px;">
                 <div id="nav-content"></div>
                 <div class="container-fluid">
-                    <h1><span style="color:black">Profile Page</span></h1>
-
                     <div id="user-profile">
 
                         <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span>
@@ -252,7 +250,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-1-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-1-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-1-name">
@@ -290,7 +289,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-2-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-2-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-2-name">
@@ -328,7 +328,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-3-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-3-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-3-name">
@@ -366,7 +367,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-4-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-4-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-4-name">
@@ -404,7 +406,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-5-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-5-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-5-name">
@@ -442,7 +445,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-6-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-6-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-6-name">
@@ -480,7 +484,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-7-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-7-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-7-name">
@@ -505,7 +510,7 @@
                         </div>
 
                         <!-- Car 8-->
-                        <div class="col-xl-3 col-md-6 mb-4" id="profile-car-8"hidden>
+                        <div class="col-xl-3 col-md-6 mb-4" id="profile-car-8" hidden>
                             <div class="card border-bottom-primary shadow h-100 py-2">
                                 <!-- Link To Car Details-->
                                 <a id="profile-car-8-link" href="" style="text-decoration: none">
@@ -518,7 +523,8 @@
 
                                             <!--Left Details-->
                                             <div class="col mr-2">
-                                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="profile-car-8-price">
+                                                <div class="h4 mb-0 font-weight-bold text-gray-800"
+                                                    id="profile-car-8-price">
                                                     $200/day
                                                 </div>
                                                 <div class="h5 mb-0 font-weight text-gray-800" id="profile-car-8-name">
@@ -584,7 +590,7 @@
 
                         //Run getRatings when DOM loads
                         //document.addEventListener('DOMContentLoaded', getRatings);
-                        getRatings();
+                        getRatings(rating);
                         //console.log("past call"); //DEBUG
                     } else {
                         console.log("No such document!", doc);
@@ -600,123 +606,77 @@
         })
 
         //getRatings func
-        function getRatings() {
+        function getRatings(rating) {
             //console.log("enetered func"); //DEBUG
             //Total Stars
             const starsTotal = 5;
 
-            //get user's ID
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    // User is signed in.
-                    const userID = user.uid;
+            const starPercentage = (rating / starsTotal * 100);
 
-                    //get user's doc from "Users" collection
-                    db.collection("Users").doc(userID).get().then((doc) => {
-                        if (doc.exists) {
-                            //retrieve user data from doc
-                            const userData = doc.data();
-                            const rating = userData.Rating;
+            //Round to nearest 10
+            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
 
-                            //Get percentage
-                            const starPercentage = (rating / starsTotal * 100);
+            //Set width of stars-inner to percentage
+            document.querySelector('.stars-inner').style.width = starPercentageRounded;
 
-                            //Round to nearest 10
-                            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-
-                            //Set width of stars-inner to percentage
-                            document.querySelector('.stars-inner').style.width = starPercentageRounded;
-
-                            //Add number rating
-                            //console.log(rating); //DEBUG
-                            if (rating != undefined) {
-                                document.querySelector('.number-rating').innerHTML = rating;
-                            }
-                        }
-                        else {
-                            console.log("No such document!", doc);
-                        }
-                    }).catch((error) => {
-                        console.log("Error getting document:", error);
-                    });
-                }
-            });
+            //Add number rating
+            //console.log(rating); //DEBUG
+            if (rating != undefined) {
+                document.querySelector('.number-rating').innerHTML = rating;
+            }
         }
     </script>
 
     <script>
         //to pull and display the car's that a user owns in his profile page
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                // User is signed in.
-                const userID = user.uid;
+        const userID = localStorage.getItem("userId");
+        const carsRef = db.collection("Cars");
 
-                db.collection("Users").doc(userID).get().then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        if (userData.hasOwnProperty("CarsOwned")) {
-                            const carsOwned = userData.CarsOwned;
-                            //console.log(carsOwned); //DEBUG
-                            // iterate over the carsOwned array and get the information for each car
-                            carsOwned.forEach((carRef, index) => {
-                                db.collection("Cars").doc(carRef).get().then((carDoc) => {
-                                    if (carDoc.exists) {
-                                        const carData = carDoc.data();
-                                        // displaying the car data in each card and removing the hidden attribute of the card
-                                        
-                                        //retrieve car data
-                                        const carNum = index + 1;
-                                        const carBrandModel = carData.Brand + ' ' + carData.Model; 
-                                        const carImage = carData.Images[0]; //just the cover image
-                                        const carPrice = carData.Price;
-                                        const carRating = carData.Rating;
-                                        const carSeats = carData.Seats;
-                                        
-                                        //unhiding the card
-                                        const cardID = `profile-car-${carNum}`;
-                                        document.getElementById(cardID).removeAttribute("hidden");
+        carsRef.where("CarOwner", "==", userID).get()
+            .then((carSnapshot) => {
+                const carDocs = carSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
+                carDocs.forEach((doc, index) => {
+                    //iterate through results and display car details
+                    const carData = doc.data();
+                    const carRef = doc.id;
 
-                                        //all element IDs
-                                        const carBrandModelID = `profile-car-${carNum}-name`;
-                                        const carImageID = `profile-car-${carNum}-img`;
-                                        const carPriceID = `profile-car-${carNum}-price`;
-                                        const carRatingID = `.stars-inner-car-${carNum}`;
-                                        const carSeatsID = `profile-car-${carNum}-seats`;
-                                        const carLinkID = `profile-car-${carNum}-link`;
+                    //retrieve car data
+                    const carNum = index + 1;
+                    const carBrandModel = carData.Brand + ' ' + carData.Model;
+                    const carImage = carData.Images[0]; //just the cover image
+                    const carPrice = carData.Price;
+                    const carRating = carData.Rating;
+                    const carSeats = carData.Seats;
 
-                                        //inserting data into the cards
-                                        document.getElementById(carBrandModelID).innerHTML = carBrandModel;
-                                        document.getElementById(carImageID).src = carImage;
-                                        document.getElementById(carPriceID).innerHTML = `$${carPrice}/day`;
-                                        document.getElementById(carSeatsID).innerHTML = `${carSeats} seater`;
-                                        document.getElementById(carLinkID).href = `profile-car-detail.html?carId=${carRef}`;
+                    //unhiding the card
+                    const cardID = `profile-car-${carNum}`;
+                    document.getElementById(cardID).removeAttribute("hidden");
 
-                                        //inserting Rating into the card
-                                        const starsTotal = 5;
-                                        const starPercentage = (carRating / starsTotal * 100);
-                                        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-                                        document.querySelector(carRatingID).style.width = starPercentageRounded;
-                                    } else {
-                                        console.log("No such car document!");
-                                    }
-                                }).catch((error) => {
-                                    console.log("Error getting car document:", error);
-                                });
-                            });
-                        } else {
-                            console.log("User does not own any cars");
-                        }
-                    } else {
-                        console.log("No such user document!");
-                    }
-                }).catch((error) => {
-                    console.log("Error getting user document:", error);
+                    //all element IDs
+                    const carBrandModelID = `profile-car-${carNum}-name`;
+                    const carImageID = `profile-car-${carNum}-img`;
+                    const carPriceID = `profile-car-${carNum}-price`;
+                    const carRatingID = `.stars-inner-car-${carNum}`;
+                    const carSeatsID = `profile-car-${carNum}-seats`;
+                    const carLinkID = `profile-car-${carNum}-link`;
+
+                    //inserting data into the cards
+                    document.getElementById(carBrandModelID).innerHTML = carBrandModel;
+                    document.getElementById(carImageID).src = carImage;
+                    document.getElementById(carPriceID).innerHTML = `$${carPrice}/day`;
+                    document.getElementById(carSeatsID).innerHTML = `${carSeats} seater`;
+                    document.getElementById(carLinkID).href = `car-detail.html?carId=${carRef}`;
+
+                    //inserting Rating into the card
+                    const starsTotal = 5;
+                    const starPercentage = (carRating / starsTotal * 100);
+                    const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+                    document.querySelector(carRatingID).style.width = starPercentageRounded;
                 });
-            } else {
-                // User is signed out.
-                console.log("No user is signed in");
-            }
-        });
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            });
     </script>
 </body>
 

@@ -46,33 +46,36 @@ function getCarList() {
                             console.log(doc.id);
                         }
                         document.getElementById("carListContainer").innerHTML += `
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-bottom-primary shadow h-100 py-2">
-                            <!-- Link To Car Details-->
                             <a href="car-detail.html?carId=${doc.id}" style="text-decoration: none">
                                 <div class="card-body">
-                                    <div class="no-gutters align-items-center">
+                                    <div class="row no-gutters align-items-center">
                                         <div class="col-auto" style="margin-bottom: 10px;">
                                             <img src="${data.Images[0]} class="col-auto"
-                                                width="100%">
+                                                style="width:100%; height:150px;">
                                         </div>
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
                                             $${data.Price}/day</div>
                                             <div class="h5 mb-0 font-weight text-gray-800">
                                             ${data.Brand} ${data.Model}</div>
-                                            <div class="h6 mb-0 font-weight text-gray-800">
-                                            ${data.Seats} seater</div>
                                         </div>
 
                                         <div class="col-auto">
+                                            <div class="h4 mb-0 font-weight text-gray-800">
+                                                ${data.Seats} seater
+                                            </div>
+
+                                            <i class="fa fa-star fa-xs"></i>
+                                            <i class="fa fa-star fa-xs"></i>
+                                            <i class="fa fa-star fa-xs"></i>
+                                            <i class="fa fa-star fa-xs"></i>
+                                            <i class="fa fa-star fa-xs"></i>
+                                            
                                             <div class="h7 mb-0 font-weight text-gray-800">
-                                            ${userName}</div>
-                                            <i class="fa fa-star fa-xs"></i>
-                                            <i class="fa fa-star fa-xs"></i>
-                                            <i class="fa fa-star fa-xs"></i>
-                                            <i class="fa fa-star fa-xs"></i>
-                                            <i class="fa fa-star fa-xs"></i>
+                                                ${userName}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

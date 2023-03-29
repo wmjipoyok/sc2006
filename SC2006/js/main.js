@@ -46,8 +46,16 @@ window.addEventListener('load', function () {
     getData();
     initMap();
     window.initMap = initMap;
+
+    setTimeout(unhideContent, 1000);
+
 }, false);
 
+function unhideContent() {
+    document.getElementById("loading").setAttribute('hidden', true);
+    document.getElementById("mapContainer").removeAttribute('hidden');
+    document.getElementById("nav-content").removeAttribute('hidden');
+}
 
 function initMap() {
     // The location of sg (default value if fail to retrieve user's location)
@@ -101,9 +109,11 @@ function addCarparkMarker(lat, lng, data) {
         icon: iconImg,
     });
 
-    const contentString = `Name: ${titleize(data["ppName"])} 
-                            <div style="margin-top: 5px;"><a href="car-list.html?lat=${lat}&lng=${lng}&name=${data["ppName"]}" class="btn btn-info btn-sm">
-                                <span class="text">View Car List</span></div>`;
+    const contentString = `<p>Name: ${titleize(data["ppName"])} </p>
+                            <span style="margin-right: 5px;"><a href="car-list.html?lat=${lat}&lng=${lng}&name=${data["ppName"]}" class="btn btn-info btn-sm">
+                                <span class="text">View Car List</span></a></span>
+                                <span style="margin-top: 5px;"><a href="car-form.html?lat=${lat}&lng=${lng}" class="btn btn-info btn-sm">
+                                <span class="text">Add Car</span></a></span>`;
 
     const infowindow = new google.maps.InfoWindow({
         content: contentString,
@@ -175,7 +185,7 @@ function getData() {
 
     xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
     xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-    xhr.setRequestHeader("Token", "mPbaUdax8mcwS-RD3GqcfYsy6yAy2amET41fe-n9Bms5-pKuMrVnYt-eEdRgJ8YbS4f408d@TNpR33UgdDZFafegb6f8n-+DTaa8");
+    xhr.setRequestHeader("Token", "yf9cDz-cefbT4had98Cf1ca7hHekettGvgHq9ce3f8affNtfeQ8bqsSYaf88S4d808Da-2fb3f4zdbNv1JcBxUedcf-8cr+64-W9");
 
     xhr.send();
 }
