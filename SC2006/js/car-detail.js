@@ -110,7 +110,7 @@ async function retrieveCarDetails(carId) {
         // TODO: retrieve trip start and end from booking
     } else if (dataSnap.Status == 0) {
         document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
-        document.getElementById("userInfo").removeAttribute();
+        document.getElementById("userInfo").removeAttribute('hidden');
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
