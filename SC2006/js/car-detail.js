@@ -110,7 +110,7 @@ async function retrieveCarDetails(carId) {
         // TODO: retrieve trip start and end from booking
     } else if (dataSnap.Status == 0) {
         document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
-        document.getElementById("userInfo").removeAttribute();
+        document.getElementById("userInfo").removeAttribute('hidden');
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
@@ -221,7 +221,8 @@ async function BookCar(carId) {
                 UserId: localStorage.getItem("userId"),
                 CarId: carId,
                 Start: StartTrip,
-                End: EndTrip
+                End: EndTrip,
+                Status: 1      //booking not completed, change to 0 once complete
             });
             console.log("Booking written with ID: ", bookingRef.id);
 
@@ -248,6 +249,10 @@ async function BookCar(carId) {
             console.error("Error updating status: ", e);
         }
     }
+
+    alert("Booking Successful! Wait for owner to accept."); 
+    window.location.href = "bookings.html";
+    
 }
 
 function sendMessage(carOwner, bookingId) {
