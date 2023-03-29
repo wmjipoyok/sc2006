@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
 const firebaseConfig = {
     apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
     authDomain: "fir-c9c47.firebaseapp.com",
@@ -20,10 +20,11 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const request = urlParams.get('request');
 const carId = urlParams.get('carId');
+const carparkLocation = [parseFloat(urlParams.get('lat')), parseFloat(urlParams.get('lng'))]
 const imageLimit = 5;
 let imageArray = [];
 let imgToUpload = [];
-let imageURL = [];
+let imageUrlList = [];
 let jsScript;
 let carData;
 
@@ -154,7 +155,7 @@ window.addEventListener('load', function () {
         const carSeats = parseInt(dataVal.carSeats.value);
         const carPrice = parseInt(dataVal.carPrice.value);
         const carDescription = dataVal.carDescription.value;
-        console.log(imgToUpload);
+        // console.log(imgToUpload);
         // handle submit
         if (!carBrand) {
             document.getElementById("carBrand").style.borderColor = "red";
@@ -222,64 +223,71 @@ window.addEventListener('load', function () {
                 CarOwner: carData.CarOwner
             })
                 .then(() => {
+                    document.getElementById("successMsg").innerHTML = "Car information has been updated!";
                     document.getElementById("successMsg").removeAttribute('hidden');
                 })
                 .catch((error) => {
                     console.error("Error updating car information: ", error);
                 });
         } else {
-            uploadImage(imgToUpload[0]);
-            console.log(imageURL);
+            disableInputs();
+            uploadImages(imgToUpload);
         }
     });
 }, false);
 
-function uploadImage(img) {
-    const imagesRef = ref(storage, 'CarImages/' + img.name);
-    const metadata = {
-        contentType: img.type
-    }
+async function uploadImages(images) {
+    const imagePromises = Array.from(images, (image) => uploadImage(image));
 
-    const uploadTask = uploadBytesResumable(imagesRef, img, metadata);
+    const imageRes = await Promise.all(imagePromises).then((data) => {
+        imageUrlList = data;
+        // console.log(imageUrlList);
+        createCarListing();
+    });
+    return imageRes;
+}
 
-    uploadTask.on('state_changed',
-        (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-                case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                case 'running':
-                    console.log('Upload is running');
-                    break;
-            }
-        },
-        (error) => {
-            // A full list of error codes is available at
-            // https://firebase.google.com/docs/storage/web/handle-errors
-            switch (error.code) {
-                case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
-                    break;
-                case 'storage/canceled':
-                    // User canceled the upload
-                    break;
-                case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
-                    break;
-            }
-        },
-        () => {
-            // Upload completed successfully, now we can get the download URL
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                imageURL.push(downloadURL);
-                console.log(downloadURL);
-            });
-        }
-    );
+async function uploadImage(image) {
+    const storageRef = ref(storage, `/CarImages/${image.name}`);
+    const response = await uploadBytes(storageRef, image);
+    const url = await getDownloadURL(response.ref);
+    return url;
+}
 
+async function createCarListing() {
+    const carBrand = document.getElementById("carBrand").value;
+    const carModel = document.getElementById("carModel").value;
+    const carSeats = parseInt(document.getElementById("carSeats").value);
+    const carPrice = parseInt(document.getElementById("carPrice").value);
+    const carDescription = document.getElementById("carDescription").value;
+    const carImages = imageUrlList;
+    const userId = localStorage.getItem("userId");
+
+    await db.collection("Cars").add({
+        Brand: carBrand,
+        Model: carModel,
+        Seats: carSeats,
+        Price: carPrice,
+        Description: carDescription,
+        Status: 0,
+        Images: carImages,
+        Rating: 0,
+        Carpark: carparkLocation,
+        CarOwner: userId
+    })
+        .then(() => {
+            document.getElementById("successMsg").innerHTML = "Car listing has been uploaded!";
+            document.getElementById("successMsg").removeAttribute('hidden');
+            document.getElementById("saveLoading").setAttribute('hidden', true);
+        })
+        .catch((error) => {
+            console.error("Error updating car information: ", error);
+        });
+}
+
+function disableInputs() {
+    $("#carForm :input").prop("disabled", true);
+    document.getElementById("saveLoading").style.visibility = "visible";
 }
 
 function displayImages() {

@@ -109,9 +109,11 @@ function addCarparkMarker(lat, lng, data) {
         icon: iconImg,
     });
 
-    const contentString = `Name: ${titleize(data["ppName"])} 
-                            <div style="margin-top: 5px;"><a href="car-list.html?lat=${lat}&lng=${lng}&name=${data["ppName"]}" class="btn btn-info btn-sm">
-                                <span class="text">View Car List</span></div>`;
+    const contentString = `<p>Name: ${titleize(data["ppName"])} </p>
+                            <span style="margin-right: 5px;"><a href="car-list.html?lat=${lat}&lng=${lng}&name=${data["ppName"]}" class="btn btn-info btn-sm">
+                                <span class="text">View Car List</span></a></span>
+                                <span style="margin-top: 5px;"><a href="car-form.html?lat=${lat}&lng=${lng}" class="btn btn-info btn-sm">
+                                <span class="text">Add Car</span></a></span>`;
 
     const infowindow = new google.maps.InfoWindow({
         content: contentString,
