@@ -177,6 +177,19 @@
             font-weight: 900;
             color: #f8ce0b;
         }
+
+        .empty-message {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .empty-message p {
+            font-weight: bold;
+            margin: 0;
+        }
     </style>
 
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
@@ -234,6 +247,11 @@
                         </div>
                         <span class="number-rating"></span>
                     </div><br>
+
+                    <!-- User does not uploaded any cars-->
+                    <div id="no-user-cars" class="empty-message" hidden>
+                        <p>You have not uploaded any cars for rent!</p>
+                    </div>
 
                     <div class="row">
                         <!-- Car 1-->
@@ -635,6 +653,13 @@
         carsRef.where("CarOwner", "==", userID).get()
             .then((carSnapshot) => {
                 const carDocs = carSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
+                
+                //checking if array is empty.. if it is, we display message that user has not uploaded any car
+                if(carDocs.length == 0){
+                    console.log("User has not uploaded any cars!");
+                    document.getElementById("no-user-cars").removeAttribute("hidden");
+                }
+
                 carDocs.forEach((doc, index) => {
                     //iterate through results and display car details
                     const carData = doc.data();
