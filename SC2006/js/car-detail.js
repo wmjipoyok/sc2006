@@ -64,6 +64,10 @@ async function retrieveCarDetails(carId) {
     const docSnap = await getDoc(docRef);
     const dataSnap = docSnap.data();
 
+    const ownerSnap = doc(db, "Users", docSnap.data().CarOwner);
+    const ownerDocSnap = await getDoc(ownerSnap);
+    const ownerDataSnap = ownerDocSnap.data();
+
 
     //get individual data from db
     var brand = dataSnap.Brand;
@@ -81,6 +85,7 @@ async function retrieveCarDetails(carId) {
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
     document.getElementById("Description").innerHTML = description;
+    document.getElementById("CarOwner").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
 
     if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 0) {
         document.getElementById("editBtn").removeAttribute('hidden');
@@ -126,7 +131,49 @@ function getStarRatings(rating) {
 //     head.appendChild(jsScript);
 // }
 
+function checkBooking() {
+    const start = document.getElementById("StartTrip");
+    const tripDateError = document.getElementById("tripDateError");
+    const end = document.getElementById("EndTrip");
+
+    if (start.value == "") {
+        start.style.borderColor = "red";
+        tripDateError.innerHTML = "Trip start date cannot be empty";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        start.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+
+    if (end.value == "") {
+        end.style.borderColor = "red";
+        tripDateError.innerHTML = "Trip end date cannot be empty";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        end.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+
+    if (start.value > end.value) {
+        start.style.borderColor = "red";
+        tripDateError.innerHTML = "Start date cannot occur after the end date";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        start.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+    return true;
+}
+
 async function BookCar(carId) {
+
+    const validation = checkBooking();
+    if (!validation) {
+        return;
+    }
 
     //get date and time selected by user
     const StartTrip = document.getElementById("StartTrip").value;
@@ -137,6 +184,7 @@ async function BookCar(carId) {
 
     //get car's status
     const carStatus = docSnap.data().Status;
+    const carOwner = docSnap.data().CarOwner;
 
     //check if car is available
     if (carStatus == 0) {
@@ -157,14 +205,12 @@ async function BookCar(carId) {
                 Booking: arrayUnion(bookingRef.id)
             });
             console.log("Booking stored in Users with ID: ");
+            sendMessage(carOwner, bookingRef.id);
+            saveMessageToDb(carId, carOwner, bookingRef.id);
 
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-
-
-
-
 
         //update car's availabilty status
         try {
@@ -176,9 +222,42 @@ async function BookCar(carId) {
         } catch (e) {
             console.error("Error updating status: ", e);
         }
+    }
+}
 
+function sendMessage(carOwner, bookingId) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    var data = {
+        'to': localStorage.getItem("currToken"),
+        'data': {
+            'senderId': localStorage.getItem("userId"),
+            'receiverId': carOwner,
+            'carId': carId,
+            'bookingId': bookingId,
+            'message': `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+        }
     }
 
+    xhr.open('POST', "https://fcm.googleapis.com/fcm/send", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bENkRgqPANjMwEuYQWPxl9EC0-0S5FU4KfDPK_Yucd3-oZy2UsDPMdx6l5AHfL5dvWCi5wbBrV6vDxOGNUwLoCWrQtZecCJmA3R7Zf8ful8xNNNYW4cCX__4yVfSaCxSTyvIBa8');
+    xhr.send(JSON.stringify(data));
+}
+
+async function saveMessageToDb(carId, carOwner, bookingId) {
+    try {
+        const bookingRef = await addDoc(collection(db, "Messages"), {
+            ReceiverId: carOwner,
+            Sender: localStorage.getItem("userId"),
+            CarId: carId,
+            BookingId: bookingId,
+            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+        });
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
 }
 
 

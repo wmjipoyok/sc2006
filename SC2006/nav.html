@@ -42,13 +42,13 @@
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                    Alerts Center
+                    Messages Center
                 </h6>
                 <div id="alertContainer"></div>
                 <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
                 <div class="text-center small text-gray-500" style="padding-top: 10px; padding-bottom: 10px;"
                     id="noAlert">
-                    No Alerts
+                    No Messages
                 </div>
             </div>
         </li>
@@ -112,11 +112,22 @@
             }).catch((error) => {
                 console.log("Error getting document:", error);
             });
+
+            db.collection("Messages").where("ReceiverId", "==", userID).get()
+                .then((carSnapshot) => {
+                    const carDocs = carSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
+                    carDocs.forEach((doc, index) => {
+
+                    });
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
         }
         else {
             // User is signed out.
             console.log(firebase.auth().currentUser);
         }
+
     })
 
 </script>
