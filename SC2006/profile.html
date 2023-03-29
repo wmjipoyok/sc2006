@@ -590,7 +590,7 @@
 
                         //Run getRatings when DOM loads
                         //document.addEventListener('DOMContentLoaded', getRatings);
-                        getRatings();
+                        getRatings(rating);
                         //console.log("past call"); //DEBUG
                     } else {
                         console.log("No such document!", doc);
@@ -606,47 +606,24 @@
         })
 
         //getRatings func
-        function getRatings() {
+        function getRatings(rating) {
             //console.log("enetered func"); //DEBUG
             //Total Stars
             const starsTotal = 5;
 
-            //get user's ID
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    // User is signed in.
-                    const userID = user.uid;
+            const starPercentage = (rating / starsTotal * 100);
 
-                    //get user's doc from "Users" collection
-                    db.collection("Users").doc(userID).get().then((doc) => {
-                        if (doc.exists) {
-                            //retrieve user data from doc
-                            const userData = doc.data();
-                            const rating = userData.Rating;
+            //Round to nearest 10
+            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
 
-                            //Get percentage
-                            const starPercentage = (rating / starsTotal * 100);
+            //Set width of stars-inner to percentage
+            document.querySelector('.stars-inner').style.width = starPercentageRounded;
 
-                            //Round to nearest 10
-                            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-
-                            //Set width of stars-inner to percentage
-                            document.querySelector('.stars-inner').style.width = starPercentageRounded;
-
-                            //Add number rating
-                            //console.log(rating); //DEBUG
-                            if (rating != undefined) {
-                                document.querySelector('.number-rating').innerHTML = rating;
-                            }
-                        }
-                        else {
-                            console.log("No such document!", doc);
-                        }
-                    }).catch((error) => {
-                        console.log("Error getting document:", error);
-                    });
-                }
-            });
+            //Add number rating
+            //console.log(rating); //DEBUG
+            if (rating != undefined) {
+                document.querySelector('.number-rating').innerHTML = rating;
+            }
         }
     </script>
 

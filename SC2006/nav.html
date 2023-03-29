@@ -42,13 +42,13 @@
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                    Alerts Center
+                    Messages Center
                 </h6>
                 <div id="alertContainer"></div>
                 <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
                 <div class="text-center small text-gray-500" style="padding-top: 10px; padding-bottom: 10px;"
                     id="noAlert">
-                    No Alerts
+                    No Messages
                 </div>
             </div>
         </li>
@@ -112,11 +112,33 @@
             }).catch((error) => {
                 console.log("Error getting document:", error);
             });
+
+            db.collection("Messages").where("ReceiverId", "==", userID).get()
+                .then((msgSnapshot) => {
+                    const msgDocs = msgSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
+                    msgDocs.forEach((doc, index) => {
+                        const alerts = document.getElementById('alertContainer');
+                        alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${doc.data().CarId}">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">${doc.data().DateTime}</div>
+                                <span class="font-weight-bold">${doc.data().Message}</span>
+                            </div>
+                        </a>`
+                    });
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
         }
         else {
             // User is signed out.
             console.log(firebase.auth().currentUser);
         }
+
     })
 
 </script>

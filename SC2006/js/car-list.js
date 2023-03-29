@@ -46,28 +46,29 @@ function getCarList() {
                             console.log(doc.id);
                         }
                         document.getElementById("carListContainer").innerHTML += `
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-bottom-primary shadow h-100 py-2">
-                            <!-- Link To Car Details-->
                             <a href="car-detail.html?carId=${doc.id}" style="text-decoration: none">
                                 <div class="card-body">
-                                    <div class="no-gutters align-items-center">
+                                    <div class="row no-gutters align-items-center">
                                         <div class="col-auto" style="margin-bottom: 10px;">
                                             <img src="${data.Images[0]} class="col-auto"
                                                 style="width:100%; height:150px;">
                                         </div>
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
-                                            $${data.Price}/day</div>
+                                                $${data.Price}/day
+                                            </div>
                                             <div class="h5 mb-0 font-weight text-gray-800">
-                                            ${data.Brand} ${data.Model}</div>
-                                            <div class="h6 mb-0 font-weight text-gray-800">
-                                            ${data.Seats} seater</div>
+                                                ${data.Brand} ${data.Model}
+                                            </div>
                                         </div>
 
                                         <div class="col-auto">
-                                            <div class="h7 mb-0 font-weight text-gray-800">
-                                            ${userName}</div>
+                                            <div class="h4 mb-0 font-weight text-gray-800">
+                                                ${data.Seats} seater
+                                            </div>
+
                                             <i class="fa fa-star fa-xs"></i>
                                             <i class="fa fa-star fa-xs"></i>
                                             <i class="fa fa-star fa-xs"></i>
@@ -75,6 +76,11 @@ function getCarList() {
                                             <i class="fa fa-star fa-xs"></i>
                                         </div>
                                     </div>
+                                    <div class="h7 mb-0 font-weight text-gray-800" style="margin-top:5px;">
+                                                <img class="owner-profile rounded-circle" style="width:20px; vertical-align: text-top;"
+                                                        src="img/profile.png">
+                                                    <span id="CarOwner">${userName}</span>
+                                            </div>
                                 </div>
                             </a>
                         </div>
@@ -84,10 +90,17 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
+            if (document.getElementById("carListContainer").innerHTML == "") {
+                noCarAvailable();
+            }
         } else {
-            document.getElementById("loading").setAttribute('hidden', true);
-            document.getElementById("warningMsg").innerHTML = "No cars available.";
-            document.getElementById("warningMsg").removeAttribute('hidden');
+            noCarAvailable();
         }
     })
+}
+
+function noCarAvailable() {
+    document.getElementById("loading").setAttribute('hidden', true);
+    document.getElementById("warningMsg").innerHTML = "No cars available.";
+    document.getElementById("warningMsg").removeAttribute('hidden');
 }
