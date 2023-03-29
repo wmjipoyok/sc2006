@@ -90,9 +90,7 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
-            if (document.getElementById("carListContainer").innerHTML == "") {
-                noCarAvailable();
-            }
+            noCarAvailable();
         } else {
             noCarAvailable();
         }
@@ -100,7 +98,9 @@ function getCarList() {
 }
 
 function noCarAvailable() {
-    document.getElementById("loading").setAttribute('hidden', true);
-    document.getElementById("warningMsg").innerHTML = "No cars available.";
-    document.getElementById("warningMsg").removeAttribute('hidden');
+    if ($("#carListContainer :div").length <= 0) {
+        document.getElementById("loading").setAttribute('hidden', true);
+        document.getElementById("warningMsg").innerHTML = "No cars available.";
+        document.getElementById("warningMsg").removeAttribute('hidden');
+    }
 }
