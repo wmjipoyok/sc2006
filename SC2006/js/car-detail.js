@@ -64,10 +64,19 @@ async function retrieveCarDetails(carId) {
     const docSnap = await getDoc(docRef);
     const dataSnap = docSnap.data();
 
+    if (!dataSnap) {
+        errorHandle("No car information found.");
+        return;
+    }
+
     const ownerSnap = doc(db, "Users", docSnap.data().CarOwner);
     const ownerDocSnap = await getDoc(ownerSnap);
     const ownerDataSnap = ownerDocSnap.data();
 
+    if (!ownerDataSnap) {
+        errorHandle("Unable to reterive car owner information.");
+        return;
+    }
 
     //get individual data from db
     var brand = dataSnap.Brand;
@@ -85,12 +94,23 @@ async function retrieveCarDetails(carId) {
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
     document.getElementById("Description").innerHTML = description;
-    document.getElementById("CarOwner").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+
 
     if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 0) {
         document.getElementById("editBtn").removeAttribute('hidden');
         document.getElementById("delete").removeAttribute('hidden');
+    } else if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 1) {
+        // TODO: Change to renter name
+        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+        document.getElementById("userInfo").removeAttribute("hidden");
+        document.getElementById("bookBtn").setAttribute("hidden", true);
+        document.getElementById("Booking").removeAttribute("hidden");
+        document.getElementById("pendingOwner").removeAttribute('hidden');
+
+        // TODO: retrieve trip start and end from booking
     } else if (dataSnap.Status == 0) {
+        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+        document.getElementById("userInfo").removeAttribute();
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
@@ -112,6 +132,11 @@ async function retrieveCarDetails(carId) {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
+function errorHandle(msg) {
+    document.getElementById("errorMsg").innerHTML = msg;
+    document.getElementById("errorMsg").removeAttribute('hidden');
+    document.getElementById("loading").setAttribute('hidden', true);
+}
 
 function getStarRatings(rating) {
 
@@ -248,12 +273,13 @@ function sendMessage(carOwner, bookingId) {
 
 async function saveMessageToDb(carId, carOwner, bookingId) {
     try {
-        const bookingRef = await addDoc(collection(db, "Messages"), {
+        const messageRef = await addDoc(collection(db, "Messages"), {
             ReceiverId: carOwner,
             Sender: localStorage.getItem("userId"),
             CarId: carId,
             BookingId: bookingId,
-            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`,
+            DateTime: new Date().toLocaleDateString()
         });
     } catch (e) {
         console.error("Error adding document: ", e);

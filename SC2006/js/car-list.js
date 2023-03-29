@@ -57,9 +57,11 @@ function getCarList() {
                                         </div>
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
-                                            $${data.Price}/day</div>
+                                                $${data.Price}/day
+                                            </div>
                                             <div class="h5 mb-0 font-weight text-gray-800">
-                                            ${data.Brand} ${data.Model}</div>
+                                                ${data.Brand} ${data.Model}
+                                            </div>
                                         </div>
 
                                         <div class="col-auto">
@@ -72,12 +74,13 @@ function getCarList() {
                                             <i class="fa fa-star fa-xs"></i>
                                             <i class="fa fa-star fa-xs"></i>
                                             <i class="fa fa-star fa-xs"></i>
-                                            
-                                            <div class="h7 mb-0 font-weight text-gray-800">
-                                                ${userName}
-                                            </div>
                                         </div>
                                     </div>
+                                    <div class="h7 mb-0 font-weight text-gray-800" style="margin-top:5px;">
+                                                <img class="owner-profile rounded-circle" style="width:20px; vertical-align: text-top;"
+                                                        src="img/profile.png">
+                                                    <span id="CarOwner">${userName}</span>
+                                            </div>
                                 </div>
                             </a>
                         </div>
@@ -87,10 +90,17 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
+            if (document.getElementById("carListContainer").innerHTML == "") {
+                noCarAvailable();
+            }
         } else {
-            document.getElementById("loading").setAttribute('hidden', true);
-            document.getElementById("warningMsg").innerHTML = "No cars available.";
-            document.getElementById("warningMsg").removeAttribute('hidden');
+            noCarAvailable();
         }
     })
+}
+
+function noCarAvailable() {
+    document.getElementById("loading").setAttribute('hidden', true);
+    document.getElementById("warningMsg").innerHTML = "No cars available.";
+    document.getElementById("warningMsg").removeAttribute('hidden');
 }
