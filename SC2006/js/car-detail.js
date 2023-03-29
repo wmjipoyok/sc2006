@@ -110,7 +110,7 @@ async function retrieveCarDetails(carId) {
         // TODO: retrieve trip start and end from booking
     } else if (dataSnap.Status == 0) {
         document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
-        document.getElementById("userInfo").removeAttribute();
+        document.getElementById("userInfo").removeAttribute('hidden');
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
@@ -214,14 +214,15 @@ async function BookCar(carId) {
     //check if car is available
     if (carStatus == 0) {
 
-        //update Booking in db
+        //update Booking in db and the BookingId into individual users
         try {
             const bookingRef = await addDoc(collection(db, "Bookings"), {
 
                 UserId: localStorage.getItem("userId"),
                 CarId: carId,
                 Start: StartTrip,
-                End: EndTrip
+                End: EndTrip,
+                Status: 1      //booking not completed, change to 0 once complete
             });
             console.log("Booking written with ID: ", bookingRef.id);
 
@@ -248,6 +249,10 @@ async function BookCar(carId) {
             console.error("Error updating status: ", e);
         }
     }
+
+    alert("Booking Successful! Wait for owner to accept."); 
+    window.location.href = "bookings.html";
+    
 }
 
 function sendMessage(carOwner, bookingId) {
@@ -304,24 +309,24 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
-            */
+           
 
             //reading from db
-/*
-        const querySnapshot = await getDocs(collection(db, "TestCars"));
-        querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        });
-*/
-/*
-        //update db
 
-        import { doc, updateDoc } from "firebase/firestore";
+            const querySnapshot = await getDocs(collection(db, "TestCars"));
+            querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+            });
 
-        const washingtonRef = doc(db, "cities", "DC");
 
-        // Set the "capital" field of the city 'DC'
-        await updateDoc(washingtonRef, {
-            capital: true
-        });
+            //update db
+
+            import { doc, updateDoc } from "firebase/firestore";
+
+            const washingtonRef = doc(db, "cities", "DC");
+
+            // Set the "capital" field of the city 'DC'
+            await updateDoc(washingtonRef, {
+                capital: true
+            });
 */

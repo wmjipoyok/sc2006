@@ -51,9 +51,9 @@ function getCarList() {
                             <a href="car-detail.html?carId=${doc.id}" style="text-decoration: none">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
-                                        <div class="col-auto" style="margin-bottom: 10px;">
+                                        <div class="col-auto" style="margin-bottom: 10px; margin-left: auto;margin-right: auto;">
                                             <img src="${data.Images[0]} class="col-auto"
-                                                style="width:100%; height:150px;">
+                                                style="width:100%; height:150px; ">
                                         </div>
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
@@ -90,9 +90,7 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
-            if (document.getElementById("carListContainer").innerHTML == "") {
-                noCarAvailable();
-            }
+            noCarAvailable();
         } else {
             noCarAvailable();
         }
@@ -100,7 +98,9 @@ function getCarList() {
 }
 
 function noCarAvailable() {
-    document.getElementById("loading").setAttribute('hidden', true);
-    document.getElementById("warningMsg").innerHTML = "No cars available.";
-    document.getElementById("warningMsg").removeAttribute('hidden');
+    if ($("#carListContainer :div").length <= 0) {
+        document.getElementById("loading").setAttribute('hidden', true);
+        document.getElementById("warningMsg").innerHTML = "No cars available.";
+        document.getElementById("warningMsg").removeAttribute('hidden');
+    }
 }
