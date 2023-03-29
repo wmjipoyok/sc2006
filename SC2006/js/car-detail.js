@@ -94,12 +94,23 @@ async function retrieveCarDetails(carId) {
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
     document.getElementById("Description").innerHTML = description;
-    document.getElementById("CarOwner").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+
 
     if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 0) {
         document.getElementById("editBtn").removeAttribute('hidden');
         document.getElementById("delete").removeAttribute('hidden');
+    } else if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 1) {
+        // TODO: Change to renter name
+        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+        document.getElementById("userInfo").removeAttribute("hidden");
+        document.getElementById("bookBtn").setAttribute("hidden", true);
+        document.getElementById("Booking").removeAttribute("hidden");
+        document.getElementById("pendingOwner").removeAttribute('hidden');
+
+        // TODO: retrieve trip start and end from booking
     } else if (dataSnap.Status == 0) {
+        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+        document.getElementById("userInfo").removeAttribute();
         document.getElementById("Booking").removeAttribute('hidden');
     }
 

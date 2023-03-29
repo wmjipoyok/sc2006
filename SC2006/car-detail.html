@@ -76,10 +76,10 @@
                             <span class="number-rating"></span>
                             </p>
 
-                            <p>
+                            <p id="userInfo" hidden>
                                 <img class="owner-profile rounded-circle" style="width:20px; vertical-align: text-top;"
                                     src="img/profile.png">
-                                <span id="CarOwner">-</span>
+                                <span id="UserName">-</span>
                             </p>
 
                             <div id="CarDescription">
@@ -87,7 +87,7 @@
                             </div>
 
                             <div id="Booking" hidden>
-                                <div class="row">
+                                <div class="row" id="tripDate">
                                     <div class="col-sm">
                                         <h5>Trip Start</h5>
                                         <input type="date" id="StartTrip" min="2000-01-01"
@@ -108,55 +108,59 @@
                                 <button id="bookBtn" class="btn btn-danger" data-toggle="modal"
                                     data-target="#deleteModal">DELETE</button>
                             </div>
+
+                            <div id="pendingOwner" hidden>
+                                <button id="bookBtn" class="btn btn-info">ACCEPT</button>
+                                <button id="bookBtn" class="btn btn-danger">REJECT</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="logout-model"></div>
+        <div id="logout-model"></div>
 
-    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingModalTitle">Booking Confirmation</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Please confirm your booking details:</p>
-                    <p id="bookingDetail"></p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="#">Confirm</a>
+        <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookingModalTitle">Booking Confirmation</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please confirm your booking details:</p>
+                        <p id="bookingDetail"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="#">Confirm</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalTitle">Delete Confirmation</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Are you sure to delete this car listing? The data will be
-                    deleted permanently!</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="#">Confirm</a>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalTitle">Delete Confirmation</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Are you sure to delete this car listing? The data will be
+                        deleted permanently!</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="#">Confirm</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 </body>
 
