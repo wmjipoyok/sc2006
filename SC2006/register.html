@@ -112,8 +112,6 @@
                         //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
                         const db = firebase.firestore();
 
-
-
                         firebase.auth().onAuthStateChanged(user => {
                             if (user) {
                                 // User is signed in.
