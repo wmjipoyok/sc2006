@@ -28,8 +28,10 @@
                 <div id="nav-content"></div>
                 <!-- End of Topbar -->
 
+                <div class="loading" id="loading">Loading&#8230;</div>
+
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid" id="contentCon" hidden>
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-center mb-4">
@@ -141,7 +143,7 @@
 
     <!-- Start of user login modal -->
     <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="userLoginModal"
-        aria-hidden="true">
+        aria-hidden="true" hidden>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,18 +153,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    After the user has registered for an account, they can enter the user credentials and click “Login”. You should be brought to the Map Page if you logged in successfully. 
+                    After the user has registered for an account, they can enter the user credentials and click “Login”.
+                    You should be brought to the Map Page if you logged in successfully.
                     <br><br><br> <b>Steps:</b><br>
                     1. Key in credentials, and click the blue “Login” button.<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Flogin1.png?alt=media&token=1448b8d4-2e49-42c6-9203-b37bbf194358"><br><br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Flogin1.png?alt=media&token=1448b8d4-2e49-42c6-9203-b37bbf194358"><br><br>
                     2. If successful, you will see this page.
-                    <img
-                    height = "255"
-                    width ="460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Flogin2.png?alt=media&token=dba296c0-c848-4356-8643-60fbc2bea4a9"><br><br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Flogin2.png?alt=media&token=dba296c0-c848-4356-8643-60fbc2bea4a9"><br><br>
 
                     Note: You will be prompted with an error message when:<br>
                     Username is blank<br>
@@ -179,34 +178,33 @@
     </div>
     <!-- End of user login modal -->
 
-     <!-- Start of forget-password modal -->
-     <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal"
-        aria-hidden="true">
+    <!-- Start of forget-password modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal"
+        aria-hidden="true" hidden>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLongTitle">Forget Password</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Forget Password</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    If you have forgotten your password, you may reset it by clicking “Forgot Password?”. This will direct you to a page to key in your registered email address and click “Reset Password”. 
-                    An email notification will be sent to you. Check your email and follow the instructions within the sent email. If followed correctly, you will be able to reset your password.
+                    If you have forgotten your password, you may reset it by clicking “Forgot Password?”. This will
+                    direct you to a page to key in your registered email address and click “Reset Password”.
+                    An email notification will be sent to you. Check your email and follow the instructions within the
+                    sent email. If followed correctly, you will be able to reset your password.
                     <br><br><br> <b>Steps:</b><br>
                     1. Click “Forget Password?” and reach the following page, key in your registered email address<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fpw1.png?alt=media&token=e9058cf2-3718-4f13-bd05-6f876ddeed8f"><br><br>
-                    2. After keying in your email and there is no error, you would receive the following page. Proceed to your registered email and follow the instructions to reset your password.<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fpw2.png?alt=media&token=3d16a197-9a4c-448d-8780-5e843cc60a0a"><br><br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fpw1.png?alt=media&token=e9058cf2-3718-4f13-bd05-6f876ddeed8f"><br><br>
+                    2. After keying in your email and there is no error, you would receive the following page. Proceed
+                    to your registered email and follow the instructions to reset your password.<br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fpw2.png?alt=media&token=3d16a197-9a4c-448d-8780-5e843cc60a0a"><br><br>
                 </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -215,7 +213,7 @@
 
     <!-- Start of register modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal"
-        aria-hidden="true">
+        aria-hidden="true" hidden>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -225,19 +223,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Firstly, you need to get an account to access the features of the application. After clicking “Create an Account!”, you will be brought to the Create Account page. After filling the credentials, click “Register Account”. 
+                    Firstly, you need to get an account to access the features of the application. After clicking
+                    “Create an Account!”, you will be brought to the Create Account page. After filling the credentials,
+                    click “Register Account”.
                     If done correctly, you would have successfully registered your account.
                     <br><br><br> <b>Steps:</b><br>
                     1. Click “Create an Account!” at the bottom. It will lead to the following page.<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fcreate1.png?alt=media&token=b7728b29-3d7b-4704-8840-c561e598fd59"><br><br>
-                    2. If credentials are filled correctly, you would receive this page and you would be able to login with your new account.
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fcreate2.png?alt=media&token=75d6caa2-1da5-43a5-bafb-7d9540ba8f9b"><br><br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fcreate1.png?alt=media&token=b7728b29-3d7b-4704-8840-c561e598fd59"><br><br>
+                    2. If credentials are filled correctly, you would receive this page and you would be able to login
+                    with your new account.
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Fcreate2.png?alt=media&token=75d6caa2-1da5-43a5-bafb-7d9540ba8f9b"><br><br>
                     Note: You will be prompted an error message if:
                     Any of the credentials are empty
                     Password and Repeat Password are different
@@ -254,7 +251,7 @@
 
     <!-- Start of rent car modal -->
     <div class="modal fade" id="rentCarModal" tabindex="-1" role="dialog" aria-labelledby="rentCarModal"
-        aria-hidden="true">
+        aria-hidden="true" hidden>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -264,24 +261,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Within the main page of the Map, you would see many Car Park Icons. Click on the Car Park Icon which you desire to rent from, and click the “View Car List” button. Afterwards, the page would show all available cars within that carpark. 
-                    Click on the car you desire, and it will bring you to the Car Description Page. Proceed to indicate your Trip Start and Trip End Dates and press the “Book” button. You will have successfully booked your car and can view it within your profile.
+                    Within the main page of the Map, you would see many Car Park Icons. Click on the Car Park Icon which
+                    you desire to rent from, and click the “View Car List” button. Afterwards, the page would show all
+                    available cars within that carpark.
+                    Click on the car you desire, and it will bring you to the Car Description Page. Proceed to indicate
+                    your Trip Start and Trip End Dates and press the “Book” button. You will have successfully booked
+                    your car and can view it within your profile.
                     <br><br><br> <b>Steps:</b><br>
-                    1. Within the Map Page,  click on your desired Car Park (the Car Park Icon) and click “View Car List”<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent1.png?alt=media&token=755a181b-bf09-426a-9103-99b1c238f4dc"><br><br>
+                    1. Within the Map Page, click on your desired Car Park (the Car Park Icon) and click “View Car
+                    List”<br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent1.png?alt=media&token=755a181b-bf09-426a-9103-99b1c238f4dc"><br><br>
                     2. Click on your desired Cars which are available within the Car Park.<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent2.png?alt=media&token=a4eead0a-6c71-4910-bbad-09912dfa7c4c"><br><br>
-                    3. Indicate the time frame which you want to book your cars for. Press the “Book” button after you are done.<br>
-                    <img 
-                    height = "255"
-                    width = "460"
-                    src ="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent3.png?alt=media&token=6240962f-4cee-4c3b-97ec-cd91e8c1a497"><br><br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent2.png?alt=media&token=a4eead0a-6c71-4910-bbad-09912dfa7c4c"><br><br>
+                    3. Indicate the time frame which you want to book your cars for. Press the “Book” button after you
+                    are done.<br>
+                    <img height="255" width="460"
+                        src="https://firebasestorage.googleapis.com/v0/b/sc2006-1d9b8.appspot.com/o/Help%20Center%2Frent3.png?alt=media&token=6240962f-4cee-4c3b-97ec-cd91e8c1a497"><br><br>
 
 
                 </div>
@@ -295,7 +292,7 @@
 
     <!-- Start of rent car modal -->
     <div class="modal fade" id="uploadCarModal" tabindex="-1" role="dialog" aria-labelledby="uploadCarModal"
-        aria-hidden="true">
+        aria-hidden="true" hidden>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -323,6 +320,20 @@
             $("#nav-content").load("nav.html");
             $("#logout-model").load("logout-model.html");
         });
+
+        window.addEventListener('load', function () {
+            setTimeout(unhideContent, 1000);
+        }, false);
+
+        function unhideContent() {
+            document.getElementById("contentCon").removeAttribute('hidden');
+            document.getElementById("userLoginModal").removeAttribute('hidden');
+            document.getElementById("passwordModal").removeAttribute('hidden');
+            document.getElementById("registerModal").removeAttribute('hidden');
+            document.getElementById("rentCarModal").removeAttribute('hidden');
+            document.getElementById("uploadCarModal").removeAttribute('hidden');
+            document.getElementById("loading").setAttribute('hidden', true);
+        }
     </script>
 
 </body>
