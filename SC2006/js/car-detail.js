@@ -64,10 +64,19 @@ async function retrieveCarDetails(carId) {
     const docSnap = await getDoc(docRef);
     const dataSnap = docSnap.data();
 
+    if (!dataSnap) {
+        errorHandle("No car information found.");
+        return;
+    }
+
     const ownerSnap = doc(db, "Users", docSnap.data().CarOwner);
     const ownerDocSnap = await getDoc(ownerSnap);
     const ownerDataSnap = ownerDocSnap.data();
 
+    if (!ownerDataSnap) {
+        errorHandle("Unable to reterive car owner information.");
+        return;
+    }
 
     //get individual data from db
     var brand = dataSnap.Brand;
@@ -112,6 +121,11 @@ async function retrieveCarDetails(carId) {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
+function errorHandle(msg) {
+    document.getElementById("errorMsg").innerHTML = msg;
+    document.getElementById("errorMsg").removeAttribute('hidden');
+    document.getElementById("loading").setAttribute('hidden', true);
+}
 
 function getStarRatings(rating) {
 
@@ -248,12 +262,13 @@ function sendMessage(carOwner, bookingId) {
 
 async function saveMessageToDb(carId, carOwner, bookingId) {
     try {
-        const bookingRef = await addDoc(collection(db, "Messages"), {
+        const messageRef = await addDoc(collection(db, "Messages"), {
             ReceiverId: carOwner,
             Sender: localStorage.getItem("userId"),
             CarId: carId,
             BookingId: bookingId,
-            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`,
+            DateTime: new Date().toLocaleDateString()
         });
     } catch (e) {
         console.error("Error adding document: ", e);

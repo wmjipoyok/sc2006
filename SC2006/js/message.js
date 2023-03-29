@@ -55,19 +55,18 @@ messaging.onMessage((payload) => {
             notiCount.innerHTML = parseInt(notiCount.innerHTML) + 1;
             const alerts = document.getElementById('alertContainer');
             const carId = payload.data.carId;
-            const username = 'user123';
             var currentdate = new Date();
             alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${carId}">
-            <div class="mr-3">
-                <div class="icon-circle bg-primary">
-                    <i class="fas fa-file-alt text-white"></i>
+                <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                        <i class="fas fa-file-alt text-white"></i>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <div class="small text-gray-500">${currentdate.toLocaleString()}</div>
-                <span class="font-weight-bold">A new booking request from ${username}!</span>
-            </div>
-        </a>`
+                <div>
+                    <div class="small text-gray-500">${currentdate.toLocaleString()}</div>
+                    <span class="font-weight-bold">${payload.data.message}</span>
+                </div>
+            </a>`
 
         }
 
