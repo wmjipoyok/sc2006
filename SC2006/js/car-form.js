@@ -62,9 +62,11 @@ function getCarInfo() {
 
             //append slideshow javasdcript after images finish loading
             addSlideshowJS();
+        } else {
+            document.getElementById("warningMsg").innerHTML = "Car information not found.";
+            document.getElementById("warningMsg").removeAttribute('hidden');
         }
-        document.getElementById("warningMsg").innerHTML = "Car information not found.";
-        document.getElementById("warningMsg").removeAttribute('hidden');
+
         document.getElementById("carFormContainer").removeAttribute('hidden');
         document.getElementById("loading").setAttribute('hidden', true);
     }).catch((error) => {
@@ -203,7 +205,7 @@ window.addEventListener('load', function () {
             document.getElementById("priceError").setAttribute("hidden", true);
         }
 
-        if (imgToUpload.length <= 0) {
+        if (imgToUpload.length <= 0 && request == null) {
             document.getElementById("imageBox").style.border = "2px dotted red";
             document.getElementById("imgError").removeAttribute("hidden");
             return;

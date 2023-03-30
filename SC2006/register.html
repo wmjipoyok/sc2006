@@ -104,10 +104,6 @@
                     .then((userCredential) => {
                         // Signed in 
                         var user = userCredential.user;
-                        var regForm = document.getElementById("registerForm");
-                        var sucMsg = document.getElementById("successMsg");
-                        regForm.setAttribute("hidden", true);
-                        sucMsg.removeAttribute("hidden");
 
                         //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
                         const db = firebase.firestore();
@@ -124,6 +120,11 @@
                                 })
                                     .then(() => {
                                         console.log("User document created succesesfully");
+                                        var regForm = document.getElementById("registerForm");
+                                        var sucMsg = document.getElementById("successMsg");
+                                        regForm.setAttribute("hidden", true);
+                                        sucMsg.removeAttribute("hidden");
+                                        console.log("You may login now");
                                     })
                                     .catch((error) => {
                                         console.error("Error creating user document: ", error);
