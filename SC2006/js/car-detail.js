@@ -50,19 +50,17 @@ window.addEventListener('load', function () {
 }, false);
 
 //buttons
-var bookBtn = document.querySelector("#bookBtn");
+//var bookBtn = document.querySelector("#bookBtn");
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
-//var cancelBtn = document.querySelector("#cancelBtn");
+var cancelBtn = document.querySelector("#cancelBtn");
 
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
 acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () {  rejectCar(carId) });
-//cancelBtn.addEventListener('click', function () {  cancelCar(carId) });
-
-
+cancelBtn.addEventListener('click', function () {  cancelCar(carId) });
 
 //functions 
 async function retrieveCarDetails(carId){
@@ -157,7 +155,7 @@ async function retrieveCarDetails(carId){
         document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
 
-       // document.getElementById("cancelBooking").removeAttribute('hidden');
+        document.getElementById("cancelBooking").removeAttribute('hidden');
 
     } 
 
@@ -186,12 +184,12 @@ async function retrieveCarDetails(carId){
     if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) 
     {
         //display accepted status when renter views after booking
-        document.getElementById("Description").setAttribute('hidden', true);
         document.getElementById("Accepted").innerHTML = "Accepted";
         document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
 
         document.getElementById("cancelBooking").removeAttribute('hidden');
+
     }
 
 
@@ -435,7 +433,7 @@ async function rejectCar(carId) {
     window.location.href = "profile.html";
 }
 
-/*
+
 async function cancelCar(carId){
 
     const docRef = doc(db, "Cars", carId)
@@ -458,19 +456,27 @@ async function cancelCar(carId){
 
         const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
         await updateDoc(bookingRef, {
-            Status: 0,
             Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
         });
-        console.log("Booking record will be deleted");
+        console.log("Booking 'Delete' field updated to true");
 
-        const docRef = doc(db, "Bookings", bookingQuerySnapshot);
-        deleteDoc(docRef)
-        .then(() => {
-            console.log("Entire booking document has been deleted successfully.")
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+        
+        const bookingREF = await getDoc(bookingRef);
+        const bookingData = bookingREF.data();
+        const renterRef = bookingData.UserId;
+        const renterReference = doc(db, "Users", renterRef);
+        await updateDoc(renterReference, {
+            Booking: deleteField()
+        });
+        console.log("Booking field in renter deleted");
+    
+        await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
+        console.log("Entire booking document has been deleted successfully.");
 
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
@@ -480,7 +486,15 @@ async function cancelCar(carId){
     window.location.href = "profile.html";
 
 }
-*/
+
+
+
+
+
+
+
+
+
 
 
 
