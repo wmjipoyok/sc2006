@@ -185,7 +185,7 @@ function getData() {
 
     xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
     xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-    xhr.setRequestHeader("Token", "yf9cDz-cefbT4had98Cf1ca7hHekettGvgHq9ce3f8affNtfeQ8bqsSYaf88S4d808Da-2fb3f4zdbNv1JcBxUedcf-8cr+64-W9");
+    xhr.setRequestHeader("Token", "tEfeddrjfXu01-dk9888r9J1-AWXPfaSS4Gaf8zd81NUx3@ectXc+AeGR4dHc7bUVXHd-342Svf9ufajkmtk9cGM0T899jR-m9cs");
 
     xhr.send();
 }
