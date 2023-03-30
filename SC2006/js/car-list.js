@@ -50,10 +50,10 @@ function getCarList() {
                         <div class="card border-bottom-primary shadow h-100 py-2">
                             <a href="car-detail.html?carId=${doc.id}" style="text-decoration: none">
                                 <div class="card-body">
-                                <div class="col-auto" style="margin-bottom: 10px; margin-left: auto;margin-right: auto;">
+                                    <div class="col-auto" style="margin-bottom: 10px; margin-left: auto;margin-right: auto;">
                                             <img src="${data.Images[0]} class="col-auto"
                                                 style="width:100%; max-height:150px;">
-                                        </div>
+                                    </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="h4 mb-0 font-weight-bold text-gray-800">
@@ -77,10 +77,10 @@ function getCarList() {
                                         </div>
                                     </div>
                                     <div class="h7 mb-0 font-weight text-gray-800" style="margin-top:5px;">
-                                                <img class="owner-profile rounded-circle" style="width:20px; vertical-align: text-top;"
-                                                        src="img/profile.png">
-                                                    <span id="CarOwner">${userName}</span>
-                                            </div>
+                                        <img class="owner-profile rounded-circle" style="width:20px; vertical-align: text-top;"
+                                                src="img/profile.png">
+                                        <span id="CarOwner">${userName}</span>
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -98,7 +98,7 @@ function getCarList() {
 }
 
 function noCarAvailable() {
-    if ($("#carListContainer :div").length <= 0) {
+    if (document.getElementById("carListContainer").innerHTML == "") {
         document.getElementById("loading").setAttribute('hidden', true);
         document.getElementById("warningMsg").innerHTML = "No cars available.";
         document.getElementById("warningMsg").removeAttribute('hidden');
