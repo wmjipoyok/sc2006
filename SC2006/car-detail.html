@@ -87,7 +87,13 @@
                             </div>
 
                             <div id="pendingStatus" hidden>
-                                <span id="AcceptPendingReject", style="color: red; font-size:30px;">-</span>
+                                <span id="Pending", style="color: blue; font-size:30px;" hidden>-</span>
+                                <span id="Accepted", style="color: green; font-size:30px;" hidden>-</span>
+                            </div>
+
+                            <div id="cancelBooking" hidden>
+                                <button id="cancelBtn" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#deleteModal">CANCEL</button>
                             </div>
 
                             <div id="Booking" hidden>

@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc, deleteField  } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -53,12 +53,15 @@ window.addEventListener('load', function () {
 var bookBtn = document.querySelector("#bookBtn");
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
+//var cancelBtn = document.querySelector("#cancelBtn");
 
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
 acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () {  rejectCar(carId) });
+//cancelBtn.addEventListener('click', function () {  cancelCar(carId) });
+
 
 
 //functions 
@@ -133,6 +136,7 @@ async function retrieveCarDetails(carId){
 
     } 
 
+    //if car owner views his own car's details, and car is unavailable(2) status
     if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 2)
     {
         const pendingBookingID = ownerCarData.PendingBookingOwner[0];
@@ -149,8 +153,11 @@ async function retrieveCarDetails(carId){
         document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
         document.getElementById("userInfo").removeAttribute("hidden");
 
-        document.getElementById("AcceptPendingReject").innerHTML = "Accepted";
+        document.getElementById("Accepted").innerHTML = "Accepted";
+        document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
+
+       // document.getElementById("cancelBooking").removeAttribute('hidden');
 
     } 
 
@@ -165,22 +172,26 @@ async function retrieveCarDetails(carId){
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
-    //if renter view a car from listing, display owner's details
+    //if renter view a car after booking request, pending
     if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 1) 
     {
         //display pending status when renter views after booking
-        document.getElementById("AcceptPendingReject").innerHTML = "Pending";
+        document.getElementById("Pending").innerHTML = "Pending";
+        document.getElementById("Pending").removeAttribute('hidden');
         document.getElementById("pendingStatus").removeAttribute('hidden');
-
         
     }
 
+    //if renter view a car after booking request, accepted
     if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) 
     {
         //display accepted status when renter views after booking
         document.getElementById("Description").setAttribute('hidden', true);
-        document.getElementById("AcceptPendingReject").innerHTML = "Accepted";
-        document.getElementById("pendingStatus").removeAttribute('hidden');    
+        document.getElementById("Accepted").innerHTML = "Accepted";
+        document.getElementById("Accepted").removeAttribute("hidden");
+        document.getElementById("pendingStatus").removeAttribute('hidden');
+
+        document.getElementById("cancelBooking").removeAttribute('hidden');
     }
 
 
@@ -396,6 +407,60 @@ async function rejectCar(carId) {
         await updateDoc(bookingRef, {
             Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
         });
+        console.log("Booking 'Delete' field updated to true");
+
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+        
+        const bookingREF = await getDoc(bookingRef);
+        const bookingData = bookingREF.data();
+        const renterRef = bookingData.UserId;
+        const renterReference = doc(db, "Users", renterRef);
+        await updateDoc(renterReference, {
+            Booking: deleteField()
+        });
+        console.log("Booking field in renter deleted");
+    
+        await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
+        console.log("Entire booking document has been deleted successfully.");
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking request rejected!");
+    window.location.href = "profile.html";
+}
+
+/*
+async function cancelCar(carId){
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0]; 
+
+    //update car's availabilty status to available and booking delete status to true
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(0)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Status: 0,
+            Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+        });
         console.log("Booking record will be deleted");
 
         const docRef = doc(db, "Bookings", bookingQuerySnapshot);
@@ -411,10 +476,11 @@ async function rejectCar(carId) {
         console.error("Error updating status to rejected status: ", e);
     }
 
-    alert("Booking request rejected!");
+    alert("Booking cancelled!");
     window.location.href = "profile.html";
 
 }
+*/
 
 
 
