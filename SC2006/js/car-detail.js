@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,16 +30,15 @@ const storage = getStorage(app);
 const storageRef = ref(storage);
 
 
-
 //get carID from URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const carId = urlParams.get('carId');
 
 
-
 //retrieve selected car details on load
 window.addEventListener('load', function () {
+    
     document.getElementById("editCarUrl").href = "car-form.html?request=edit&carId=" + carId;
     $(function () {
         $("#nav-content").load("nav.html");
@@ -47,76 +46,147 @@ window.addEventListener('load', function () {
     });
 
     retrieveCarDetails(carId);
+
 }, false);
 
 //buttons
 var bookBtn = document.querySelector("#bookBtn");
+var acceptBtn = document.querySelector("#acceptBtn");
+var rejectBtn = document.querySelector("#rejectBtn");
+
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
+acceptBtn.addEventListener('click', function () { acceptCar(carId) });
+rejectBtn.addEventListener('click', function () {  rejectCar(carId) });
 
 
 //functions 
-async function retrieveCarDetails(carId) {
+async function retrieveCarDetails(carId){
 
     //read db using car's id
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
-    const dataSnap = docSnap.data();
+    const carData = docSnap.data();
 
-    if (!dataSnap) {
+    if (!carData) {
         errorHandle("No car information found.");
         return;
     }
 
+    //read db using owner's id
     const ownerSnap = doc(db, "Users", docSnap.data().CarOwner);
     const ownerDocSnap = await getDoc(ownerSnap);
-    const ownerDataSnap = ownerDocSnap.data();
+    const ownerCarData = ownerDocSnap.data();
 
-    if (!ownerDataSnap) {
-        errorHandle("Unable to reterive car owner information.");
+    if (!ownerCarData) {
+        errorHandle("Unable to reterive car owner's information.");
         return;
     }
 
-    //get individual data from db
-    var brand = dataSnap.Brand;
-    var model = dataSnap.Model;
-    var rating = dataSnap.Rating;
-    var seats = dataSnap.Seats;
-    var price = dataSnap.Price;
-    var description = dataSnap.Description;
+    //get individual car data from db
+    var brand = carData.Brand;
+    var model = carData.Model;
+    var rating = carData.Rating;
+    var seats = carData.Seats;
+    var price = carData.Price;
+    var description = carData.Description;
 
-    //function to display stars
+    //function to display rating stars
     getStarRatings(rating);
 
-    //update fields in the page
+    //update fields in the car details page
     document.getElementById("BrandModel").innerHTML = brand + " " + model;
     document.getElementById("Seats").innerHTML = seats + " seater";
     document.getElementById("Price").innerHTML = "$" + price + "/day";
     document.getElementById("Description").innerHTML = description;
 
-
-    if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 0) {
+    //if car owner views his own car's details, and car is available(0) status
+    if ((carData.CarOwner == localStorage.getItem("userId")) && carData.Status == 0) 
+    {
+        //show edit details and delete listing buttons
+        console.log("car owner views his own car's details, and car is available(0) status");
         document.getElementById("editBtn").removeAttribute('hidden');
         document.getElementById("delete").removeAttribute('hidden');
-    } else if (dataSnap.CarOwner == localStorage.getItem("userId") && dataSnap.Status == 1) {
-        // TODO: Change to renter name
-        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
-        document.getElementById("userInfo").removeAttribute("hidden");
-        document.getElementById("bookBtn").setAttribute("hidden", true);
-        document.getElementById("Booking").removeAttribute("hidden");
-        document.getElementById("pendingOwner").removeAttribute('hidden');
 
-        // TODO: retrieve trip start and end from booking
-    } else if (dataSnap.Status == 0) {
-        document.getElementById("UserName").innerHTML = ownerDataSnap.FirstName + " " + ownerDataSnap.LastName;
+    } 
+
+    //if car owner views his own car's details, and car is pending(1) status
+    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 1)
+    {
+        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+        const pendingSnap = doc(db, "Bookings", pendingBookingID);
+        const pendingDocSnap = await getDoc(pendingSnap);
+        const pendingBookingData = pendingDocSnap.data();
+        const pendingRenter = pendingBookingData.UserId;
+
+        const renterRef = doc(db, "Users", pendingRenter)
+        const renterSnap = await getDoc(renterRef);
+        const renterData = renterSnap.data();
+
+        //Display renter's info and booking info for car owner to see
+        document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+        document.getElementById("userInfo").removeAttribute("hidden");
+
+        //show accept and reject buttons
+        document.getElementById("pendingOwner").removeAttribute('hidden');  
+
+    } 
+
+    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 2)
+    {
+        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+        const pendingSnap = doc(db, "Bookings", pendingBookingID);
+        const pendingDocSnap = await getDoc(pendingSnap);
+        const pendingBookingData = pendingDocSnap.data();
+        const pendingRenter = pendingBookingData.UserId;
+
+        const renterRef = doc(db, "Users", pendingRenter)
+        const renterSnap = await getDoc(renterRef);
+        const renterData = renterSnap.data();
+
+        //Display renter's info and booking info for car owner to see
+        document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+        document.getElementById("userInfo").removeAttribute("hidden");
+
+        document.getElementById("AcceptPendingReject").innerHTML = "Accepted";
+        document.getElementById("pendingStatus").removeAttribute('hidden');
+
+    } 
+
+    //if renter view a car from listing, display owner's details
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 0) 
+    {
+        //display car owner in user info
+        document.getElementById("UserName").innerHTML = ownerCarData.FirstName + " " + ownerCarData.LastName;
         document.getElementById("userInfo").removeAttribute('hidden');
+
+        //show date picker and booking button
         document.getElementById("Booking").removeAttribute('hidden');
     }
 
-    for (let i = 0; i < dataSnap.Images.length; i++) {
+    //if renter view a car from listing, display owner's details
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 1) 
+    {
+        //display pending status when renter views after booking
+        document.getElementById("AcceptPendingReject").innerHTML = "Pending";
+        document.getElementById("pendingStatus").removeAttribute('hidden');
+
+        
+    }
+
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) 
+    {
+        //display accepted status when renter views after booking
+        document.getElementById("Description").setAttribute('hidden', true);
+        document.getElementById("AcceptPendingReject").innerHTML = "Accepted";
+        document.getElementById("pendingStatus").removeAttribute('hidden');    
+    }
+
+
+    for (let i = 0; i < carData.Images.length; i++) {
         document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
-        <img src="${dataSnap.Images[i]}" class="slideshow-img" alt="image"></div>`
+        <img src="${carData.Images[i]}" class="slideshow-img" alt="image"></div>`
         document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${i + 1})"></span>`
     }
 
@@ -132,11 +202,13 @@ async function retrieveCarDetails(carId) {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
+
 function errorHandle(msg) {
     document.getElementById("errorMsg").innerHTML = msg;
     document.getElementById("errorMsg").removeAttribute('hidden');
     document.getElementById("loading").setAttribute('hidden', true);
 }
+
 
 function getStarRatings(rating) {
     const starsTotal = 5;
@@ -145,8 +217,8 @@ function getStarRatings(rating) {
 
     document.querySelector('.stars-inner').style.width = starPercentageRounded;
     document.querySelector('.number-rating').innerHTML = rating;
-
 }
+
 
 function checkBooking() {
     const start = document.getElementById("StartTrip");
@@ -185,8 +257,10 @@ function checkBooking() {
     return true;
 }
 
+
 async function BookCar(carId) {
 
+    //check valid booking
     const validation = checkBooking();
     if (!validation) {
         return;
@@ -196,33 +270,47 @@ async function BookCar(carId) {
     const StartTrip = document.getElementById("StartTrip").value;
     const EndTrip = document.getElementById("EndTrip").value;
 
+    //read "Cars" db with selected car's ID
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
 
-    //get car's status
+    //get car's status and owner
     const carStatus = docSnap.data().Status;
     const carOwner = docSnap.data().CarOwner;
 
-    //check if car is available
+    //check if car is available status
     if (carStatus == 0) {
 
-        //update Booking in db and the BookingId into individual users
+        //update Booking in db and the BookingId into individual users db
         try {
             const bookingRef = await addDoc(collection(db, "Bookings"), {
 
                 UserId: localStorage.getItem("userId"),
+                CarOwner: carOwner,
                 CarId: carId,
                 Start: StartTrip,
                 End: EndTrip,
-                Status: 1      //booking not completed, change to 0 once complete
+                Status: 1,                  //booking not completed, change to 0 once renter completes
+                OwnerAccepted: false,       //owner has not accepted the booking, change to true once accepted, dont't change if owner rejects
+                Delete: false               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+
             });
-            console.log("Booking written with ID: ", bookingRef.id);
+            console.log("Booking written in 'Bookings' with ID: ", bookingRef.id);
 
             const userRef = doc(db, "Users", localStorage.getItem("userId"));
             await updateDoc(userRef, {
                 Booking: arrayUnion(bookingRef.id)
             });
-            console.log("Booking stored in Users with ID: ");
+            console.log("Booking stored in 'Users' with ID: ", userRef.id);
+
+            const ownerRef = doc(db, "Users", carOwner);
+            await updateDoc(ownerRef, {
+                PendingBookingOwner: arrayUnion(bookingRef.id)
+            });
+            console.log("Booking stored in 'Owner' with userID: ", ownerRef.id);
+
+
+            //send message to car's owner and store message in "Messages" db
             sendMessage(carOwner, bookingRef.id);
             saveMessageToDb(carId, carOwner, bookingRef.id);
 
@@ -230,22 +318,105 @@ async function BookCar(carId) {
             console.error("Error adding document: ", e);
         }
 
-        //update car's availabilty status
+        //update car's availabilty status to pending
         try {
             const carRef = doc(db, "Cars", carId);
             await updateDoc(carRef, {
-                Status: 1
+                Status: 1       //upated car's status to pending(1)
             });
-            console.log("Car status updated");
+            console.log("Car status updated to pending");
+
         } catch (e) {
-            console.error("Error updating status: ", e);
+            console.error("Error updating status to pending: ", e);
         }
     }
 
+    //pop-up alert, once user clicks 'Ok', go to booking page to view booking
     alert("Booking Successful! Wait for owner to accept.");
     window.location.href = "bookings.html";
 
 }
+
+async function acceptCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to unavailable 
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 2       //upated car's status to unavailable(2)
+        });
+        console.log("Car status updated to unavailable");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            OwnerAccepted: true,       //owner has accepted the booking
+        });
+        console.log("Booking accepted by owner");
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking request accepted!");
+    window.location.href = "profile.html";
+
+}
+
+async function rejectCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0]; 
+
+    //update car's availabilty status to available and booking delete status to true
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(0)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+        });
+        console.log("Booking record will be deleted");
+
+        const docRef = doc(db, "Bookings", bookingQuerySnapshot);
+        deleteDoc(docRef)
+        .then(() => {
+            console.log("Entire booking document has been deleted successfully.")
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking request rejected!");
+    window.location.href = "profile.html";
+
+}
+
+
 
 function sendMessage(carOwner, bookingId) {
     var xhr = new XMLHttpRequest();
@@ -304,7 +475,6 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
            
 
             //reading from db
-
             const querySnapshot = await getDocs(collection(db, "TestCars"));
             querySnapshot.forEach((doc) => {
             console.log(`${doc.id} => ${doc.data()}`);
@@ -312,7 +482,6 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
 
 
             //update db
-
             import { doc, updateDoc } from "firebase/firestore";
 
             const washingtonRef = doc(db, "cities", "DC");

@@ -19,7 +19,7 @@
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
     <script src="/__/firebase/init.js?useEmulator=true"></script>
 
-    <script type="module" src="./js/car-detail.js"> </script>
+    
 
     <title>Car Details</title>
 </head>
@@ -86,6 +86,10 @@
                                 <p id="Description">Description</p>
                             </div>
 
+                            <div id="pendingStatus" hidden>
+                                <span id="AcceptPendingReject", style="color: red; font-size:30px;">-</span>
+                            </div>
+
                             <div id="Booking" hidden>
                                 <div class="row" id="tripDate">
                                     <div class="col-sm">
@@ -105,13 +109,13 @@
                             </div>
 
                             <div id="delete" hidden>
-                                <button id="bookBtn" class="btn btn-danger" data-toggle="modal"
+                                <button id="deleteBtn" class="btn btn-danger" data-toggle="modal"
                                     data-target="#deleteModal">DELETE</button>
                             </div>
 
                             <div id="pendingOwner" hidden>
-                                <button id="bookBtn" class="btn btn-info">ACCEPT</button>
-                                <button id="bookBtn" class="btn btn-danger">REJECT</button>
+                                <button id="acceptBtn" class="btn btn-info">ACCEPT</button>
+                                <button id="rejectBtn" class="btn btn-danger">REJECT</button>
                             </div>
                         </div>
                     </div>
@@ -162,6 +166,7 @@
             </div>
         </div>
 
+        <script type="module" src="./js/car-detail.js"> </script>
 </body>
 
 </html>
