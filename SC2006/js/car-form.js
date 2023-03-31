@@ -108,7 +108,6 @@ window.addEventListener('load', function () {
                 document.getElementById("imgError").setAttribute("hidden", true);
                 document.getElementById("slideshowContainer").setAttribute("hidden", true);
                 document.getElementById("imageLoader").removeAttribute("hidden");
-
                 const spaceAva = imageLimit - $("#imageContainer img").length;
                 let limit;
                 if (spaceAva == 0 && files.length >= imageLimit) {
@@ -120,7 +119,9 @@ window.addEventListener('load', function () {
                 }
 
                 for (let i = 0; i < limit; i++) {
-                    imageArray.push(files[i]);
+                    if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
+                        imageArray.push(files[i]);
+                    };
                 }
                 displayImages();
             }
@@ -138,10 +139,11 @@ window.addEventListener('load', function () {
 
                 let limit = files.length >= imageLimit ? imageLimit : files.length;
                 for (let i = 0; i < limit; i++) {
-                    if (!files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png")) continue;
-                    if (imageArray.every(image => image.name !== files[i].name)) {
-                        imageArray.push(files[i]);
-                    }
+                    if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
+                        if (imageArray.every(image => image.name !== files[i].name)) {
+                            imageArray.push(files[i]);
+                        }
+                    };
                 }
                 displayImages();
             }
@@ -207,6 +209,7 @@ window.addEventListener('load', function () {
 
         if (imgToUpload.length <= 0 && request == null) {
             document.getElementById("imageBox").style.border = "2px dotted red";
+            document.getElementById("imgError").innerHTML = "Image cannot be empty";
             document.getElementById("imgError").removeAttribute("hidden");
             return;
         }
@@ -222,7 +225,8 @@ window.addEventListener('load', function () {
                 Images: carData.Images,
                 Rating: carData.Rating,
                 Carpark: carData.Carpark,
-                CarOwner: carData.CarOwner
+                CarOwner: carData.CarOwner,
+                CreateDateTime: carData.CreateDateTime
             })
                 .then(() => {
                     document.getElementById("successMsg").innerHTML = "Car information has been updated!";
@@ -264,6 +268,8 @@ async function createCarListing() {
     const carDescription = document.getElementById("carDescription").value;
     const carImages = imageUrlList;
     const userId = localStorage.getItem("userId");
+    const currentDateTime = new Date();
+    const createDateTime = currentDateTime.toLocaleDateString("fr-ca") + " " + currentDateTime.toLocaleTimeString('it-IT');
 
     await db.collection("Cars").add({
         Brand: carBrand,
@@ -275,7 +281,8 @@ async function createCarListing() {
         Images: carImages,
         Rating: 0,
         Carpark: carparkLocation,
-        CarOwner: userId
+        CarOwner: userId,
+        CreateDateTime: createDateTime
     })
         .then(() => {
             document.getElementById("successMsg").innerHTML = "Car listing has been uploaded!";
@@ -300,27 +307,33 @@ function displayImages() {
         jsScript.remove();
     }
 
-    imageArray.forEach((image, index) => {
-        imgToUpload.push(image);
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
-        <img src="${e.target.result}" class="slideshow-img" alt="image"></div>`
-            document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${index + 1})"></span>`
-        };
-        reader.readAsDataURL(image);
-    });
-    document.getElementById("imageContainer").innerHTML += `<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>`
+    if (imageArray.length > 0) {
+        imageArray.forEach((image, index) => {
+            imgToUpload.push(image);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("imageContainer").innerHTML += `<div class="mySlides">
+            <img src="${e.target.result}" class="slideshow-img" alt="image"></div>`
+                document.getElementById("dotContatiner").innerHTML += `<span class="dot" onclick="currentSlide(${index + 1})"></span>`
+            };
+            reader.readAsDataURL(image);
+        });
+        document.getElementById("imageContainer").innerHTML += `<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>`
 
-    var len = $('script[src="./js/slideshow.js"]').length;
+        var len = $('script[src="./js/slideshow.js"]').length;
 
-    if (len != 0) {
-        jsScript.remove();
+        if (len != 0) {
+            jsScript.remove();
+        }
+
+        setTimeout(addSlideshowJS, 2000);
+        imageArray = [];
+    } else {
+        document.getElementById("imgError").innerHTML = "Image in wrong format.";
+        document.getElementById("imgError").removeAttribute("hidden");
+        document.getElementById("imageLoader").setAttribute("hidden", true);
     }
-
-    setTimeout(addSlideshowJS, 2000);
-    imageArray = [];
 }
 
 function addSlideshowJS() {
