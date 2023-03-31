@@ -439,9 +439,9 @@ async function rejectCar(carId) {
         const renterRef = bookingData.UserId;
         const renterReference = doc(db, "Users", renterRef);
         await updateDoc(renterReference, {
-            Booking: deleteField()
+            Booking: arrayRemove(bookingRef.id)
         });
-        console.log("Booking field in renter deleted");
+        console.log("Booking field in renter deleted:", bookingRef.id);
     
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
@@ -492,7 +492,7 @@ async function cancelCar(carId){
         const renterRef = bookingData.UserId;
         const renterReference = doc(db, "Users", renterRef);
         await updateDoc(renterReference, {
-            Booking: deleteField()
+            Booking: arrayRemove(bookingRef.id)
         });
         console.log("Booking field in renter deleted");
     
@@ -504,7 +504,7 @@ async function cancelCar(carId){
     }
 
     alert("Booking cancelled!");
-    window.location.href = "profile.html";
+    window.location.href = "bookings.html";
 
 }
 
