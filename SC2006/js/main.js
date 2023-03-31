@@ -69,29 +69,29 @@ function initMap() {
 
     infoWindow = new google.maps.InfoWindow();
 
-    // addMarker(1.3483, 103.6831);
+    addMarker(1.3483, 103.6831);
 
     //get user currect location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
+    // if (navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(
+    //         (position) => {
+    //             const pos = {
+    //                 lat: position.coords.latitude,
+    //                 lng: position.coords.longitude,
+    //             };
 
-                //set user's locaton to the map center & add the red market to the map
-                map.setCenter(pos);
-                addMarker(position.coords.latitude, position.coords.longitude);
-            },
-            () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-            }
-        );
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-    }
+    //             //set user's locaton to the map center & add the red market to the map
+    //             map.setCenter(pos);
+    //             addMarker(position.coords.latitude, position.coords.longitude);
+    //         },
+    //         () => {
+    //             handleLocationError(true, infoWindow, map.getCenter());
+    //         }
+    //     );
+    // } else {
+    //     // Browser doesn't support Geolocation
+    //     handleLocationError(false, infoWindow, map.getCenter());
+    // }
 }
 
 function addCarparkMarker(lat, lng, data) {
