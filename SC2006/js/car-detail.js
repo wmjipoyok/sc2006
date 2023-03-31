@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, deleteDoc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -51,10 +51,11 @@ window.addEventListener('load', function () {
 
 //buttons
 var bookBtn = document.querySelector("#bookBtn");
+var delConfirmBtn = document.getElementById("delete-confirm-button");
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
-
+delConfirmBtn.addEventListener('click', function () {deleteCar(carId)});
 
 //functions 
 async function retrieveCarDetails(carId) {
@@ -281,6 +282,21 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
     } catch (e) {
         console.error("Error adding document: ", e);
     }
+}
+
+function deleteCar(carID){
+    //reference to car doc to be deleted
+    const carRef = doc(db, "Cars", carID);
+
+    //Call deleteDoc() to delete the doc
+    deleteDoc(carRef)
+        .then(() => {
+            //if deletion is successful, we redirect user to his profile page so that he can see his current list of cars
+            window.location.href = "profile.html";
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 
