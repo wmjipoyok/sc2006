@@ -90,7 +90,9 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
-            noCarAvailable();
+            setTimeout(() => {
+                noCarAvailable();
+            }, 1000);
         } else {
             noCarAvailable();
         }
