@@ -48,7 +48,6 @@ window.addEventListener('load', function () {
     window.initMap = initMap;
 
     setTimeout(unhideContent, 1000);
-
 }, false);
 
 function unhideContent() {

@@ -34,16 +34,16 @@ window.addEventListener('load', function () {
 });
 
 function getCarList() {
-    db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).get().then(snapshot => {
+    db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).orderBy("CreateDateTime", "desc").get().then(snapshot => {
         if (snapshot.docs.length > 0) {
             snapshot.docs.forEach(doc => {
                 if (doc.exists && doc.data().Status == 0) {
                     let data = doc.data();
+                    // console.log("snapshot:" + doc.data().CreateDateTime);
                     let userName = "-";
                     db.collection("Users").doc(data.CarOwner).get().then((docRef) => {
                         if (docRef.exists) {
                             userName = docRef.data().FirstName;
-                            console.log(doc.id);
                         }
                         document.getElementById("carListContainer").innerHTML += `
                     <div class="col-xl-3 col-md-6 mb-4">
@@ -52,7 +52,7 @@ function getCarList() {
                                 <div class="card-body">
                                     <div class="col-auto" style="margin-bottom: 10px; margin-left: auto;margin-right: auto;">
                                             <img src="${data.Images[0]} class="col-auto"
-                                                style="width:100%; max-height:150px;">
+                                                style="width:100%;">
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -90,7 +90,9 @@ function getCarList() {
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
-            noCarAvailable();
+            setTimeout(() => {
+                noCarAvailable();
+            }, 1000);
         } else {
             noCarAvailable();
         }
