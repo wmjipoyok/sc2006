@@ -54,13 +54,14 @@ window.addEventListener('load', function () {
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
 var cancelBtn = document.querySelector("#cancelBtn");
-
+var completeBtn = document.querySelector("#completeBtn");
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
 acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () {  rejectCar(carId) });
 cancelBtn.addEventListener('click', function () {  cancelCar(carId) });
+completeBtn.addEventListener('click', function () {  completeCar(carId) });
 
 //functions 
 async function retrieveCarDetails(carId){
@@ -142,6 +143,7 @@ async function retrieveCarDetails(carId){
         const pendingDocSnap = await getDoc(pendingSnap);
         const pendingBookingData = pendingDocSnap.data();
         const pendingRenter = pendingBookingData.UserId;
+        const pendingStart = pendingBookingData.Start;
 
         const renterRef = doc(db, "Users", pendingRenter)
         const renterSnap = await getDoc(renterRef);
@@ -155,7 +157,11 @@ async function retrieveCarDetails(carId){
         document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
 
-        document.getElementById("cancelBooking").removeAttribute('hidden');
+        const d = new Date().toLocaleDateString('fr-ca');
+        if( d < pendingStart){
+            document.getElementById("cancelBooking").removeAttribute('hidden');
+        }
+        
 
     } 
 
@@ -183,12 +189,27 @@ async function retrieveCarDetails(carId){
     //if renter view a car after booking request, accepted
     if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) 
     {
+
+        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+        const pendingSnap = doc(db, "Bookings", pendingBookingID);
+        const pendingDocSnap = await getDoc(pendingSnap);
+        const pendingBookingData = pendingDocSnap.data();
+        const pendingStart = pendingBookingData.Start;
+        //const pendingEnd = pendingBookingData.End;
+
         //display accepted status when renter views after booking
         document.getElementById("Accepted").innerHTML = "Accepted";
         document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
 
-        document.getElementById("cancelBooking").removeAttribute('hidden');
+        //if(today's date >= start date)
+        const d = new Date().toLocaleDateString('fr-ca');
+        if( d >= pendingStart){
+            document.getElementById("completeBooking").removeAttribute('hidden');
+        }
+        else{
+            document.getElementById("cancelBooking").removeAttribute('hidden');
+        }  
 
     }
 
@@ -484,6 +505,46 @@ async function cancelCar(carId){
 
     alert("Booking cancelled!");
     window.location.href = "profile.html";
+
+}
+
+async function completeCar(carId){
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to available 
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(2)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Status: 0       
+        });
+        console.log("Booking updated status in 'Bookings' with ID: ", bookingRef.id);
+
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+    } catch (e) {
+        console.error("Error updating status to completed status: ", e);
+    }
+
+    alert("Rental completed!");
+    window.location.href = "bookings.html";
 
 }
 
