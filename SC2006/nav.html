@@ -16,11 +16,12 @@
     <link href="./css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
     <script src="./js/common.js"></script>
-    <script type="module" src="./js/message.js"></script>
+    <!-- <script type="module" src="./js/message.js"></script> -->
 
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
     <script src="/__/firebase/init.js?useEmulator=true"></script>
 </head>
 
@@ -88,6 +89,65 @@
     </ul>
 </nav>
 
+<script type="module">
+    import { } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-messaging.js";
+
+    requestPermission();
+
+    function requestPermission() {
+        // console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                // console.log('Notification permission granted.');x
+                messaging.getToken({ vapidKey: 'BIKm-OqsfzgKZhCH9oczK00Gq8gHLwLzvSKlrD3H1A0FuNKZW3x-D9xPoRbNbpnRTbVW5XL7c9AJVODdoV_pLAI' })
+                    .then((currentToken) => {
+                        if (currentToken) {
+                            localStorage.setItem("currToken", currentToken);
+                        } else {
+                            console.log("cannot get notification token");
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                    });
+            } else {
+                console.log("do not have permission");
+            }
+        })
+    }
+
+
+    messaging.onMessage((payload) => {
+        console.log('Message received. ', payload);
+        const userId = localStorage.getItem("userId");
+        const notiCount = document.getElementById('notiCount');
+        if ((userId == payload.data.receiverId) && notiCount) {
+            if (notiCount) {
+                if (notiCount.style.visibility == 'hidden') {
+                    notiCount.style.visibility = 'visible';
+                }
+                notiCount.innerHTML = parseInt(notiCount.innerHTML) + 1;
+                const alerts = document.getElementById('alertContainer');
+                const carId = payload.data.carId;
+                var currentdate = new Date();
+                alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${carId}">
+            <div class="mr-3">
+                <div class="icon-circle bg-primary">
+                    <i class="fas fa-file-alt text-white"></i>
+                </div>
+            </div>
+            <div>
+                <div class="small text-gray-500">${currentdate.toLocaleString("fr-ca")} ${currentdate.toLocaleTimeString('it-IT')}</div>
+                <span class="font-weight-bold">${payload.data.message}</span>
+            </div>
+        </a>`
+
+            }
+
+        }
+    });
+</script>
+
 <script>
     const db = firebase.firestore();
 
@@ -139,7 +199,5 @@
             // User is signed out.
             console.log(firebase.auth().currentUser);
         }
-
     })
-
 </script>

@@ -650,12 +650,12 @@
         const userID = localStorage.getItem("userId");
         const carsRef = db.collection("Cars");
 
-        carsRef.where("CarOwner", "==", userID).get()
+        carsRef.where("CarOwner", "==", userID).orderBy("CreateDateTime", "desc").get()
             .then((carSnapshot) => {
                 const carDocs = carSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
-                
+
                 //checking if array is empty.. if it is, we display message that user has not uploaded any car
-                if(carDocs.length == 0){
+                if (carDocs.length == 0) {
                     console.log("User has not uploaded any cars!");
                     document.getElementById("no-user-cars").removeAttribute("hidden");
                 }

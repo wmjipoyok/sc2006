@@ -63,7 +63,7 @@ messaging.onMessage((payload) => {
                     </div>
                 </div>
                 <div>
-                    <div class="small text-gray-500">${currentdate.toLocaleString()}</div>
+                    <div class="small text-gray-500">${currentdate.toLocaleDateString("fr-ca")} ${currentdate.toLocaleTimeString('it-IT')}</div>
                     <span class="font-weight-bold">${payload.data.message}</span>
                 </div>
             </a>`

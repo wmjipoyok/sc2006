@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc, deleteField  } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,7 +38,7 @@ const carId = urlParams.get('carId');
 
 //retrieve selected car details on load
 window.addEventListener('load', function () {
-    
+
     document.getElementById("editCarUrl").href = "car-form.html?request=edit&carId=" + carId;
     $(function () {
         $("#nav-content").load("nav.html");
@@ -59,12 +59,12 @@ var completeBtn = document.querySelector("#completeBtn");
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
 acceptBtn.addEventListener('click', function () { acceptCar(carId) });
-rejectBtn.addEventListener('click', function () {  rejectCar(carId) });
-cancelBtn.addEventListener('click', function () {  cancelCar(carId) });
-completeBtn.addEventListener('click', function () {  completeCar(carId) });
+rejectBtn.addEventListener('click', function () { rejectCar(carId) });
+cancelBtn.addEventListener('click', function () { cancelCar(carId) });
+completeBtn.addEventListener('click', function () { completeCar(carId) });
 
 //functions 
-async function retrieveCarDetails(carId){
+async function retrieveCarDetails(carId) {
 
     //read db using car's id
     const docRef = doc(db, "Cars", carId)
@@ -104,70 +104,69 @@ async function retrieveCarDetails(carId){
     document.getElementById("Description").innerHTML = description;
 
     //if car owner views his own car's details, and car is available(0) status
-    if ((carData.CarOwner == localStorage.getItem("userId")) && carData.Status == 0) 
-    {
+    if ((carData.CarOwner == localStorage.getItem("userId")) && carData.Status == 0) {
         //show edit details and delete listing buttons
         console.log("car owner views his own car's details, and car is available(0) status");
         document.getElementById("editBtn").removeAttribute('hidden');
         document.getElementById("delete").removeAttribute('hidden');
 
-    } 
+    }
 
     //if car owner views his own car's details, and car is pending(1) status
-    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 1)
-    {
-        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
-        const pendingSnap = doc(db, "Bookings", pendingBookingID);
-        const pendingDocSnap = await getDoc(pendingSnap);
-        const pendingBookingData = pendingDocSnap.data();
-        const pendingRenter = pendingBookingData.UserId;
+    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 1) {
+        if (ownerCarData.PendingBookingOwner && ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingRenter = pendingBookingData.UserId;
 
-        const renterRef = doc(db, "Users", pendingRenter)
-        const renterSnap = await getDoc(renterRef);
-        const renterData = renterSnap.data();
+            const renterRef = doc(db, "Users", pendingRenter)
+            const renterSnap = await getDoc(renterRef);
+            const renterData = renterSnap.data();
 
-        //Display renter's info and booking info for car owner to see
-        document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
-        document.getElementById("userInfo").removeAttribute("hidden");
+            //Display renter's info and booking info for car owner to see
+            document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+            document.getElementById("userInfo").removeAttribute("hidden");
 
-        //show accept and reject buttons
-        document.getElementById("pendingOwner").removeAttribute('hidden');  
+            //show accept and reject buttons
+            document.getElementById("pendingOwner").removeAttribute('hidden');
+        }
 
-    } 
+
+    }
 
     //if car owner views his own car's details, and car is unavailable(2) status
-    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 2)
-    {
-        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
-        const pendingSnap = doc(db, "Bookings", pendingBookingID);
-        const pendingDocSnap = await getDoc(pendingSnap);
-        const pendingBookingData = pendingDocSnap.data();
-        const pendingRenter = pendingBookingData.UserId;
-        const pendingStart = pendingBookingData.Start;
+    if (carData.CarOwner == localStorage.getItem("userId") && carData.Status == 2) {
+        if (ownerCarData.PendingBookingOwner && ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingRenter = pendingBookingData.UserId;
+            const pendingStart = pendingBookingData.Start;
 
-        const renterRef = doc(db, "Users", pendingRenter)
-        const renterSnap = await getDoc(renterRef);
-        const renterData = renterSnap.data();
+            const renterRef = doc(db, "Users", pendingRenter)
+            const renterSnap = await getDoc(renterRef);
+            const renterData = renterSnap.data();
 
-        //Display renter's info and booking info for car owner to see
-        document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
-        document.getElementById("userInfo").removeAttribute("hidden");
+            //Display renter's info and booking info for car owner to see
+            document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+            document.getElementById("userInfo").removeAttribute("hidden");
 
-        document.getElementById("Accepted").innerHTML = "Accepted";
-        document.getElementById("Accepted").removeAttribute("hidden");
-        document.getElementById("pendingStatus").removeAttribute('hidden');
+            document.getElementById("Accepted").innerHTML = "Accepted";
+            document.getElementById("Accepted").removeAttribute("hidden");
+            document.getElementById("pendingStatus").removeAttribute('hidden');
 
-        const d = new Date().toLocaleDateString('fr-ca');
-        if( d < pendingStart){
-            document.getElementById("cancelBooking").removeAttribute('hidden');
+            const d = new Date().toLocaleDateString('fr-ca');
+            if (d < pendingStart) {
+                document.getElementById("cancelBooking").removeAttribute('hidden');
+            }
         }
-        
-
-    } 
+    }
 
     //if renter view a car from listing, display owner's details
-    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 0) 
-    {
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 0) {
         //display car owner in user info
         document.getElementById("UserName").innerHTML = ownerCarData.FirstName + " " + ownerCarData.LastName;
         document.getElementById("userInfo").removeAttribute('hidden');
@@ -177,39 +176,39 @@ async function retrieveCarDetails(carId){
     }
 
     //if renter view a car after booking request, pending
-    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 1) 
-    {
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 1) {
         //display pending status when renter views after booking
         document.getElementById("Pending").innerHTML = "Pending";
         document.getElementById("Pending").removeAttribute('hidden');
         document.getElementById("pendingStatus").removeAttribute('hidden');
-        
+
     }
 
     //if renter view a car after booking request, accepted
-    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) 
-    {
+    if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 2) {
+        if (ownerCarData.PendingBookingOwner && ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingStart = pendingBookingData.Start;
+            //if(today's date >= start date)
+            const d = new Date().toLocaleDateString('fr-ca');
+            if (d >= pendingStart) {
+                document.getElementById("completeBooking").removeAttribute('hidden');
+            }
+            else {
+                document.getElementById("cancelBooking").removeAttribute('hidden');
+            }
+        }
 
-        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
-        const pendingSnap = doc(db, "Bookings", pendingBookingID);
-        const pendingDocSnap = await getDoc(pendingSnap);
-        const pendingBookingData = pendingDocSnap.data();
-        const pendingStart = pendingBookingData.Start;
+
         //const pendingEnd = pendingBookingData.End;
 
         //display accepted status when renter views after booking
         document.getElementById("Accepted").innerHTML = "Accepted";
         document.getElementById("Accepted").removeAttribute("hidden");
         document.getElementById("pendingStatus").removeAttribute('hidden');
-
-        //if(today's date >= start date)
-        const d = new Date().toLocaleDateString('fr-ca');
-        if( d >= pendingStart){
-            document.getElementById("completeBooking").removeAttribute('hidden');
-        }
-        else{
-            document.getElementById("cancelBooking").removeAttribute('hidden');
-        }  
 
     }
 
@@ -377,7 +376,7 @@ async function acceptCar(carId) {
     const ownerRef = doc(db, "Users", carOwner)
     const ownerSnap = await getDoc(ownerRef);
     const ownerData = ownerSnap.data();
-    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0];
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
 
     //update car's availabilty status to unavailable 
     try {
@@ -412,7 +411,7 @@ async function rejectCar(carId) {
     const ownerRef = doc(db, "Users", carOwner)
     const ownerSnap = await getDoc(ownerRef);
     const ownerData = ownerSnap.data();
-    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0]; 
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
 
     //update car's availabilty status to available and booking delete status to true
     try {
@@ -433,7 +432,7 @@ async function rejectCar(carId) {
         });
         console.log("PendingBookingOwner field in owner deleted");
 
-        
+
         const bookingREF = await getDoc(bookingRef);
         const bookingData = bookingREF.data();
         const renterRef = bookingData.UserId;
@@ -442,7 +441,7 @@ async function rejectCar(carId) {
             Booking: deleteField()
         });
         console.log("Booking field in renter deleted");
-    
+
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
 
@@ -455,7 +454,7 @@ async function rejectCar(carId) {
 }
 
 
-async function cancelCar(carId){
+async function cancelCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
@@ -465,7 +464,7 @@ async function cancelCar(carId){
     const ownerRef = doc(db, "Users", carOwner)
     const ownerSnap = await getDoc(ownerRef);
     const ownerData = ownerSnap.data();
-    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0]; 
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
 
     //update car's availabilty status to available and booking delete status to true
     try {
@@ -486,7 +485,7 @@ async function cancelCar(carId){
         });
         console.log("PendingBookingOwner field in owner deleted");
 
-        
+
         const bookingREF = await getDoc(bookingRef);
         const bookingData = bookingREF.data();
         const renterRef = bookingData.UserId;
@@ -495,7 +494,7 @@ async function cancelCar(carId){
             Booking: deleteField()
         });
         console.log("Booking field in renter deleted");
-    
+
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
 
@@ -508,7 +507,7 @@ async function cancelCar(carId){
 
 }
 
-async function completeCar(carId){
+async function completeCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
     const docSnap = await getDoc(docRef);
@@ -518,7 +517,7 @@ async function completeCar(carId){
     const ownerRef = doc(db, "Users", carOwner)
     const ownerSnap = await getDoc(ownerRef);
     const ownerData = ownerSnap.data();
-    const bookingQuerySnapshot  = ownerData.PendingBookingOwner[0];
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
 
     //update car's availabilty status to available 
     try {
@@ -530,7 +529,7 @@ async function completeCar(carId){
 
         const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
         await updateDoc(bookingRef, {
-            Status: 0       
+            Status: 0
         });
         console.log("Booking updated status in 'Bookings' with ID: ", bookingRef.id);
 
