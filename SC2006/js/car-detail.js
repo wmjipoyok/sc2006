@@ -55,6 +55,7 @@ var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
 var cancelBtn = document.querySelector("#cancelBtn");
 var completeBtn = document.querySelector("#completeBtn");
+var delConfirmBtn = document.getElementById("delete-confirm-button");
 
 //book button event listener
 bookBtn.addEventListener('click', function () { BookCar(carId) });
@@ -62,6 +63,7 @@ acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () { rejectCar(carId) });
 cancelBtn.addEventListener('click', function () { cancelCar(carId) });
 completeBtn.addEventListener('click', function () { completeCar(carId) });
+delConfirmBtn.addEventListener('click', function () {deleteCar(carId)});
 
 //functions 
 async function retrieveCarDetails(carId) {
@@ -592,6 +594,21 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
     } catch (e) {
         console.error("Error adding document: ", e);
     }
+}
+
+function deleteCar(carID){
+    //reference to car doc to be deleted
+    const carRef = doc(db, "Cars", carID);
+
+    //Call deleteDoc() to delete the doc
+    deleteDoc(carRef)
+        .then(() => {
+            //if deletion is successful, we redirect user to his profile page so that he can see his current list of cars
+            window.location.href = "profile.html";
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 
