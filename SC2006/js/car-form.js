@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
     authDomain: "fir-c9c47.firebaseapp.com",
@@ -8,7 +9,7 @@ const firebaseConfig = {
     storageBucket: "fir-c9c47.appspot.com",
     messagingSenderId: "732611892783",
     appId: "1:732611892783:web:518baf14f8076858af18da",
-    storageBucket: "gs://fir-c9c47.appspot.com"
+    storageBucket: "gs://sc2006-1d9b8.appspot.com"
 };
 
 
@@ -28,6 +29,23 @@ let imageUrlList = [];
 let jsScript;
 let carData;
 
+// var deleteBtn = document.querySelector("#deleteImgBtn");
+// deleteBtn.addEventListener('click', function () { deleteImage() });
+
+// function deleteImage() {
+//     // Create a reference to the file to delete
+//     const desertRef = ref(storage, 'CarImages/gif.gif');
+
+//     // Delete the file
+//     deleteObject(desertRef).then(() => {
+//         // File deleted successfully
+//         console.log("deleted!!!!!!!!!!");
+//     }).catch((error) => {
+//         // Uh-oh, an error occurred!
+//         console.log("Uh-oh, an error occurred!");
+//         console.log(error);
+//     });
+// }
 
 function getCarInfo() {
     db.collection("Cars").doc(carId).get().then((doc) => {
