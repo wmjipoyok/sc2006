@@ -1,31 +1,32 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-messaging.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-}
+// const firebaseConfig = {
+//     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+//     authDomain: "sc2006-1d9b8.firebaseapp.com",
+//     databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+//     projectId: "sc2006-1d9b8",
+//     storageBucket: "gs://sc2006-1d9b8.appspot.com",
+//     messagingSenderId: "18363617474",
+//     appId: "1:18363617474:web:de5535d545b6169e532b5b",
+//     measurementId: "G-NCKVJ8K4JJ"
+// }
 
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 function requestPermission() {
     // console.log('Requesting permission...');
     Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
-            // console.log('Notification permission granted.');
+            console.log('Notification permission granted.');
             messaging.getToken({ vapidKey: 'BIKm-OqsfzgKZhCH9oczK00Gq8gHLwLzvSKlrD3H1A0FuNKZW3x-D9xPoRbNbpnRTbVW5XL7c9AJVODdoV_pLAI' })
                 .then((currentToken) => {
+                    console.log("currentToken: " + currentToken);
                     if (currentToken) {
                         localStorage.setItem("currToken", currentToken);
                     } else {
@@ -63,7 +64,7 @@ messaging.onMessage((payload) => {
                     </div>
                 </div>
                 <div>
-                    <div class="small text-gray-500">${currentdate.toLocaleDateString("fr-ca")} ${currentdate.toLocaleTimeString('it-IT')}</div>
+                    <div class="small text-gray-500">${currentdate.toLocaleString("fr-ca")} ${currentdate.toLocaleTimeString('it-IT')}</div>
                     <span class="font-weight-bold">${payload.data.message}</span>
                 </div>
             </a>`

@@ -19,7 +19,9 @@
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
 
+    <script type="module" src="./js/message.js"></script>
     <!-- styles for star inner and outer -->
     <style>
         .empty-message {
@@ -77,7 +79,8 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content" style="width:100%; height:900px;">
                 <div id="nav-content"></div>
-                <div class="container-fluid">
+                <div class="loading" id="loading">Loading&#8230;</div>
+                <div class="container-fluid" id="profileContainer" hidden>
                     <div id="user-profile">
 
                         <p style="color: black"><b>First name:</b> <span id="user-fname" style="color: #262626"></span>
@@ -542,9 +545,12 @@
                     const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
                     document.querySelector(carRatingID).style.width = starPercentageRounded;
                 });
+                document.getElementById("loading").setAttribute("hidden", true);
+                document.getElementById("profileContainer").removeAttribute("hidden");
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
+                document.getElementById("loading").setAttribute("hidden", true);
             });
     </script>
 </body>

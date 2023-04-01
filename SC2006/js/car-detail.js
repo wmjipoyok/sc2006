@@ -63,7 +63,7 @@ acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () { rejectCar(carId) });
 cancelBtn.addEventListener('click', function () { cancelCar(carId) });
 completeBtn.addEventListener('click', function () { completeCar(carId) });
-delConfirmBtn.addEventListener('click', function () {deleteCar(carId)});
+delConfirmBtn.addEventListener('click', function () { deleteCar(carId) });
 
 //functions 
 async function retrieveCarDetails(carId) {
@@ -342,7 +342,10 @@ async function BookCar(carId) {
 
 
             //send message to car's owner and store message in "Messages" db
-            sendMessage(carOwner, bookingRef.id);
+            const sender = localStorage.getItem("userId");
+            const receiver = carOwner;
+            const msg = `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+            sendMessage(sender, receiver, carId, msg, bookingRef.id);
             saveMessageToDb(carId, carOwner, bookingRef.id);
 
         } catch (e) {
@@ -364,7 +367,7 @@ async function BookCar(carId) {
 
     //pop-up alert, once user clicks 'Ok', go to booking page to view booking
     alert("Booking Successful! Wait for owner to accept.");
-    window.location.href = "bookings.html";
+    // window.location.href = "bookings.html";
 
 }
 
@@ -550,28 +553,19 @@ async function completeCar(carId) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-function sendMessage(carOwner, bookingId) {
+function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
+    console.log("here~!!!");
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
     var data = {
         'to': localStorage.getItem("currToken"),
         'data': {
-            'senderId': localStorage.getItem("userId"),
-            'receiverId': carOwner,
-            'carId': carId,
+            'senderId': senderId,
+            'receiverId': receiverId,
+            'carId': carIdRef,
             'bookingId': bookingId,
-            'message': `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+            'message': msg
         }
     }
 
@@ -582,6 +576,7 @@ function sendMessage(carOwner, bookingId) {
 }
 
 async function saveMessageToDb(carId, carOwner, bookingId) {
+    const currentDateTime = new Date()
     try {
         const messageRef = await addDoc(collection(db, "Messages"), {
             ReceiverId: carOwner,
@@ -589,14 +584,14 @@ async function saveMessageToDb(carId, carOwner, bookingId) {
             CarId: carId,
             BookingId: bookingId,
             Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`,
-            DateTime: new Date().toLocaleDateString()
+            DateTime: currentDateTime.toLocaleDateString("fr-ca") + " " + currentDateTime.toLocaleTimeString('it-IT')
         });
     } catch (e) {
         console.error("Error adding document: ", e);
     }
 }
 
-function deleteCar(carID){
+function deleteCar(carID) {
     //reference to car doc to be deleted
     const carRef = doc(db, "Cars", carID);
 

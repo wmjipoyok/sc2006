@@ -21,6 +21,10 @@ function logoutHandler() {
     localStorage.getItem("userId");
 }
 
+function cancelLogout() {
+    document.getElementById("logoutModal").setAttribute("hidden", true);
+}
+
 function handleAlertCount() {
     const notiCount = document.getElementById('notiCount');
     const alertCon = document.getElementById('alertContainer');

@@ -12,9 +12,11 @@
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
     <script defer src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
     <script type="module" src="js/bookings.js"></script>
+    <script type="module" src="./js/message.js"></script>
 </head>
 
 
@@ -40,14 +42,14 @@
                             <h2 class="current-booking-heading">Current Booking</h2>
                             <div id="current-booking-container" class="current-booking-content">
                                 <!-- INSERT CURRENT BOOKING HERE -->
-                                <p id="no-current-booking" >No current booking found.</p>
+                                <p id="no-current-booking">No current booking found.</p>
                             </div>
                         </div>
                         <div class="past-bookings-container">
                             <h2 class="past-bookings-heading">Past Bookings</h2>
                             <ul id="pastBookingsContainer" class="past-bookings-list">
                                 <!-- INSERT NEW PAST BOOKING HERE-->
-                                <p id="no-past-bookings" >No past bookings found.</p>
+                                <p id="no-past-bookings">No past bookings found.</p>
                             </ul>
                         </div>
                     </div>
