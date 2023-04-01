@@ -367,8 +367,7 @@ async function BookCar(carId) {
 
     //pop-up alert, once user clicks 'Ok', go to booking page to view booking
     alert("Booking Successful! Wait for owner to accept.");
-    // window.location.href = "bookings.html";
-
+    window.location.href = "bookings.html";
 }
 
 async function acceptCar(carId) {
