@@ -355,7 +355,7 @@ async function BookCar(carId) {
             const receiver = carOwner;
             const msg = `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
             sendMessage(sender, receiver, carId, msg, bookingRef.id);
-            saveMessageToDb(carId, carOwner, bookingRef.id);
+            saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
 
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -376,7 +376,8 @@ async function BookCar(carId) {
 
     //pop-up alert, once user clicks 'Ok', go to booking page to view booking
     alert("Booking Successful! Wait for owner to accept.");
-    window.location.href = "bookings.html";
+    // window.location.href = "bookings.html";
+    location.reload();
 }
 
 async function acceptCar(carId) {
@@ -405,12 +406,20 @@ async function acceptCar(carId) {
         });
         console.log("Booking accepted by owner");
 
+        //send message to renter and store message in "Messages" db
+        const sender = carOwner;
+        const receiver = bookingRef.data().UserId;
+        const msg = `Congratulations! Your booking request has been accepted.`
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
     }
 
     alert("Booking request accepted!");
-    window.location.href = "profile.html";
+    // window.location.href = "profile.html";
+    location.reload();
 
 }
 
@@ -458,12 +467,20 @@ async function rejectCar(carId) {
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
 
+        //send message to car owner and store message in "Messages" db
+        const sender = carOwner;
+        const receiver = bookingRef.data().UserId;
+        const msg = `Oops! Your booking request has been rejected`;
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
     }
 
     alert("Booking request rejected!");
-    window.location.href = "profile.html";
+    // window.location.href = "profile.html";
+    location.reload();
 }
 
 
@@ -511,12 +528,24 @@ async function cancelCar(carId) {
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
 
+        //send message to both renter and owner and store messages in "Messages" db
+        const renter = bookingRef.data().UserId;
+        const msg = `Oh no! Your booking has been cancelled.`
+        // send to car owner
+        sendMessage(renter, carOwner, carId, msg, bookingRef.id);
+        saveMessageToDb(renter, carOwner, carId, msg, bookingRef.id);
+
+        // send to renter
+        sendMessage(carOwner, renter, carId, msg, bookingRef.id);
+        saveMessageToDb(carOwner, renter, carId, msg, bookingRef.id);
+
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
     }
 
     alert("Booking cancelled!");
-    window.location.href = "bookings.html";
+    // window.location.href = "bookings.html";
+    location.reload();
 
 }
 
@@ -551,12 +580,20 @@ async function completeCar(carId) {
         });
         console.log("PendingBookingOwner field in owner deleted");
 
+        //send message to car owner and store message in "Messages" db
+        const sender = bookingRef.data().UserId;
+        const receiver = carOwner;
+        const msg = `The trip has ended! Your car is available for rent again.`;
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
     } catch (e) {
         console.error("Error updating status to completed status: ", e);
     }
 
     alert("Rental completed!");
-    window.location.href = "bookings.html";
+    // window.location.href = "bookings.html";
+    location.reload();
 
 }
 
@@ -583,15 +620,15 @@ function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
     xhr.send(JSON.stringify(data));
 }
 
-async function saveMessageToDb(carId, carOwner, bookingId) {
+async function saveMessageToDb(sender, receiver, carId, msg, bookingId) {
     const currentDateTime = new Date()
     try {
         const messageRef = await addDoc(collection(db, "Messages"), {
-            ReceiverId: carOwner,
-            Sender: localStorage.getItem("userId"),
+            ReceiverId: receiver,
+            SenderId: sender,
             CarId: carId,
             BookingId: bookingId,
-            Message: `A new booking request from ${document.getElementById("nav-name").innerHTML}.`,
+            Message: msg,
             DateTime: currentDateTime.toLocaleDateString("fr-ca") + " " + currentDateTime.toLocaleTimeString('it-IT')
         });
     } catch (e) {
