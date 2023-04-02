@@ -34,10 +34,12 @@ window.addEventListener('load', function () {
 });
 
 function getCarList() {
+    let isCarAva = false;
     db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).orderBy("CreateDateTime", "desc").get().then(snapshot => {
         if (snapshot.docs.length > 0) {
             snapshot.docs.forEach((doc, index) => {
                 if (doc.exists && doc.data().Status == 0) {
+                    isCarAva = true;
                     let data = doc.data();
                     // console.log("snapshot:" + doc.data().CreateDateTime);
                     let userName = "-";
@@ -89,15 +91,14 @@ function getCarList() {
                             </div>
                         </div>`
                     });
-
-
                 }
             })
             document.getElementById("loading").setAttribute('hidden', true);
             document.getElementById("carListContainer").removeAttribute('hidden');
-            setTimeout(() => {
+
+            if (!isCarAva) {
                 noCarAvailable();
-            }, 1000);
+            }
         } else {
             noCarAvailable();
         }

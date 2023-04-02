@@ -271,6 +271,8 @@ function checkBooking() {
     const start = document.getElementById("StartTrip");
     const tripDateError = document.getElementById("tripDateError");
     const end = document.getElementById("EndTrip");
+    const termNcon = document.getElementById("customCheck");
+    const checkedError = document.getElementById("checkboxError");
 
     if (start.value == "") {
         start.style.borderColor = "red";
@@ -300,6 +302,13 @@ function checkBooking() {
     } else {
         start.style.borderColor = "";
         tripDateError.setAttribute("hidden", true);
+    }
+
+    if (!termNcon.checked) {
+        checkedError.removeAttribute("hidden");
+        return false;
+    } else {
+        checkedError.setAttribute("hidden", true);
     }
     return true;
 }
