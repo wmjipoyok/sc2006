@@ -33,9 +33,9 @@ window.addEventListener('load', function () {
     getCarList();
 });
 
-function getCarList() {
+async function getCarList() {
     let isCarAva = false;
-    db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).orderBy("CreateDateTime", "desc").get().then(snapshot => {
+    await db.collection("Cars").where("Carpark", "array-contains", parseFloat(lat)).orderBy("CreateDateTime", "desc").get().then(snapshot => {
         if (snapshot.docs.length > 0) {
             snapshot.docs.forEach((doc, index) => {
                 if (doc.exists && doc.data().Status == 0) {
@@ -93,21 +93,15 @@ function getCarList() {
                     });
                 }
             })
-            document.getElementById("loading").setAttribute('hidden', true);
-            document.getElementById("carListContainer").removeAttribute('hidden');
-
-            if (!isCarAva) {
-                noCarAvailable();
-            }
-        } else {
-            noCarAvailable();
         }
+        document.getElementById("loading").setAttribute('hidden', true);
+        document.getElementById("carListContainer").removeAttribute('hidden');
+        noCarAvailable();
     })
 }
 
 function noCarAvailable() {
     if (document.getElementById("carListContainer").innerHTML == "") {
-        document.getElementById("loading").setAttribute('hidden', true);
         document.getElementById("warningMsg").innerHTML = "No cars available.";
         document.getElementById("warningMsg").removeAttribute('hidden');
     }

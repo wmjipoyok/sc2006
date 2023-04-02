@@ -371,7 +371,7 @@ async function BookCar(carId) {
             const receiver = carOwner;
             const msg = `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
             sendMessage(sender, receiver, carId, msg, bookingRef.id);
-            saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+            await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
 
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -422,12 +422,14 @@ async function acceptCar(carId) {
         });
         console.log("Booking accepted by owner");
 
+        const bookingRecord = await getDoc(bookingRef);
+
         //send message to renter and store message in "Messages" db
         const sender = carOwner;
-        const receiver = bookingRef.data().UserId;
-        const msg = `Congratulations! Your booking request has been accepted.`
+        const receiver = bookingRecord.data().UserId;
+        const msg = `Congratulations! Your booking request has been accepted.`;
         sendMessage(sender, receiver, carId, msg, bookingRef.id);
-        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
 
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
@@ -482,12 +484,14 @@ async function rejectCar(carId) {
         await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
         console.log("Entire booking document has been deleted successfully.");
 
+        console.log(bookingData);
+
         //send message to car owner and store message in "Messages" db
         const sender = carOwner;
-        const receiver = bookingRef.data().UserId;
+        const receiver = renterRef;
         const msg = `Oops! Your booking request has been rejected`;
         sendMessage(sender, receiver, carId, msg, bookingRef.id);
-        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
 
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
@@ -544,15 +548,15 @@ async function cancelCar(carId) {
         console.log("Entire booking document has been deleted successfully.");
 
         //send message to both renter and owner and store messages in "Messages" db
-        const renter = bookingRef.data().UserId;
-        const msg = `Oh no! Your booking has been cancelled.`
+        const renter = bookingData.UserId;
+        const msg = `Oh no! Your booking has been cancelled.`;
         // send to car owner
         sendMessage(renter, carOwner, carId, msg, bookingRef.id);
-        saveMessageToDb(renter, carOwner, carId, msg, bookingRef.id);
+        await saveMessageToDb(renter, carOwner, carId, msg, bookingRef.id);
 
         // send to renter
         sendMessage(carOwner, renter, carId, msg, bookingRef.id);
-        saveMessageToDb(carOwner, renter, carId, msg, bookingRef.id);
+        await saveMessageToDb(carOwner, renter, carId, msg, bookingRef.id);
 
     } catch (e) {
         console.error("Error updating status to rejected status: ", e);
@@ -595,12 +599,14 @@ async function completeCar(carId) {
         });
         console.log("PendingBookingOwner field in owner deleted");
 
+        const bookingRecord = await getDoc(bookingRef);
+
         //send message to car owner and store message in "Messages" db
-        const sender = bookingRef.data().UserId;
+        const sender = bookingRecord.data().UserId;
         const receiver = carOwner;
         const msg = `The trip has ended! Your car is available for rent again.`;
         sendMessage(sender, receiver, carId, msg, bookingRef.id);
-        saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
 
     } catch (e) {
         console.error("Error updating status to completed status: ", e);
