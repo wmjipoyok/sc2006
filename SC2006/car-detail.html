@@ -111,8 +111,20 @@
                                     </div>
                                 </div>
                                 <span id="tripDateError" style="color:red" hidden></span>
-                                <br /><br />
+                                <br />
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                    <label class="custom-control-label" for="customCheck"> I agree the <a
+                                            href="./terms-conditions.html">terms and
+                                            conditions</a></label>
+                                </div>
+
+                                <br />
+
                                 <button id="bookBtn" class="btn btn-info">BOOK</button>
+                                <span style="color:red" id="checkboxError" hidden> You must agree with the terms and
+                                    condition before booking! </span>
                             </div>
 
                             <div id="delete" hidden>
@@ -142,7 +154,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Please confirm your booking details:</p>
+                        <p>By accepting the terms & conditions</p>
                         <p id="bookingDetail"></p>
                     </div>
                     <div class="modal-footer">
