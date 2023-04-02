@@ -130,6 +130,10 @@ async function retrieveCarDetails(carId) {
             //Display renter's info and booking info for car owner to see
             document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
             document.getElementById("userInfo").removeAttribute("hidden");
+            document.getElementById("CarDescription").setAttribute('hidden', true);
+
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
 
             //show accept and reject buttons
             document.getElementById("pendingOwner").removeAttribute('hidden');
@@ -156,6 +160,9 @@ async function retrieveCarDetails(carId) {
             document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
             document.getElementById("userInfo").removeAttribute("hidden");
 
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
+
             document.getElementById("Accepted").innerHTML = "Accepted";
             document.getElementById("Accepted").removeAttribute("hidden");
             document.getElementById("pendingStatus").removeAttribute('hidden');
@@ -179,10 +186,18 @@ async function retrieveCarDetails(carId) {
 
     //if renter view a car after booking request, pending
     if ((carData.CarOwner != localStorage.getItem("userId")) && carData.Status == 1) {
+        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+        const pendingSnap = doc(db, "Bookings", pendingBookingID);
+        const pendingDocSnap = await getDoc(pendingSnap);
+        const pendingBookingData = pendingDocSnap.data();
+
         //display pending status when renter views after booking
         document.getElementById("Pending").innerHTML = "Pending";
         document.getElementById("Pending").removeAttribute('hidden');
         document.getElementById("pendingStatus").removeAttribute('hidden');
+
+        document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+        document.getElementById("dateDetails").removeAttribute("hidden");
 
     }
 
@@ -196,6 +211,9 @@ async function retrieveCarDetails(carId) {
             const pendingStart = pendingBookingData.Start;
             //if(today's date >= start date)
             const d = new Date().toLocaleDateString('fr-ca');
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
+
             if (d >= pendingStart) {
                 document.getElementById("completeBooking").removeAttribute('hidden');
             }
@@ -204,8 +222,6 @@ async function retrieveCarDetails(carId) {
             }
         }
 
-
-        //const pendingEnd = pendingBookingData.End;
 
         //display accepted status when renter views after booking
         document.getElementById("Accepted").innerHTML = "Accepted";
@@ -420,7 +436,6 @@ async function acceptCar(carId) {
     alert("Booking request accepted!");
     // window.location.href = "profile.html";
     location.reload();
-
 }
 
 async function rejectCar(carId) {
@@ -544,8 +559,8 @@ async function cancelCar(carId) {
     }
 
     alert("Booking cancelled!");
-    // window.location.href = "bookings.html";
-    location.reload();
+    window.location.href = "bookings.html";
+    // location.reload();
 
 }
 
@@ -592,8 +607,8 @@ async function completeCar(carId) {
     }
 
     alert("Rental completed!");
-    // window.location.href = "bookings.html";
-    location.reload();
+    window.location.href = "bookings.html";
+    // location.reload();
 
 }
 
