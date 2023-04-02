@@ -35,6 +35,9 @@ function displayBookings() {
             //getting booking array
             const bookings = userData.Booking;
 
+            //reverse sort to display newest bookings first
+            bookings.reverse();
+
             //then for each booking, we will query the booking db and check the status
             bookings.forEach((bookingRef) => {
                 db.collection("Bookings").doc(bookingRef).get().then((bookingDoc) => {
