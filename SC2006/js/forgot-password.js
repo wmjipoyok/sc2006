@@ -1,5 +1,17 @@
+/**
+* @module forgot-password-js
+* @description This file renders the 'Forgot Password' page and ensures users submit a valid user email that exists in the system to reset passwords.
+A reset password email will be sent to users and users can follow the instructions to reset their password. 
+*/
+
+/* This line of code is importing the `initializeApp` function from the Firebase App module. It is used
+to initialize a Firebase app instance with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
+/* `const firebaseConfig` is an object that contains the configuration information required to
+initialize a Firebase app instance. It includes the API key, authentication domain, project ID,
+storage bucket, messaging sender ID, app ID, and measurement ID. This information is used to
+authenticate and connect to the Firebase services. */
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
     authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -10,13 +22,22 @@ const firebaseConfig = {
     measurementId: "G-NCKVJ8K4JJ"
 };
 
+/* `initializeApp(firebaseConfig);` is initializing a Firebase app instance with the provided
+configuration object `firebaseConfig`. This configuration object contains the necessary information
+to authenticate and connect to Firebase services such as the API key, authentication domain, project
+ID, storage bucket, messaging sender ID, app ID, and measurement ID. */
+initializeApp(firebaseConfig);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
+/* This code is selecting the HTML element with the ID "resetBtn" and assigning it to the variable
+`resetBtn`. It then adds an event listener to the `resetBtn` element that listens for a "click"
+event and calls the `resetPassword()` function when the button is clicked. */
 var resetBtn = document.querySelector("#resetBtn");
 resetBtn.addEventListener('click', function () { resetPassword() });
 
+/**
+ * This function sends a password reset email to a user's email address and handles errors related to
+ * invalid or non-existent email addresses.
+ */
 function resetPassword() {
     const email = document.getElementById("resetEmailInput").value;
     if (email) {
@@ -45,6 +66,11 @@ function resetPassword() {
     }
 }
 
+/**
+ * The function displays an error message and changes the border color of an email input field.
+ * @param {String} errorMsg - The errorMsg parameter is a string that contains an error message related to an
+ * email input field.
+ */
 function getEmailError(errorMsg) {
     let emailTb = document.getElementById("resetEmailInput");
     var emailError = document.getElementById("resetEmailError");
@@ -57,6 +83,9 @@ function getEmailError(errorMsg) {
     emailTb.style.borderColor = "red";
 }
 
+/**
+ * The function clears the error message and border color of an email input field.
+ */
 function clearEmailError() {
     let emailTb = document.getElementById("resetEmailInput");
     var emailError = document.getElementById("resetEmailError");

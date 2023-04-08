@@ -1,3 +1,8 @@
+/**
+* @module svy21-js
+* @description A library to convert coordinates in SVY21 format to latitude and longitude.
+*/
+
 var SVY21 = (function () {
     // Ref: http://www.linz.govt.nz/geodetic/conversion-coordinates/projection-conversions/transverse-mercator-preliminary-computations/index.aspx
 

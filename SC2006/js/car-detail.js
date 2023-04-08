@@ -1,11 +1,23 @@
-// Import the functions you need from the SDKs you need
+/**
+* @module car-detail-js
+* @description This file renders the 'Car Detail' page. 
+The page allows user to view car detail information and perform actions 
+including submit booking request, accept/reject booking, cancel booking and delete car listing.
+It also provide the link for car owner to edit the car information.
+*/
+
+
+/* The below code is importing necessary modules from Firebase SDK version 9.17.2 for initializing and
+accessing Firestore database. It includes functions for creating, reading, updating, and deleting
+documents and collections in Firestore. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { collection, doc, addDoc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+/* The below code is defining a JavaScript object called `firebaseConfig` which contains the
+configuration settings for a Firebase project. These settings include the API key, authentication
+domain, database URL, project ID, storage bucket, messaging sender ID, app ID, and measurement ID. */
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
     authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -17,20 +29,31 @@ const firebaseConfig = {
     measurementId: "G-NCKVJ8K4JJ"
 };
 
-// Initialize Firebase
+/* The below code is initializing a Firebase app using the configuration object `firebaseConfig`. This
+is typically done at the beginning of a Firebase project to set up the necessary connection to the
+Firebase services. */
 const app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore
+/* The below code is initializing a Firestore database instance using the Firebase SDK for JavaScript.
+It is assuming that the `app` variable has been previously defined and contains a valid Firebase app
+instance. The `getFirestore()` function is a method provided by the Firebase SDK that returns a
+Firestore database instance associated with the specified Firebase app. The resulting database
+instance is stored in the `db` constant for later use. */
 const db = getFirestore(app);
 
-
-//get carID from URL
+/* The below code is using JavaScript to get the value of the "carId" parameter from the URL query
+string of the current page. It first gets the query string using the "window.location.search"
+property, and then creates a new URLSearchParams object from it. It then uses the "get" method of
+the URLSearchParams object to retrieve the value of the "carId" parameter. */
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const carId = urlParams.get('carId');
 
-
-//retrieve selected car details on load
+/* The below code is adding an event listener to the window object that waits for the page to load.
+Once the page is loaded, it sets the href attribute of an anchor tag with the id "editCarUrl" to a
+URL that includes a query string parameter "carId". It also loads the content of two HTML files into
+two different elements on the page using jQuery's load() method. Finally, it calls a function called
+retrieveCarDetails() and passes in a variable called carId. */
 window.addEventListener('load', function () {
 
     document.getElementById("editCarUrl").href = "car-form.html?request=edit&carId=" + carId;
@@ -43,7 +66,11 @@ window.addEventListener('load', function () {
 
 }, false);
 
-//buttons
+
+/* The below code is declaring variables and selecting HTML elements using their IDs. It is selecting
+buttons with IDs "bookBtn", "acceptBtn", "rejectBtn", "cancelBtn", "completeBtn", and
+"delete-confirm-button". These buttons are likely used for some kind of functionality in a web
+application or website. */
 var bookBtn = document.querySelector("#bookBtn");
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
@@ -51,15 +78,22 @@ var cancelBtn = document.querySelector("#cancelBtn");
 var completeBtn = document.querySelector("#completeBtn");
 var delConfirmBtn = document.getElementById("delete-confirm-button");
 
-//book button event listener
-bookBtn.addEventListener('click', function () { BookCar(carId) });
+/* The below code is adding event listeners to different buttons (bookBtn, acceptBtn, rejectBtn,
+cancelBtn, completeBtn, delConfirmBtn) and calling different functions (bookCar, acceptCar,
+rejectCar, cancelCar, completeCar, deleteCar) with a parameter (carId) when the buttons are clicked. */
+bookBtn.addEventListener('click', function () { bookCar(carId) });
 acceptBtn.addEventListener('click', function () { acceptCar(carId) });
 rejectBtn.addEventListener('click', function () { rejectCar(carId) });
 cancelBtn.addEventListener('click', function () { cancelCar(carId) });
 completeBtn.addEventListener('click', function () { completeCar(carId) });
 delConfirmBtn.addEventListener('click', function () { deleteCar(carId) });
 
-//functions 
+/**
+ * This function retrieves and displays car details from a database based on the car ID and updates the
+ * page accordingly.
+ * @param {String} carId - The ID of the car whose details are being retrieved from the database.
+ * function.
+ */
 async function retrieveCarDetails(carId) {
 
     //read db using car's id
@@ -243,24 +277,35 @@ async function retrieveCarDetails(carId) {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
-
+/**
+ * The function displays an error message and hides a loading element.
+ * @param {String} msg - The error message that will be displayed to the user.
+ */
 function errorHandle(msg) {
     document.getElementById("errorMsg").innerHTML = msg;
     document.getElementById("errorMsg").removeAttribute('hidden');
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
-
+/**
+ * The function calculates and displays star ratings based on a given rating value.
+ * @param {Number} rating - The rating is a number that represents the star rating of a product or service,
+ * ranging from 0 to 5.
+ */
 function getStarRatings(rating) {
     const starsTotal = 5;
     const starPercentage = (rating / starsTotal) * 100;
     const starPercentageRounded = `${Math.round(starPercentage)}%`
-
     document.querySelector('.stars-inner').style.width = starPercentageRounded;
     document.querySelector('.number-rating').innerHTML = rating;
 }
 
-
+/**
+ * The function checks if the trip start and end dates are valid and if the terms and conditions
+ * checkbox is checked.
+ * @returns a boolean value (either true or false) depending on whether all the conditions are met or
+ * not.
+ */
 function checkBooking() {
     const start = document.getElementById("StartTrip");
     const tripDateError = document.getElementById("tripDateError");
@@ -307,9 +352,12 @@ function checkBooking() {
     return true;
 }
 
-
-async function BookCar(carId) {
-
+/**
+ * The function books a car by checking its availability, updating the booking and user databases,
+ * sending a message to the car owner, and updating the car's availability status.
+ * @param {String} carId - The ID of the car that the user wants to book.
+ */
+async function bookCar(carId) {
     //check valid booking
     const validation = checkBooking();
     if (!validation) {
@@ -386,10 +434,14 @@ async function BookCar(carId) {
 
     //pop-up alert, once user clicks 'Ok', go to booking page to view booking
     alert("Booking Successful! Wait for owner to accept.");
-    // window.location.href = "bookings.html";
     location.reload();
 }
 
+/**
+ * This function accepts a booking request for a car and updates the car's availability status to
+ * 'Rented' while sending a message to the renter and storing the message in the database.
+ * @param {String} carId - The ID of the car for which the booking request is being accepted.
+ */
 async function acceptCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
@@ -434,6 +486,11 @@ async function acceptCar(carId) {
     location.reload();
 }
 
+/**
+ * This function updates the status of a car to available and deletes a booking record when the owner
+ * rejects a booking request, and sends a message to the renter.
+ * @param {String} carId - The ID of the car for which the booking request is being rejected.
+ */
 async function rejectCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
@@ -497,6 +554,11 @@ async function rejectCar(carId) {
 }
 
 
+/**
+ * This function cancels a car booking and updates the necessary fields in the database while also
+ * sending messages to the car owner and renter.
+ * @param {String} carId - The ID of the car that the booking is associated with and needs to be cancelled.
+ */
 async function cancelCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
@@ -561,6 +623,12 @@ async function cancelCar(carId) {
 
 }
 
+/**
+ * The function updates the status of a car and a booking to "available" and deletes the
+ * "PendingBookingOwner" field in the owner's document, and sends a message to the car owner indicating
+ * that the trip has ended.
+ * @param {String} carId - The ID of the car that has been rented and needs to be marked as available again.
+ */
 async function completeCar(carId) {
 
     const docRef = doc(db, "Cars", carId)
@@ -610,7 +678,15 @@ async function completeCar(carId) {
 
 }
 
-
+/**
+ * The function sends a message using Firebase Cloud Messaging to a specified receiver with information
+ * about the sender, car, booking, and message.
+ * @param {String} senderId - The ID of the sender of the message.
+ * @param {String} receiverId - The ID of the person who will receive the message.
+ * @param {String} carIdRef - This parameter is the reference ID of the car.
+ * @param {String} msg - The auto generated message to notify user the booking status.
+ * @param {String} bookingId - The ID of the booking.
+ */
 function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -632,6 +708,17 @@ function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
     xhr.send(JSON.stringify(data));
 }
 
+/**
+ * The function saves a message to a database with information about the sender, receiver, car,
+ * booking, message content, and date/time.
+ * @param {String} sender - The ID of the user who is sending the message.
+ * @param {String} receiver - The ID of the user who will receive the message.
+ * @param {String} carId - carId is a unique identifier for a specific car in the database. It is used to
+ * associate the message with a particular car.
+ * @param {String} msg - The message that needs to be saved to the database.
+ * @param {String} bookingId - bookingId is a unique identifier for a booking or reservation made for a car. It
+ * is used to associate the message with a specific booking.
+ */
 async function saveMessageToDb(sender, receiver, carId, msg, bookingId) {
     const currentDateTime = new Date()
     try {
@@ -648,6 +735,11 @@ async function saveMessageToDb(sender, receiver, carId, msg, bookingId) {
     }
 }
 
+/**
+ * This function deletes a car document from a database and redirects the user to their profile page.
+ * @param {String} carID - The ID of the car document that needs to be deleted from the "Cars" collection in the
+ * Firestore database.
+ */
 function deleteCar(carID) {
     //reference to car doc to be deleted
     const carRef = doc(db, "Cars", carID);

@@ -1,7 +1,17 @@
+/**
+* @module profile-js
+* @description This file renders the 'Profile' page. The page allows users to view their account information, 
+including first name, last name, email, ratings and cars uploaded for rent.
+*/
 
+/* This line of code is importing the `initializeApp` function from the Firebase App SDK version
+9.17.1. This function is used to initialize a Firebase app with the provided configuration object. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
-// Initialize Firebase
+/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
+a Firebase app. It includes the API key, authentication domain, project ID, storage bucket,
+messaging sender ID, app ID, and measurement ID. This information is used to connect the app to the
+Firebase services and resources specified in the configuration. */
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
     authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -12,8 +22,16 @@ const firebaseConfig = {
     measurementId: "G-NCKVJ8K4JJ"
 };
 
+/* `initializeApp(firebaseConfig);` is initializing a Firebase app with the provided configuration
+object `firebaseConfig`. This function is imported from the Firebase App SDK version 9.17.1 and is
+used to connect the app to the Firebase services and resources specified in the configuration. */
 initializeApp(firebaseConfig);
 
+/* This code is adding an event listener to the window object that waits for the page to fully load
+before executing a function. The function uses jQuery to load the contents of two HTML files,
+"nav.html" and "logout-model.html", into the respective elements with the IDs "nav-content" and
+"logout-model" in the current page's HTML. This allows the navigation bar and logout modal to be
+reused across multiple pages without duplicating code. */
 window.addEventListener('load', function () {
     $(function () {
         $("#nav-content").load("nav.html");
@@ -22,9 +40,14 @@ window.addEventListener('load', function () {
 }, false);
 
 
+/* `const db = firebase.firestore();` is initializing a Firestore database instance and assigning it to
+the constant variable `db`. This allows the code to interact with the Firestore database and perform
+operations such as reading and writing data. */
 const db = firebase.firestore();
 
-//get user's ID
+/* The `firebase.auth().onAuthStateChanged()` function is a listener that is triggered whenever the
+authentication state of the user changes. It takes a callback function as an argument that is
+executed whenever the authentication state changes. */
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
         // User is signed in.
@@ -46,10 +69,8 @@ firebase.auth().onAuthStateChanged(user => {
                 document.getElementById("user-lname").innerHTML = lastName;
                 document.getElementById("user-email").innerHTML = email;
 
-                //Run getRatings when DOM loads
-                //document.addEventListener('DOMContentLoaded', getRatings);
                 getRatings(rating);
-                //console.log("past call"); //DEBUG
+                getUploadedCars();
             } else {
                 console.log("No such document!", doc);
             }
@@ -63,9 +84,13 @@ firebase.auth().onAuthStateChanged(user => {
     }
 })
 
-//getRatings func
+/**
+ * The function calculates and sets the percentage width of a star rating system based on a given
+ * rating.
+ * @param {Number} rating - The rating parameter is a number that represents the rating value to be displayed.
+ * It is used to calculate the percentage of stars to be filled and to display the number rating.
+ */
 function getRatings(rating) {
-    //console.log("enetered func"); //DEBUG
     //Total Stars
     const starsTotal = 5;
 
@@ -78,10 +103,15 @@ function getRatings(rating) {
     document.querySelector('.stars-inner').style.width = starPercentageRounded;
 
     //Add number rating
-    //console.log(rating); //DEBUG
     if (rating != undefined) {
         document.querySelector('.number-rating').innerHTML = rating;
     }
+}
+
+/**
+ * This function retrieves and displays the cars that a user owns in their profile page.
+ */
+function getUploadedCars() {
     //to pull and display the car's that a user owns in his profile page
     const userID = localStorage.getItem("userId");
     const carsRef = db.collection("Cars");

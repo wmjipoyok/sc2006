@@ -1,6 +1,21 @@
+/**
+* @module car-form-js
+* @description This file renders the 'Add Car' and 'Edit Car' pages.
+'Add Car' page allows users to upload the information of the cars they want like to rent out.
+'Edit Car' page allows car owners to edit the car information they have uploaded to the system for rent.
+*/
+
+/* The below code is importing the necessary modules from Firebase to initialize a Firebase app and use
+Firebase Storage. It is using ES6 module syntax to import the `initializeApp` function from the
+`firebase-app.js` module and the `getStorage`, `ref`, `uploadBytes`, and `getDownloadURL` functions
+from the `firebase-storage.js` module. These functions will be used to interact with Firebase
+Storage to upload and download files. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
 
+/* The below code is defining a JavaScript object called `firebaseConfig` which contains the
+configuration settings for a Firebase project. These settings include the API key, authentication
+domain, database URL, project ID, messaging sender ID, app ID, measurement ID, and storage bucket. */
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
     authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -12,15 +27,24 @@ const firebaseConfig = {
     storageBucket: "gs://sc2006-1d9b8.appspot.com"
 };
 
+/* The below code is initializing a Firebase app with the provided configuration object, and then
+creating a Firestore database instance and a Cloud Storage instance. */
 initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = getStorage();
 
+/* The below code is written in JavaScript and it is using the URLSearchParams API to extract query
+parameters from the current URL. It is getting the values of three query parameters: 'request',
+'carId', and 'lat'/'lng' (latitude and longitude). The values of these parameters are then stored in
+variables 'request', 'carId', and 'carparkLocation' respectively. The 'carparkLocation' variable is
+an array containing the latitude and longitude values parsed as floats. */
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const request = urlParams.get('request');
 const carId = urlParams.get('carId');
-const carparkLocation = [parseFloat(urlParams.get('lat')), parseFloat(urlParams.get('lng'))]
+const carparkLocation = [parseFloat(urlParams.get('lat')), parseFloat(urlParams.get('lng'))];
+
+/* The below code is declaring and initializing several variables in JavaScript. */
 const imageLimit = 5;
 let imageArray = [];
 let imgToUpload = [];
@@ -28,6 +52,10 @@ let imageUrlList = [];
 let jsScript;
 let carData;
 
+/**
+ * This function retrieves car information from a database and displays it on a webpage, with certain
+ * restrictions on editing based on the user's permissions and the car's status.
+ */
 function getCarInfo() {
     db.collection("Cars").doc(carId).get().then((doc) => {
         if (doc.exists) {
@@ -77,6 +105,9 @@ function getCarInfo() {
     });
 }
 
+/**
+ * The function unhides certain elements on a webpage.
+ */
 function unhideContent() {
     document.getElementById("carFormContainer").removeAttribute('hidden');
     document.getElementById("carForm").removeAttribute('hidden');
@@ -84,6 +115,9 @@ function unhideContent() {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
+/* The below code is a JavaScript code that is adding an event listener to the window object for the
+'load' event. When the page is loaded, it is loading the navigation and logout model HTML files
+using jQuery's load() method. */
 window.addEventListener('load', function () {
     $(function () {
         $("#nav-content").load("nav.html");
@@ -96,59 +130,19 @@ window.addEventListener('load', function () {
         document.getElementById("pageTitle").innerHTML = "Upload Car";
         setTimeout(unhideContent, 1000);
 
-        //for images
-        let input = document.querySelector(".input-div input");
-
-        // click & browse 
-        input.addEventListener("change", () => {
-            const files = input.files;
-            if (files.length > 0) {
-                document.getElementById("imageBox").style.border = "2px dotted grey";
-                document.getElementById("imgError").setAttribute("hidden", true);
-                document.getElementById("slideshowContainer").setAttribute("hidden", true);
-                document.getElementById("imageLoader").removeAttribute("hidden");
-                const spaceAva = imageLimit - $("#imageContainer img").length;
-                let limit;
-                if (spaceAva == 0 && files.length >= imageLimit) {
-                    limit = imageLimit;
-                } else if (spaceAva == 0 && files.length < imageLimit) {
-                    limit = files.length;
-                } else {
-                    limit = spaceAva < files.length ? spaceAva : files.length;
-                }
-
-                for (let i = 0; i < limit; i++) {
-                    if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
-                        imageArray.push(files[i]);
-                    };
-                }
-                displayImages();
-            }
-        })
-
-        // drag & drop
-        input.addEventListener("drop", (e) => {
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                document.getElementById("imageBox").style.border = "2px dotted grey";
-                document.getElementById("imgError").setAttribute("hidden", true);
-                document.getElementById("slideshowContainer").setAttribute("hidden", true);
-                document.getElementById("imageLoader").removeAttribute("hidden");
-                e.preventDefault();
-
-                let limit = files.length >= imageLimit ? imageLimit : files.length;
-                for (let i = 0; i < limit; i++) {
-                    if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
-                        if (imageArray.every(image => image.name !== files[i].name)) {
-                            imageArray.push(files[i]);
-                        }
-                    };
-                }
-                displayImages();
-            }
-        })
+        handleImageInput();
     }
 
+    submitForm();
+
+}, false);
+
+/**
+ * This function handles the submission of a car form, validates the input fields, and updates the car
+ * information in the database if it is an edit request, or uploads the images and adds the car
+ * information to the database if it is a new car request.
+ */
+function submitForm() {
     let carForm = document.getElementById("carForm");
     carForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -239,8 +233,75 @@ window.addEventListener('load', function () {
             uploadImages(imgToUpload);
         }
     });
-}, false);
+}
 
+/**
+ * The function handles image input through both click and browse, as well as drag and drop, and
+ * displays the images.
+ */
+function handleImageInput() {
+    //for images
+    let input = document.querySelector(".input-div input");
+
+    // click & browse 
+    input.addEventListener("change", () => {
+        const files = input.files;
+        if (files.length > 0) {
+            document.getElementById("imageBox").style.border = "2px dotted grey";
+            document.getElementById("imgError").setAttribute("hidden", true);
+            document.getElementById("slideshowContainer").setAttribute("hidden", true);
+            document.getElementById("imageLoader").removeAttribute("hidden");
+            const spaceAva = imageLimit - $("#imageContainer img").length;
+            let limit;
+            if (spaceAva == 0 && files.length >= imageLimit) {
+                limit = imageLimit;
+            } else if (spaceAva == 0 && files.length < imageLimit) {
+                limit = files.length;
+            } else {
+                limit = spaceAva < files.length ? spaceAva : files.length;
+            }
+
+            for (let i = 0; i < limit; i++) {
+                if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
+                    imageArray.push(files[i]);
+                };
+            }
+            displayImages();
+        }
+    })
+
+    // drag & drop
+    input.addEventListener("drop", (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            document.getElementById("imageBox").style.border = "2px dotted grey";
+            document.getElementById("imgError").setAttribute("hidden", true);
+            document.getElementById("slideshowContainer").setAttribute("hidden", true);
+            document.getElementById("imageLoader").removeAttribute("hidden");
+            e.preventDefault();
+
+            let limit = files.length >= imageLimit ? imageLimit : files.length;
+            for (let i = 0; i < limit; i++) {
+                if (files[i].type.match("image/jpeg") || files[i].type.match("image/jpg") || files[i].type.match("image/png") || files[i].type.match("image/gif")) {
+                    if (imageArray.every(image => image.name !== files[i].name)) {
+                        imageArray.push(files[i]);
+                    }
+                };
+            }
+            displayImages();
+        }
+    })
+}
+
+/**
+ * The function uploads multiple images and returns a promise that resolves with an array of image
+ * URLs.
+ * @param {File} images - The `images` parameter is an array of image files that are to be uploaded.
+ * @returns the result of the `Promise.all()` method, which is a promise that resolves to an array of
+ * the results of the input promises. However, since the `Promise.all()` method is being used with the
+ * `await` keyword, the function will not return until all the promises in the `imagePromises` array
+ * have resolved or rejected. Once all the promises have resolved.
+ */
 async function uploadImages(images) {
     const imagePromises = Array.from(images, (image) => uploadImage(image));
 
@@ -251,6 +312,12 @@ async function uploadImages(images) {
     return imageRes;
 }
 
+/**
+ * The function uploads an image to Firebase storage and returns its download URL.
+ * @param {File} image - The image parameter is a file object that represents the image file to be uploaded to
+ * the Firebase storage. It contains information such as the file name, size, and type.
+ * @returns a URL that points to the uploaded image in the Firebase storage.
+ */
 async function uploadImage(image) {
     const storageRef = ref(storage, `/CarImages/${image.name}`);
     const response = await uploadBytes(storageRef, image);
@@ -258,6 +325,9 @@ async function uploadImage(image) {
     return url;
 }
 
+/**
+ * This function creates a new car listing in a database with information provided by the user.
+ */
 async function createCarListing() {
     const carBrand = document.getElementById("carBrand").value;
     const carModel = document.getElementById("carModel").value;
@@ -292,11 +362,17 @@ async function createCarListing() {
         });
 }
 
+/**
+ * The function disables all input fields in a form and shows a loading icon.
+ */
 function disableInputs() {
     $("#carForm :input").prop("disabled", true);
     document.getElementById("saveLoading").style.visibility = "visible";
 }
 
+/**
+ * The function displays images in a slideshow format and removes them if the image limit is reached.
+ */
 function displayImages() {
     if ($("#imageContainer img").length >= imageLimit) {
         document.getElementById("imageContainer").innerHTML = "";
@@ -334,6 +410,10 @@ function displayImages() {
     }
 }
 
+/**
+ * This function adds a JavaScript file for a slideshow and hides an image loader while revealing a
+ * slideshow container.
+ */
 function addSlideshowJS() {
     var head = document.getElementsByTagName('HEAD')[0];
     jsScript = document.createElement('script');

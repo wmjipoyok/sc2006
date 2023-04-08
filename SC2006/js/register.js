@@ -1,6 +1,16 @@
-// Import the functions you need from the SDKs you need
+/**
+* @module register-js
+* @description This file renders the 'Registration' page. The page allows users to register new accounts using email and password.
+*/
+
+/* Importing the `initializeApp` function from the Firebase App module, which is used to initialize a
+Firebase app with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
+/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
+a Firebase app. It includes the API key, authentication domain, project ID, storage bucket,
+messaging sender ID, app ID, and measurement ID. This information is used to authenticate and
+connect to the Firebase services. */
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
     authDomain: "sc2006-1d9b8.firebaseapp.com",
@@ -11,12 +21,23 @@ const firebaseConfig = {
     measurementId: "G-NCKVJ8K4JJ"
 };
 
-// Initialize Firebase
+/* `initializeApp(firebaseConfig);` is initializing a Firebase app with the provided configuration
+object `firebaseConfig`. This function is imported from the Firebase App module and is used to
+authenticate and connect to Firebase services. */
 initializeApp(firebaseConfig);
 
+/* This code is selecting the HTML element with the ID "registerBtn" and assigning it to the variable
+`registerBtn`. It then adds an event listener to the button so that when it is clicked, the
+`signUpWithEmailPassword()` function is called. This function is responsible for handling the user
+registration process. */
 var registerBtn = document.querySelector("#registerBtn");
 registerBtn.addEventListener('click', function () { signUpWithEmailPassword() });
 
+/**
+ * The function handles user registration with email and password, validates user input, and stores
+ * user data in Firestore upon successful registration. It also handles errors that may occur during the
+ * process.
+ */
 function signUpWithEmailPassword() {
     var fnameTb = document.getElementById("registerFName");
     var lnameTb = document.getElementById("registerLName");
@@ -30,38 +51,38 @@ function signUpWithEmailPassword() {
     var repeatPw = repeatPwTb.value;
 
     if (!fname) {
-        getFNameError();
+        handleFieldError("registerFName", "regFnError");
         return;
     } else {
-        clearFNameError();
+        clearFieldError("registerFName", "regFnError");
     }
 
     if (!lname) {
-        getLNameError();
+        handleFieldError("registerLName", "regLnError");
         return;
     } else {
-        clearLNameError();
+        clearFieldError("registerLName", "regLnError");
     }
 
     if (!email) {
-        getEmailError();
+        handleFieldError("registerEmail", "regEmailError");
         return;
     } else {
-        clearEmailError();
+        clearFieldError("registerEmail", "regEmailError");
     }
 
     if (!regPw) {
-        getPasswordError();
+        handleFieldError("registerPassword", "regPwError");
         return;
     } else {
-        clearPasswordError();
+        clearFieldError("registerPassword", "regPwError");
     }
 
     if (!repeatPw) {
-        getRepPwError();
+        handleFieldError("repeatPassword", "repPwError");
         return;
     } else {
-        clearRepPasswordError();
+        clearFieldError("repeatPassword", "repPwError");
     }
 
     if (fname && lname && email && regPw && repeatPw) {
@@ -105,123 +126,57 @@ function signUpWithEmailPassword() {
 
                 })
                 .catch((error) => {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
                     console.log(error);
                     switch (error.code) {
                         case "auth/weak-password":
-                            getPasswordError(error.code);
-                            getRepPwError(error.code);
+                            handleFieldError("registerPassword", "regPwError", error.code);
+                            handleFieldError("repeatPassword", "repPwError", error.code);
                             break;
                         case "auth/invalid-email":
-                            getEmailError(error.code);
+                            handleFieldError("registerEmail", "regEmailError", error.code);
                             break;
                         case "auth/email-already-in-use":
-                            getEmailError(error.code);
+                            handleFieldError("registerEmail", "regEmailError", error.code);
                             break;
                     }
                 });
             // [END auth_signup_password]
 
-
         } else {
-            getPasswordError("Password not match");
-            getRepPwError("Password not match");
+            handleFieldError("registerPassword", "regPwError", "Password not match");
+            handleFieldError("repeatPassword", "repPwError", "Password not match");
         }
     }
 }
 
-function getFNameError(errorMsg) { //FIRST NAME
-    let fnameTb = document.getElementById("registerFName");
-    var fnameError = document.getElementById("regFnError");
+
+/**
+ * The function handles field errors by displaying an error message and changing the border color of
+ * the input field to red.
+ * @param {String} inputField - The ID of the input field that has an error.
+ * @param {String} errorField - The ID of the HTML element where the error message will be displayed.
+ * @param {String} errorMsg - The error message that will be displayed in the errorField element.
+ */
+function handleFieldError(inputField, errorField, errorMsg) {
+    let inputF = document.getElementById(inputField);
+    var ErrorF = document.getElementById(errorField);
     if (errorMsg) {
         const eMsg = reformatErrorStr(errorMsg);
-        fnameError.innerHTML = eMsg;
+        ErrorF.innerHTML = eMsg;
     }
 
-    fnameError.removeAttribute("hidden");
-    fnameTb.style.borderColor = "red";
+    ErrorF.removeAttribute("hidden");
+    inputF.style.borderColor = "red";
 }
 
-function getLNameError(errorMsg) { //LAST NAME
-    let lnameTb = document.getElementById("registerLName");
-    var lnameError = document.getElementById("regLnError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        emailError.innerHTML = eMsg;
-    }
-
-    lnameError.removeAttribute("hidden");
-    lnameTb.style.borderColor = "red";
-}
-
-function getEmailError(errorMsg) {
-    let emailTb = document.getElementById("registerEmail");
-    var emailError = document.getElementById("regEmailError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        emailError.innerHTML = eMsg;
-    }
-
-    emailError.removeAttribute("hidden");
-    emailTb.style.borderColor = "red";
-}
-
-function getPasswordError(errorMsg) {
-    let passwordTb = document.getElementById("registerPassword");
-    var pwErrorTb = document.getElementById("regPwError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        pwErrorTb.innerHTML = eMsg;
-    }
-
-    pwErrorTb.removeAttribute("hidden");
-    passwordTb.style.borderColor = "red";
-}
-
-function getRepPwError(errorMsg) {
-    let repPwTb = document.getElementById("repeatPassword");
-    var repPwError = document.getElementById("repPwError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        repPwError.innerHTML = eMsg;
-    }
-
-    repPwError.removeAttribute("hidden");
-    repPwTb.style.borderColor = "red";
-}
-
-function clearFNameError() { //FIRST NAME
-    let fnameTb = document.getElementById("registerFName");
-    var fnameError = document.getElementById("regFnError");
-    fnameError.setAttribute("hidden", true);
-    fnameTb.style.borderColor = "";
-}
-
-function clearLNameError() { //LAST NAME
-    let lnameTb = document.getElementById("registerLName");
-    var lnameError = document.getElementById("regLnError");
-    lnameError.setAttribute("hidden", true);
-    lnameTb.style.borderColor = "";
-}
-
-function clearEmailError() {
-    let emailTb = document.getElementById("registerEmail");
-    var emailError = document.getElementById("regEmailError");
-    emailError.setAttribute("hidden", true);
-    emailTb.style.borderColor = "";
-}
-
-function clearPasswordError() {
-    let passwordTb = document.getElementById("registerPassword");
-    var passwordError = document.getElementById("regPwError");
-    passwordError.setAttribute("hidden", true);
-    passwordTb.style.borderColor = "";
-}
-
-function clearRepPasswordError() {
-    let repPwTb = document.getElementById("repeatPassword");
-    var repPwError = document.getElementById("repPwError");
-    repPwError.setAttribute("hidden", true);
-    repPwTb.style.borderColor = "";
+/**
+ * The function clears the error message and resets the border color of an input field.
+ * @param {String} inputField - The ID of the input field that needs to be cleared of errors.
+ * @param {String} errorField - The ID of the HTML element that displays the error message for the input field.
+ */
+function clearFieldError(inputField, errorField) {
+    let inputF = document.getElementById(inputField);
+    var ErrorF = document.getElementById(errorField);
+    ErrorF.setAttribute("hidden", true);
+    inputF.style.borderColor = "";
 }

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>car-detail.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-bookings-js.html">bookings-js</a><ul class='methods'><li data-type='method'><a href="module-bookings-js.html#~displayBookings">displayBookings</a></li><li data-type='method'><a href="module-bookings-js.html#~getDaysBetweenDates">getDaysBetweenDates</a></li></ul></li><li><a href="module-car-detail-js.html">car-detail-js</a><ul class='methods'><li data-type='method'><a href="module-car-detail-js.html#~acceptCar">acceptCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~bookCar">bookCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~cancelCar">cancelCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~checkBooking">checkBooking</a></li><li data-type='method'><a href="module-car-detail-js.html#~completeCar">completeCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~deleteCar">deleteCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~errorHandle">errorHandle</a></li><li data-type='method'><a href="module-car-detail-js.html#~getStarRatings">getStarRatings</a></li><li data-type='method'><a href="module-car-detail-js.html#~rejectCar">rejectCar</a></li><li data-type='method'><a href="module-car-detail-js.html#~retrieveCarDetails">retrieveCarDetails</a></li><li data-type='method'><a href="module-car-detail-js.html#~saveMessageToDb">saveMessageToDb</a></li><li data-type='method'><a href="module-car-detail-js.html#~sendMessage">sendMessage</a></li></ul></li><li><a href="module-car-form-js.html">car-form-js</a><ul class='methods'><li data-type='method'><a href="module-car-form-js.html#~addSlideshowJS">addSlideshowJS</a></li><li data-type='method'><a href="module-car-form-js.html#~createCarListing">createCarListing</a></li><li data-type='method'><a href="module-car-form-js.html#~disableInputs">disableInputs</a></li><li data-type='method'><a href="module-car-form-js.html#~displayImages">displayImages</a></li><li data-type='method'><a href="module-car-form-js.html#~getCarInfo">getCarInfo</a></li><li data-type='method'><a href="module-car-form-js.html#~handleImageInput">handleImageInput</a></li><li data-type='method'><a href="module-car-form-js.html#~submitForm">submitForm</a></li><li data-type='method'><a href="module-car-form-js.html#~unhideContent">unhideContent</a></li><li data-type='method'><a href="module-car-form-js.html#~uploadImage">uploadImage</a></li><li data-type='method'><a href="module-car-form-js.html#~uploadImages">uploadImages</a></li></ul></li><li><a href="module-car-list-js.html">car-list-js</a></li><li><a href="module-common-js.html">common-js</a><ul class='methods'><li data-type='method'><a href="module-common-js.html#~cancelLogout">cancelLogout</a></li><li data-type='method'><a href="module-common-js.html#~checkAlertEmpty">checkAlertEmpty</a></li><li data-type='method'><a href="module-common-js.html#~handleMsgCount">handleMsgCount</a></li><li data-type='method'><a href="module-common-js.html#~logoutHandler">logoutHandler</a></li><li data-type='method'><a href="module-common-js.html#~reformatErrorStr">reformatErrorStr</a></li><li data-type='method'><a href="module-common-js.html#~titleize">titleize</a></li></ul></li><li><a href="module-forgot-password-js.html">forgot-password-js</a><ul class='methods'><li data-type='method'><a href="module-forgot-password-js.html#~clearEmailError">clearEmailError</a></li><li data-type='method'><a href="module-forgot-password-js.html#~getEmailError">getEmailError</a></li><li data-type='method'><a href="module-forgot-password-js.html#~resetPassword">resetPassword</a></li></ul></li><li><a href="module-index-js.html">index-js</a><ul class='methods'><li data-type='method'><a href="module-index-js.html#~clearEmailError">clearEmailError</a></li><li data-type='method'><a href="module-index-js.html#~clearPasswordError">clearPasswordError</a></li><li data-type='method'><a href="module-index-js.html#~getEmailError">getEmailError</a></li><li data-type='method'><a href="module-index-js.html#~getEmailInput">getEmailInput</a></li><li data-type='method'><a href="module-index-js.html#~getPasswordError">getPasswordError</a></li></ul></li><li><a href="module-main-js.html">main-js</a><ul class='methods'><li data-type='method'><a href="module-main-js.html#~addCarparkMarker">addCarparkMarker</a></li><li data-type='method'><a href="module-main-js.html#~addMarker">addMarker</a></li><li data-type='method'><a href="module-main-js.html#~getData">getData</a></li><li data-type='method'><a href="module-main-js.html#~handleLocationError">handleLocationError</a></li><li data-type='method'><a href="module-main-js.html#~initMap">initMap</a></li><li data-type='method'><a href="module-main-js.html#~unhideContent">unhideContent</a></li></ul></li><li><a href="module-message-js.html">message-js</a><ul class='methods'><li data-type='method'><a href="module-message-js.html#~requestPermission">requestPermission</a></li></ul></li><li><a href="module-nav-js.html">nav-js</a><ul class='methods'><li data-type='method'><a href="module-nav-js.html#~unhideLogout">unhideLogout</a></li></ul></li><li><a href="module-profile-js.html">profile-js</a><ul class='methods'><li data-type='method'><a href="module-profile-js.html#~getRatings">getRatings</a></li><li data-type='method'><a href="module-profile-js.html#~getUploadedCars">getUploadedCars</a></li></ul></li><li><a href="module-register-js.html">register-js</a><ul class='methods'><li data-type='method'><a href="module-register-js.html#~clearFieldError">clearFieldError</a></li><li data-type='method'><a href="module-register-js.html#~handleFieldError">handleFieldError</a></li><li data-type='method'><a href="module-register-js.html#~signUpWithEmailPassword">signUpWithEmailPassword</a></li></ul></li><li><a href="module-sb-admin-2-min-js.html">sb-admin-2-min-js</a></li><li><a href="module-slideshow-js.html">slideshow-js</a><ul class='methods'><li data-type='method'><a href="module-slideshow-js.html#~currentSlide">currentSlide</a></li><li data-type='method'><a href="module-slideshow-js.html#~plusSlides">plusSlides</a></li><li data-type='method'><a href="module-slideshow-js.html#~showSlides">showSlides</a></li></ul></li><li><a href="module-svy21-js.html">svy21-js</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">car-detail.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* @module car-detail-js
+* @description This file renders the 'Car Detail' page. 
+The page allows user to view car detail information and perform actions 
+including submit booking request, accept/reject booking, cancel booking and delete car listing.
+It also provide the link for car owner to edit the car information.
+*/
+
+
+/* The below code is importing necessary modules from Firebase SDK version 9.17.2 for initializing and
+accessing Firestore database. It includes functions for creating, reading, updating, and deleting
+documents and collections in Firestore. */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { collection, doc, addDoc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+
+
+/* The below code is defining a JavaScript object called `firebaseConfig` which contains the
+configuration settings for a Firebase project. These settings include the API key, authentication
+domain, database URL, project ID, storage bucket, messaging sender ID, app ID, and measurement ID. */
+const firebaseConfig = {
+    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
+    authDomain: "sc2006-1d9b8.firebaseapp.com",
+    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "sc2006-1d9b8",
+    storageBucket: "sc2006-1d9b8.appspot.com",
+    messagingSenderId: "18363617474",
+    appId: "1:18363617474:web:de5535d545b6169e532b5b",
+    measurementId: "G-NCKVJ8K4JJ"
+};
+
+/* The below code is initializing a Firebase app using the configuration object `firebaseConfig`. This
+is typically done at the beginning of a Firebase project to set up the necessary connection to the
+Firebase services. */
+const app = initializeApp(firebaseConfig);
+
+/* The below code is initializing a Firestore database instance using the Firebase SDK for JavaScript.
+It is assuming that the `app` variable has been previously defined and contains a valid Firebase app
+instance. The `getFirestore()` function is a method provided by the Firebase SDK that returns a
+Firestore database instance associated with the specified Firebase app. The resulting database
+instance is stored in the `db` constant for later use. */
+const db = getFirestore(app);
+
+/* The below code is using JavaScript to get the value of the "carId" parameter from the URL query
+string of the current page. It first gets the query string using the "window.location.search"
+property, and then creates a new URLSearchParams object from it. It then uses the "get" method of
+the URLSearchParams object to retrieve the value of the "carId" parameter. */
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const carId = urlParams.get('carId');
+
+/* The below code is adding an event listener to the window object that waits for the page to load.
+Once the page is loaded, it sets the href attribute of an anchor tag with the id "editCarUrl" to a
+URL that includes a query string parameter "carId". It also loads the content of two HTML files into
+two different elements on the page using jQuery's load() method. Finally, it calls a function called
+retrieveCarDetails() and passes in a variable called carId. */
+window.addEventListener('load', function () {
+
+    document.getElementById("editCarUrl").href = "car-form.html?request=edit&amp;carId=" + carId;
+    $(function () {
+        $("#nav-content").load("nav.html");
+        $("#logout-model").load("logout-model.html");
+    });
+
+    retrieveCarDetails(carId);
+
+}, false);
+
+
+/* The below code is declaring variables and selecting HTML elements using their IDs. It is selecting
+buttons with IDs "bookBtn", "acceptBtn", "rejectBtn", "cancelBtn", "completeBtn", and
+"delete-confirm-button". These buttons are likely used for some kind of functionality in a web
+application or website. */
+var bookBtn = document.querySelector("#bookBtn");
+var acceptBtn = document.querySelector("#acceptBtn");
+var rejectBtn = document.querySelector("#rejectBtn");
+var cancelBtn = document.querySelector("#cancelBtn");
+var completeBtn = document.querySelector("#completeBtn");
+var delConfirmBtn = document.getElementById("delete-confirm-button");
+
+/* The below code is adding event listeners to different buttons (bookBtn, acceptBtn, rejectBtn,
+cancelBtn, completeBtn, delConfirmBtn) and calling different functions (bookCar, acceptCar,
+rejectCar, cancelCar, completeCar, deleteCar) with a parameter (carId) when the buttons are clicked. */
+bookBtn.addEventListener('click', function () { bookCar(carId) });
+acceptBtn.addEventListener('click', function () { acceptCar(carId) });
+rejectBtn.addEventListener('click', function () { rejectCar(carId) });
+cancelBtn.addEventListener('click', function () { cancelCar(carId) });
+completeBtn.addEventListener('click', function () { completeCar(carId) });
+delConfirmBtn.addEventListener('click', function () { deleteCar(carId) });
+
+/**
+ * This function retrieves and displays car details from a database based on the car ID and updates the
+ * page accordingly.
+ * @param {String} carId - The ID of the car whose details are being retrieved from the database.
+ * function.
+ */
+async function retrieveCarDetails(carId) {
+
+    //read db using car's id
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+
+    if (!carData) {
+        errorHandle("No car information found.");
+        return;
+    }
+
+    //read db using owner's id
+    const ownerSnap = doc(db, "Users", docSnap.data().CarOwner);
+    const ownerDocSnap = await getDoc(ownerSnap);
+    const ownerCarData = ownerDocSnap.data();
+
+    if (!ownerCarData) {
+        errorHandle("Unable to reterive car owner's information.");
+        return;
+    }
+
+    //get individual car data from db
+    var brand = carData.Brand;
+    var model = carData.Model;
+    var rating = carData.Rating;
+    var seats = carData.Seats;
+    var price = carData.Price;
+    var description = carData.Description;
+
+    //function to display rating stars
+    getStarRatings(rating);
+
+    //update fields in the car details page
+    document.getElementById("BrandModel").innerHTML = brand + " " + model;
+    document.getElementById("Seats").innerHTML = seats + " seater";
+    document.getElementById("Price").innerHTML = "$" + price + "/day";
+    document.getElementById("Description").innerHTML = description;
+
+    //if car owner views his own car's details, and car is available(0) status
+    if ((carData.CarOwner == localStorage.getItem("userId")) &amp;&amp; carData.Status == 0) {
+        //show edit details and delete listing buttons
+        console.log("car owner views his own car's details, and car is available(0) status");
+        document.getElementById("editBtn").removeAttribute('hidden');
+        document.getElementById("delete").removeAttribute('hidden');
+
+    }
+
+    //if car owner views his own car's details, and car is pending(1) status
+    if (carData.CarOwner == localStorage.getItem("userId") &amp;&amp; carData.Status == 1) {
+        if (ownerCarData.PendingBookingOwner &amp;&amp; ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingRenter = pendingBookingData.UserId;
+
+            const renterRef = doc(db, "Users", pendingRenter)
+            const renterSnap = await getDoc(renterRef);
+            const renterData = renterSnap.data();
+
+            //Display renter's info and booking info for car owner to see
+            document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+            document.getElementById("userInfo").removeAttribute("hidden");
+            document.getElementById("CarDescription").setAttribute('hidden', true);
+
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
+
+            //show accept and reject buttons
+            document.getElementById("pendingOwner").removeAttribute('hidden');
+        }
+
+
+    }
+
+    //if car owner views his own car's details, and car is unavailable(2) status
+    if (carData.CarOwner == localStorage.getItem("userId") &amp;&amp; carData.Status == 2) {
+        if (ownerCarData.PendingBookingOwner &amp;&amp; ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingRenter = pendingBookingData.UserId;
+            const pendingStart = pendingBookingData.Start;
+
+            const renterRef = doc(db, "Users", pendingRenter)
+            const renterSnap = await getDoc(renterRef);
+            const renterData = renterSnap.data();
+
+            //Display renter's info and booking info for car owner to see
+            document.getElementById("UserName").innerHTML = renterData.FirstName + " " + renterData.LastName;
+            document.getElementById("userInfo").removeAttribute("hidden");
+
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
+
+            document.getElementById("Accepted").innerHTML = "Accepted";
+            document.getElementById("Accepted").removeAttribute("hidden");
+            document.getElementById("pendingStatus").removeAttribute('hidden');
+
+            const d = new Date().toLocaleDateString('fr-ca');
+            if (d &lt; pendingStart) {
+                document.getElementById("cancelBooking").removeAttribute('hidden');
+            }
+        }
+    }
+
+    //if renter view a car from listing, display owner's details
+    if ((carData.CarOwner != localStorage.getItem("userId")) &amp;&amp; carData.Status == 0) {
+        //display car owner in user info
+        document.getElementById("UserName").innerHTML = ownerCarData.FirstName + " " + ownerCarData.LastName;
+        document.getElementById("userInfo").removeAttribute('hidden');
+
+        //show date picker and booking button
+        document.getElementById("Booking").removeAttribute('hidden');
+    }
+
+    //if renter view a car after booking request, pending
+    if ((carData.CarOwner != localStorage.getItem("userId")) &amp;&amp; carData.Status == 1) {
+        const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+        const pendingSnap = doc(db, "Bookings", pendingBookingID);
+        const pendingDocSnap = await getDoc(pendingSnap);
+        const pendingBookingData = pendingDocSnap.data();
+
+        //display pending status when renter views after booking
+        document.getElementById("Pending").innerHTML = "Pending";
+        document.getElementById("Pending").removeAttribute('hidden');
+        document.getElementById("pendingStatus").removeAttribute('hidden');
+
+        document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+        document.getElementById("dateDetails").removeAttribute("hidden");
+
+    }
+
+    //if renter view a car after booking request, accepted
+    if ((carData.CarOwner != localStorage.getItem("userId")) &amp;&amp; carData.Status == 2) {
+        if (ownerCarData.PendingBookingOwner &amp;&amp; ownerCarData.PendingBookingOwner[0]) {
+            const pendingBookingID = ownerCarData.PendingBookingOwner[0];
+            const pendingSnap = doc(db, "Bookings", pendingBookingID);
+            const pendingDocSnap = await getDoc(pendingSnap);
+            const pendingBookingData = pendingDocSnap.data();
+            const pendingStart = pendingBookingData.Start;
+            //if(today's date >= start date)
+            const d = new Date().toLocaleDateString('fr-ca');
+            document.getElementById("dateDetails").innerHTML = pendingBookingData.Start + " " + "to " + pendingBookingData.End;
+            document.getElementById("dateDetails").removeAttribute("hidden");
+
+            if (d >= pendingStart) {
+                document.getElementById("completeBooking").removeAttribute('hidden');
+            }
+            else {
+                document.getElementById("cancelBooking").removeAttribute('hidden');
+            }
+        }
+
+
+        //display accepted status when renter views after booking
+        document.getElementById("Accepted").innerHTML = "Accepted";
+        document.getElementById("Accepted").removeAttribute("hidden");
+        document.getElementById("pendingStatus").removeAttribute('hidden');
+
+    }
+
+
+    for (let i = 0; i &lt; carData.Images.length; i++) {
+        document.getElementById("imageContainer").innerHTML += `&lt;div class="mySlides">
+        &lt;img src="${carData.Images[i]}" class="slideshow-img" alt="image">&lt;/div>`
+        document.getElementById("dotContatiner").innerHTML += `&lt;span class="dot" onclick="currentSlide(${i + 1})">&lt;/span>`
+    }
+
+    document.getElementById("imageContainer").innerHTML += `&lt;a class="prev" onclick="plusSlides(-1)">&amp;#10094;&lt;/a>
+    &lt;a class="next" onclick="plusSlides(1)">&amp;#10095;&lt;/a>`
+
+    var head = document.getElementsByTagName('HEAD')[0];
+    let jsScript = document.createElement('script');
+    jsScript.src = './js/slideshow.js';
+    head.appendChild(jsScript);
+
+    document.getElementById("carInfoContainer").removeAttribute('hidden');
+    document.getElementById("loading").setAttribute('hidden', true);
+}
+
+/**
+ * The function displays an error message and hides a loading element.
+ * @param {String} msg - The error message that will be displayed to the user.
+ */
+function errorHandle(msg) {
+    document.getElementById("errorMsg").innerHTML = msg;
+    document.getElementById("errorMsg").removeAttribute('hidden');
+    document.getElementById("loading").setAttribute('hidden', true);
+}
+
+/**
+ * The function calculates and displays star ratings based on a given rating value.
+ * @param {Number} rating - The rating is a number that represents the star rating of a product or service,
+ * ranging from 0 to 5.
+ */
+function getStarRatings(rating) {
+    const starsTotal = 5;
+    const starPercentage = (rating / starsTotal) * 100;
+    const starPercentageRounded = `${Math.round(starPercentage)}%`
+    document.querySelector('.stars-inner').style.width = starPercentageRounded;
+    document.querySelector('.number-rating').innerHTML = rating;
+}
+
+/**
+ * The function checks if the trip start and end dates are valid and if the terms and conditions
+ * checkbox is checked.
+ * @returns a boolean value (either true or false) depending on whether all the conditions are met or
+ * not.
+ */
+function checkBooking() {
+    const start = document.getElementById("StartTrip");
+    const tripDateError = document.getElementById("tripDateError");
+    const end = document.getElementById("EndTrip");
+    const termNcon = document.getElementById("customCheck");
+    const checkedError = document.getElementById("checkboxError");
+
+    if (start.value == "") {
+        start.style.borderColor = "red";
+        tripDateError.innerHTML = "Trip start date cannot be empty";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        start.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+
+    if (end.value == "") {
+        end.style.borderColor = "red";
+        tripDateError.innerHTML = "Trip end date cannot be empty";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        end.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+
+    if (start.value > end.value) {
+        start.style.borderColor = "red";
+        tripDateError.innerHTML = "Start date cannot occur after the end date";
+        tripDateError.removeAttribute("hidden");
+        return false;
+    } else {
+        start.style.borderColor = "";
+        tripDateError.setAttribute("hidden", true);
+    }
+
+    if (!termNcon.checked) {
+        checkedError.removeAttribute("hidden");
+        return false;
+    } else {
+        checkedError.setAttribute("hidden", true);
+    }
+    return true;
+}
+
+/**
+ * The function books a car by checking its availability, updating the booking and user databases,
+ * sending a message to the car owner, and updating the car's availability status.
+ * @param {String} carId - The ID of the car that the user wants to book.
+ */
+async function bookCar(carId) {
+    //check valid booking
+    const validation = checkBooking();
+    if (!validation) {
+        return;
+    }
+
+    //get date and time selected by user
+    const StartTrip = document.getElementById("StartTrip").value;
+    const EndTrip = document.getElementById("EndTrip").value;
+
+    //read "Cars" db with selected car's ID
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+
+    //get car's status and owner
+    const carStatus = docSnap.data().Status;
+    const carOwner = docSnap.data().CarOwner;
+
+    //check if car is available status
+    if (carStatus == 0) {
+
+        //update Booking in db and the BookingId into individual users db
+        try {
+            const bookingRef = await addDoc(collection(db, "Bookings"), {
+
+                UserId: localStorage.getItem("userId"),
+                CarOwner: carOwner,
+                CarId: carId,
+                Start: StartTrip,
+                End: EndTrip,
+                Status: 1,                  //booking not completed, change to 0 once renter completes
+                OwnerAccepted: false,       //owner has not accepted the booking, change to true once accepted, dont't change if owner rejects
+                Delete: false               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+
+            });
+            console.log("Booking written in 'Bookings' with ID: ", bookingRef.id);
+
+            const userRef = doc(db, "Users", localStorage.getItem("userId"));
+            await updateDoc(userRef, {
+                Booking: arrayUnion(bookingRef.id)
+            });
+            console.log("Booking stored in 'Users' with ID: ", userRef.id);
+
+            const ownerRef = doc(db, "Users", carOwner);
+            await updateDoc(ownerRef, {
+                PendingBookingOwner: arrayUnion(bookingRef.id)
+            });
+            console.log("Booking stored in 'Owner' with userID: ", ownerRef.id);
+
+
+            //send message to car's owner and store message in "Messages" db
+            const sender = localStorage.getItem("userId");
+            const receiver = carOwner;
+            const msg = `A new booking request from ${document.getElementById("nav-name").innerHTML}.`
+            sendMessage(sender, receiver, carId, msg, bookingRef.id);
+            await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+        //update car's availabilty status to pending
+        try {
+            const carRef = doc(db, "Cars", carId);
+            await updateDoc(carRef, {
+                Status: 1       //upated car's status to pending(1)
+            });
+            console.log("Car status updated to pending");
+
+        } catch (e) {
+            console.error("Error updating status to pending: ", e);
+        }
+    }
+
+    //pop-up alert, once user clicks 'Ok', go to booking page to view booking
+    alert("Booking Successful! Wait for owner to accept.");
+    location.reload();
+}
+
+/**
+ * This function accepts a booking request for a car and updates the car's availability status to
+ * 'Rented' while sending a message to the renter and storing the message in the database.
+ * @param {String} carId - The ID of the car for which the booking request is being accepted.
+ */
+async function acceptCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to unavailable 
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 2       //upated car's status to unavailable(2)
+        });
+        console.log("Car status updated to unavailable");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            OwnerAccepted: true,       //owner has accepted the booking
+        });
+        console.log("Booking accepted by owner");
+
+        const bookingRecord = await getDoc(bookingRef);
+
+        //send message to renter and store message in "Messages" db
+        const sender = carOwner;
+        const receiver = bookingRecord.data().UserId;
+        const msg = `Congratulations! Your booking request has been accepted.`;
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking request accepted!");
+    // window.location.href = "profile.html";
+    location.reload();
+}
+
+/**
+ * This function updates the status of a car to available and deletes a booking record when the owner
+ * rejects a booking request, and sends a message to the renter.
+ * @param {String} carId - The ID of the car for which the booking request is being rejected.
+ */
+async function rejectCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to available and booking delete status to true
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(0)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+        });
+        console.log("Booking 'Delete' field updated to true");
+
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+
+        const bookingREF = await getDoc(bookingRef);
+        const bookingData = bookingREF.data();
+        const renterRef = bookingData.UserId;
+        const renterReference = doc(db, "Users", renterRef);
+        await updateDoc(renterReference, {
+            Booking: arrayRemove(bookingRef.id)
+        });
+        console.log("Booking field in renter deleted:", bookingRef.id);
+
+        await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
+        console.log("Entire booking document has been deleted successfully.");
+
+        console.log(bookingData);
+
+        //send message to car owner and store message in "Messages" db
+        const sender = carOwner;
+        const receiver = renterRef;
+        const msg = `Oops! Your booking request has been rejected`;
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking request rejected!");
+    // window.location.href = "profile.html";
+    location.reload();
+}
+
+
+/**
+ * This function cancels a car booking and updates the necessary fields in the database while also
+ * sending messages to the car owner and renter.
+ * @param {String} carId - The ID of the car that the booking is associated with and needs to be cancelled.
+ */
+async function cancelCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to available and booking delete status to true
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(0)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Delete: true               //delete the booking record if this field is true, it will change to true when owner rejects a booking
+        });
+        console.log("Booking 'Delete' field updated to true");
+
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+
+        const bookingREF = await getDoc(bookingRef);
+        const bookingData = bookingREF.data();
+        const renterRef = bookingData.UserId;
+        const renterReference = doc(db, "Users", renterRef);
+        await updateDoc(renterReference, {
+            Booking: arrayRemove(bookingRef.id)
+        });
+        console.log("Booking field in renter deleted");
+
+        await deleteDoc(doc(db, "Bookings", bookingQuerySnapshot));
+        console.log("Entire booking document has been deleted successfully.");
+
+        //send message to both renter and owner and store messages in "Messages" db
+        const renter = bookingData.UserId;
+        const msg = `Oh no! Your booking has been cancelled.`;
+        // send to car owner
+        sendMessage(renter, carOwner, carId, msg, bookingRef.id);
+        await saveMessageToDb(renter, carOwner, carId, msg, bookingRef.id);
+
+        // send to renter
+        sendMessage(carOwner, renter, carId, msg, bookingRef.id);
+        await saveMessageToDb(carOwner, renter, carId, msg, bookingRef.id);
+
+    } catch (e) {
+        console.error("Error updating status to rejected status: ", e);
+    }
+
+    alert("Booking cancelled!");
+    window.location.href = "bookings.html";
+
+}
+
+/**
+ * The function updates the status of a car and a booking to "available" and deletes the
+ * "PendingBookingOwner" field in the owner's document, and sends a message to the car owner indicating
+ * that the trip has ended.
+ * @param {String} carId - The ID of the car that has been rented and needs to be marked as available again.
+ */
+async function completeCar(carId) {
+
+    const docRef = doc(db, "Cars", carId)
+    const docSnap = await getDoc(docRef);
+    const carData = docSnap.data();
+    const carOwner = carData.CarOwner;
+
+    const ownerRef = doc(db, "Users", carOwner)
+    const ownerSnap = await getDoc(ownerRef);
+    const ownerData = ownerSnap.data();
+    const bookingQuerySnapshot = ownerData.PendingBookingOwner[0];
+
+    //update car's availabilty status to available 
+    try {
+        const carRef = doc(db, "Cars", carId);
+        await updateDoc(carRef, {
+            Status: 0       //upated car's status to available(2)
+        });
+        console.log("Car status updated to available");
+
+        const bookingRef = doc(db, "Bookings", bookingQuerySnapshot);
+        await updateDoc(bookingRef, {
+            Status: 0
+        });
+        console.log("Booking updated status in 'Bookings' with ID: ", bookingRef.id);
+
+        await updateDoc(ownerRef, {
+            PendingBookingOwner: deleteField()
+        });
+        console.log("PendingBookingOwner field in owner deleted");
+
+        const bookingRecord = await getDoc(bookingRef);
+
+        //send message to car owner and store message in "Messages" db
+        const sender = bookingRecord.data().UserId;
+        const receiver = carOwner;
+        const msg = `The trip has ended! Your car is available for rent again.`;
+        sendMessage(sender, receiver, carId, msg, bookingRef.id);
+        await saveMessageToDb(sender, receiver, carId, msg, bookingRef.id);
+
+    } catch (e) {
+        console.error("Error updating status to completed status: ", e);
+    }
+
+    alert("Rental completed!");
+    window.location.href = "bookings.html";
+
+}
+
+/**
+ * The function sends a message using Firebase Cloud Messaging to a specified receiver with information
+ * about the sender, car, booking, and message.
+ * @param {String} senderId - The ID of the sender of the message.
+ * @param {String} receiverId - The ID of the person who will receive the message.
+ * @param {String} carIdRef - This parameter is the reference ID of the car.
+ * @param {String} msg - The auto generated message to notify user the booking status.
+ * @param {String} bookingId - The ID of the booking.
+ */
+function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    var data = {
+        'to': localStorage.getItem("currToken"),
+        'data': {
+            'senderId': senderId,
+            'receiverId': receiverId,
+            'carId': carIdRef,
+            'bookingId': bookingId,
+            'message': msg
+        }
+    }
+
+    xhr.open('POST', "https://fcm.googleapis.com/fcm/send", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bFIpi80DSkKYLVO2umkE_3FZPLbFtHPQ5i8RoFh3aH3wtRLAUoLQf6hEVDbXOJM1lf1cyC8LZppNqtjI8RRNfXarrMnXThtvHOuDO5sUHH9r5nOo62AuagZ-VP30CdfTzixRdSG');
+    xhr.send(JSON.stringify(data));
+}
+
+/**
+ * The function saves a message to a database with information about the sender, receiver, car,
+ * booking, message content, and date/time.
+ * @param {String} sender - The ID of the user who is sending the message.
+ * @param {String} receiver - The ID of the user who will receive the message.
+ * @param {String} carId - carId is a unique identifier for a specific car in the database. It is used to
+ * associate the message with a particular car.
+ * @param {String} msg - The message that needs to be saved to the database.
+ * @param {String} bookingId - bookingId is a unique identifier for a booking or reservation made for a car. It
+ * is used to associate the message with a specific booking.
+ */
+async function saveMessageToDb(sender, receiver, carId, msg, bookingId) {
+    const currentDateTime = new Date()
+    try {
+        const messageRef = await addDoc(collection(db, "Messages"), {
+            ReceiverId: receiver,
+            SenderId: sender,
+            CarId: carId,
+            BookingId: bookingId,
+            Message: msg,
+            DateTime: currentDateTime.toLocaleDateString("fr-ca") + " " + currentDateTime.toLocaleTimeString('it-IT')
+        });
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
+/**
+ * This function deletes a car document from a database and redirects the user to their profile page.
+ * @param {String} carID - The ID of the car document that needs to be deleted from the "Cars" collection in the
+ * Firestore database.
+ */
+function deleteCar(carID) {
+    //reference to car doc to be deleted
+    const carRef = doc(db, "Cars", carID);
+
+    //Call deleteDoc() to delete the doc
+    deleteDoc(carRef)
+        .then(() => {
+            //if deletion is successful, we redirect user to his profile page so that he can see his current list of cars
+            window.location.href = "profile.html";
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Apr 09 2023 01:15:08 GMT+0800 (Singapore Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

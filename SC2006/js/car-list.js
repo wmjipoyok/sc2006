@@ -1,5 +1,18 @@
+/**
+* @module car-list-js
+* @description This file renders the 'Car List' page. The page allows users to view the available cars to rent based on the car park location selected. 
+Users can choose a car from the list to see the car formation and decide if they want to rent the car.
+*/
+
+/* Importing the `initializeApp` function from the Firebase App module version 9.17.2, which is hosted
+on the URL "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js". This function is used to
+initialize a Firebase app with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 
+/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
+a Firebase app. It includes the API key, authentication domain, database URL, project ID, storage
+bucket, messaging sender ID, and app ID. The `storageBucket` property is included twice, which may
+be a mistake. */
 const firebaseConfig = {
     apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
     authDomain: "fir-c9c47.firebaseapp.com",

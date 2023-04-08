@@ -1,7 +1,22 @@
+/**
+* @module message-js
+* @description This file is for rendering message alerts and request for notification permission.
+Since this file needs to be implemented in most of the pages in order to receive messages, 
+we make it a stand-alone javascript file which increases the code maintainability and reusability.
+*/
+
+/* This line of code is importing the Firebase Messaging module from the specified URL. It allows the
+code to use the messaging functionality provided by Firebase. */
 import { } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-messaging.js";
 
+/* `const messaging = firebase.messaging();` is initializing the Firebase Messaging service and
+creating a messaging instance that can be used to send and receive push notifications. It allows the
+code to use the messaging functionality provided by Firebase. */
 const messaging = firebase.messaging();
 
+/**
+ * This function requests permission for notifications and retrieves a token for the current user.
+ */
 function requestPermission() {
     Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
@@ -24,8 +39,15 @@ function requestPermission() {
     })
 }
 
+/* `requestPermission();` is a function that requests permission for notifications from the user. It
+uses the `Notification.requestPermission()` method to prompt the user for permission to show
+notifications. If the user grants permission, it retrieves a token for the current user using the
+Firebase Messaging service and stores it in the local storage. */
 requestPermission();
 
+/* `messaging.onMessage()` is a method provided by Firebase Messaging that listens for incoming push
+notifications. When a push notification is received, the function passed as an argument to
+`messaging.onMessage()` is executed. */
 messaging.onMessage((payload) => {
     console.log('Message received. ', payload);
     const userId = localStorage.getItem("userId");
