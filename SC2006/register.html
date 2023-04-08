@@ -19,6 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/register.css" rel="stylesheet">
 
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
@@ -26,239 +28,8 @@
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     <script src="./js/app.js"></script>
     <script src="./js/common.js"></script>
+    <script type="module" src="./js/register.js"></script>
 </head>
-
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
-
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-        apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-        authDomain: "sc2006-1d9b8.firebaseapp.com",
-        projectId: "sc2006-1d9b8",
-        storageBucket: "sc2006-1d9b8.appspot.com",
-        messagingSenderId: "18363617474",
-        appId: "1:18363617474:web:de5535d545b6169e532b5b",
-        measurementId: "G-NCKVJ8K4JJ"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-</script>
-
-<script>
-    function signUpWithEmailPassword() {
-        var fnameTb = document.getElementById("registerFName");
-        var lnameTb = document.getElementById("registerLName");
-        var emailTb = document.getElementById("registerEmail");
-        var regPwTb = document.getElementById("registerPassword");
-        var repeatPwTb = document.getElementById("repeatPassword");
-        var fname = fnameTb.value;
-        var lname = lnameTb.value;
-        var email = emailTb.value;
-        var regPw = regPwTb.value;
-        var repeatPw = repeatPwTb.value;
-
-        if (!fname) {
-            getFNameError();
-        } else {
-            clearFNameError();
-        }
-
-        if (!lname) {
-            getLNameError();
-        } else {
-            clearLNameError();
-        }
-
-        if (!email) {
-            getEmailError();
-        } else {
-            clearEmailError();
-        }
-
-        if (!regPw) {
-            getPasswordError();
-        } else {
-            clearPasswordError();
-        }
-
-        if (!repeatPw) {
-            getRepPwError();
-        } else {
-            clearRepPasswordError();
-        }
-
-        if (fname && lname && email && regPw && repeatPw) {
-            if (regPw === repeatPw) {
-                // [START auth_signup_password]
-                console.log("email: " + email + ", password: " + regPw);
-                firebase.auth().createUserWithEmailAndPassword(email, regPw)
-                    .then((userCredential) => {
-                        // Signed in 
-                        var user = userCredential.user;
-
-                        //START storing user data into "Users" collection upon successful registration.. NEED to edit rules in firestore to allow auth users to update their doc
-                        const db = firebase.firestore();
-
-                        firebase.auth().onAuthStateChanged(user => {
-                            if (user) {
-                                // User is signed in.
-                                console.log('Authenticated user:', user);
-                                db.collection("Users").doc(user.uid).set({
-                                    //setting user details
-                                    Email: email,
-                                    FirstName: fname,
-                                    LastName: lname
-                                })
-                                    .then(() => {
-                                        console.log("User document created succesesfully");
-                                        var regForm = document.getElementById("registerForm");
-                                        var sucMsg = document.getElementById("successMsg");
-                                        regForm.setAttribute("hidden", true);
-                                        sucMsg.removeAttribute("hidden");
-                                        console.log("You may login now");
-                                    })
-                                    .catch((error) => {
-                                        console.error("Error creating user document: ", error);
-                                    });
-                                //END storing users in DB
-                            } else {
-                                console.log('No authenticated user found.');
-                            }
-                        }); //END ACTUAL
-
-                    })
-                    .catch((error) => {
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        console.log(error);
-                        switch (error.code) {
-                            case "auth/weak-password":
-                                getPasswordError(error.code);
-                                getRepPwError(error.code);
-                                break;
-                            case "auth/invalid-email":
-                                getEmailError(error.code);
-                                break;
-                            case "auth/email-already-in-use":
-                                getEmailError(error.code);
-                                break;
-                        }
-                    });
-                // [END auth_signup_password]
-
-
-            } else {
-                getPasswordError("Password not match");
-                getRepPwError("Password not match");
-            }
-        }
-    }
-
-    function getFNameError(errorMsg) { //FIRST NAME
-        let fnameTb = document.getElementById("registerFName");
-        var fnameError = document.getElementById("regFnError");
-        if (errorMsg) {
-            const eMsg = reformatErrorStr(errorMsg);
-            fnameError.innerHTML = eMsg;
-        }
-
-        fnameError.removeAttribute("hidden");
-        fnameTb.style.borderColor = "red";
-    }
-
-    function getLNameError(errorMsg) { //LAST NAME
-        let lnameTb = document.getElementById("registerLName");
-        var lnameError = document.getElementById("regLnError");
-        if (errorMsg) {
-            const eMsg = reformatErrorStr(errorMsg);
-            emailError.innerHTML = eMsg;
-        }
-
-        lnameError.removeAttribute("hidden");
-        lnameTb.style.borderColor = "red";
-    }
-
-    function getEmailError(errorMsg) {
-        let emailTb = document.getElementById("registerEmail");
-        var emailError = document.getElementById("regEmailError");
-        if (errorMsg) {
-            const eMsg = reformatErrorStr(errorMsg);
-            emailError.innerHTML = eMsg;
-        }
-
-        emailError.removeAttribute("hidden");
-        emailTb.style.borderColor = "red";
-    }
-
-    function getPasswordError(errorMsg) {
-        let passwordTb = document.getElementById("registerPassword");
-        var pwErrorTb = document.getElementById("regPwError");
-        if (errorMsg) {
-            const eMsg = reformatErrorStr(errorMsg);
-            pwErrorTb.innerHTML = eMsg;
-        }
-
-        pwErrorTb.removeAttribute("hidden");
-        passwordTb.style.borderColor = "red";
-    }
-
-    function getRepPwError(errorMsg) {
-        let repPwTb = document.getElementById("repeatPassword");
-        var repPwError = document.getElementById("repPwError");
-        if (errorMsg) {
-            const eMsg = reformatErrorStr(errorMsg);
-            repPwError.innerHTML = eMsg;
-        }
-
-        repPwError.removeAttribute("hidden");
-        repPwTb.style.borderColor = "red";
-    }
-
-    function clearFNameError() { //FIRST NAME
-        let fnameTb = document.getElementById("registerFName");
-        var fnameError = document.getElementById("regFnError");
-        fnameError.setAttribute("hidden", true);
-        fnameTb.style.borderColor = "";
-    }
-
-    function clearLNameError() { //LAST NAME
-        let lnameTb = document.getElementById("registerLName");
-        var lnameError = document.getElementById("regLnError");
-        lnameError.setAttribute("hidden", true);
-        lnameTb.style.borderColor = "";
-    }
-
-    function clearEmailError() {
-        let emailTb = document.getElementById("registerEmail");
-        var emailError = document.getElementById("regEmailError");
-        emailError.setAttribute("hidden", true);
-        emailTb.style.borderColor = "";
-    }
-
-    function clearPasswordError() {
-        let passwordTb = document.getElementById("registerPassword");
-        var passwordError = document.getElementById("regPwError");
-        passwordError.setAttribute("hidden", true);
-        passwordTb.style.borderColor = "";
-    }
-
-    function clearRepPasswordError() {
-        let repPwTb = document.getElementById("repeatPassword");
-        var repPwError = document.getElementById("repPwError");
-        repPwError.setAttribute("hidden", true);
-        repPwTb.style.borderColor = "";
-    }
-
-</script>
 
 <body class="bg-gradient-primary">
 
@@ -272,7 +43,7 @@
                     <div class="col-lg-12">
                         <div id="successMsg" class="p-5" hidden>
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4" style="color: green !important">
+                                <h1 class="h4 text-gray-900 mb-4 success-text">
                                     Registration Successful! <br /> Please proceed to login.</h1>
                             </div>
                             <hr>
@@ -290,8 +61,8 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user" id="registerFName"
                                                 placeholder="First name">
-                                            <div id="regFnError" style="padding-left: 20px; color:red" hidden>First name
-                                                cannot be empty
+                                            <div id="regFnError" class="reg-error-text" hidden>
+                                                First name cannot be empty
                                             </div>
                                         </div>
                                     </div>
@@ -299,8 +70,8 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user" id="registerLName"
                                                 placeholder="Last name">
-                                            <div id="regLnError" style="padding-left: 20px; color:red" hidden>Last name
-                                                cannot be empty
+                                            <div id="regLnError" class="reg-error-text" hidden>
+                                                Last name cannot be empty
                                             </div>
                                         </div>
                                     </div>
@@ -308,7 +79,7 @@
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-user" id="registerEmail"
                                         placeholder="Email Address">
-                                    <div id="regEmailError" style="padding-left: 20px; color:red" hidden>Email
+                                    <div id="regEmailError" class="reg-error-text" hidden>Email
                                         cannot be empty</div>
                                 </div>
                                 <div class="form-group row">
@@ -316,8 +87,8 @@
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="registerPassword" placeholder="Password">
-                                            <div id="regPwError" style="padding-left: 20px; color:red" hidden>Password
-                                                cannot be empty
+                                            <div id="regPwError" class="reg-error-text" hidden>
+                                                Password cannot be empty
                                             </div>
                                         </div>
                                     </div>
@@ -325,14 +96,13 @@
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="repeatPassword" placeholder="Repeat Password">
-                                            <div id="repPwError" style="padding-left: 20px; color:red" hidden>Repeat
-                                                password cannot be empty
+                                            <div id="repPwError" class="reg-error-text" hidden>
+                                                Repeat password cannot be empty
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#" class="btn btn-primary btn-user btn-block"
-                                    onclick="signUpWithEmailPassword()">
+                                <a href="#" class="btn btn-primary btn-user btn-block" id="registerBtn">
                                     Register Account
                                 </a>
                             </form>

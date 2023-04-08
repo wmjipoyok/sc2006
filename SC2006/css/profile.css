@@ -1,0 +1,12 @@
+.empty-message {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.empty-message p {
+    font-weight: bold;
+    margin: 0;
+}

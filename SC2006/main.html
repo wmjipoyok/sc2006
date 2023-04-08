@@ -15,62 +15,45 @@
 
     <title>Map</title>
 
-    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
-    <!-- jsFiddle will insert css and js -->
+    <!-- a library used to convert geometry location from SVY21 format to lat & long format -->
     <script src="./js/svy21.js" type="text/javascript"></script>
+
+    <!-- jquery library -->
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <!-- firebase libraries -->
     <script defer src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script>
     <script defer src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <!-- others -->
     <script type="module" src="./js/main.js"></script>
+    <!-- A js used to receive messages -->
     <script type="module" src="./js/message.js"></script>
 </head>
 
 <body id="page-top">
-    <!-- <script>
-        // for testing
-        function sendMessage() {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-
-            var data = {
-                'to': localStorage.getItem("currToken"),
-                'data': {
-                    'renterId': "fp0IRnlEpORBpCeZ7jtmR0nrKw93",
-                    'ownerId': "GWJxVcujYKaOP4BPB2CPocM9dWW2",
-                    'carId': "Firebase Car Id"
-                }
-            }
-
-            xhr.open('POST', "https://fcm.googleapis.com/fcm/send", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bENkRgqPANjMwEuYQWPxl9EC0-0S5FU4KfDPK_Yucd3-oZy2UsDPMdx6l5AHfL5dvWCi5wbBrV6vDxOGNUwLoCWrQtZecCJmA3R7Zf8ful8xNNNYW4cCX__4yVfSaCxSTyvIBa8');
-            xhr.send(JSON.stringify(data));
-        }
-    </script> -->
-
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
+                <!-- Navigation bar -->
                 <div id="nav-content" hidden></div>
                 <div class="loading" id="loading">Loading&#8230;</div>
                 <div class="container-fluid" id="mapContainer" hidden>
-                    <!-- <h4>Choose a car park to start renting cars</h4> -->
-                    <!-- <button onclick="sendMessage()">For Send Message Test</button> -->
+                    <!--The div element for the map -->
                     <div id="map"></div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Logout Modal-->
     <div id="logout-model"></div>
 
-    <!--The div element for the map -->
-
+    <!-- Google Maps API -->
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWCnWvnjeAk5IAR910vcq5BuAs7xqRiO0&callback=initMap"></script>
-
 </body>
 
 </html>

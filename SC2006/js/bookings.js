@@ -11,7 +11,7 @@ const firebaseConfig = {
     measurementId: "G-NCKVJ8K4JJ"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 
@@ -25,7 +25,6 @@ window.addEventListener('load', function () {
 });
 
 function displayBookings() {
-    //need to get all the bookings associated with a user using the Booking attribute
     //getting user id
     const userID = localStorage.getItem("userId");
 

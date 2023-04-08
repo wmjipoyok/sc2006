@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
@@ -12,7 +12,7 @@ const firebaseConfig = {
     storageBucket: "gs://sc2006-1d9b8.appspot.com"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = getStorage();
 
@@ -27,24 +27,6 @@ let imgToUpload = [];
 let imageUrlList = [];
 let jsScript;
 let carData;
-
-// var deleteBtn = document.querySelector("#deleteImgBtn");
-// deleteBtn.addEventListener('click', function () { deleteImage() });
-
-// function deleteImage() {
-//     // Create a reference to the file to delete
-//     const desertRef = ref(storage, 'CarImages/gif.gif');
-
-//     // Delete the file
-//     deleteObject(desertRef).then(() => {
-//         // File deleted successfully
-//         console.log("deleted!!!!!!!!!!");
-//     }).catch((error) => {
-//         // Uh-oh, an error occurred!
-//         console.log("Uh-oh, an error occurred!");
-//         console.log(error);
-//     });
-// }
 
 function getCarInfo() {
     db.collection("Cars").doc(carId).get().then((doc) => {
@@ -176,7 +158,7 @@ window.addEventListener('load', function () {
         const carSeats = parseInt(dataVal.carSeats.value);
         const carPrice = parseInt(dataVal.carPrice.value);
         const carDescription = dataVal.carDescription.value;
-        // console.log(imgToUpload);
+
         // handle submit
         if (!carBrand) {
             document.getElementById("carBrand").style.borderColor = "red";
@@ -264,7 +246,6 @@ async function uploadImages(images) {
 
     const imageRes = await Promise.all(imagePromises).then((data) => {
         imageUrlList = data;
-        // console.log(imageUrlList);
         createCarListing();
     });
     return imageRes;

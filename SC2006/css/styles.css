@@ -31,6 +31,14 @@ html {
   height: 3.5rem !important;
 }
 
+.error-text {
+  color: red !important;
+}
+
+.success-text {
+  color: green !important;
+}
+
 /* Styling for the nav bar */
 .nav-link {
   text-decoration: none;

@@ -11,7 +11,7 @@ const firebaseConfig = {
     storageBucket: "gs://fir-c9c47.appspot.com"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const starsTotal = 5;
 
@@ -25,7 +25,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const name = urlParams.get('name');
 const lat = urlParams.get('lat');
-const lng = urlParams.get('lng');
 
 document.getElementById("carparkName").innerHTML = titleize(name);
 
@@ -96,7 +95,9 @@ async function getCarList() {
         }
         document.getElementById("loading").setAttribute('hidden', true);
         document.getElementById("carListContainer").removeAttribute('hidden');
-        noCarAvailable();
+        setTimeout(() => {
+            noCarAvailable();
+        }, 2000);
     })
 }
 

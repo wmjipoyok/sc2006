@@ -1,10 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs, updateDoc, Timestamp, query, where, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js';
-// TODO: Add SDKs for Firebase products that you want to use
+import { collection, doc, addDoc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -24,10 +22,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore
 const db = getFirestore(app);
-
-// Initialize Cloud Storage
-const storage = getStorage(app);
-const storageRef = ref(storage);
 
 
 //get carID from URL
@@ -50,7 +44,7 @@ window.addEventListener('load', function () {
 }, false);
 
 //buttons
-//var bookBtn = document.querySelector("#bookBtn");
+var bookBtn = document.querySelector("#bookBtn");
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
 var cancelBtn = document.querySelector("#cancelBtn");
@@ -564,7 +558,6 @@ async function cancelCar(carId) {
 
     alert("Booking cancelled!");
     window.location.href = "bookings.html";
-    // location.reload();
 
 }
 
@@ -614,13 +607,11 @@ async function completeCar(carId) {
 
     alert("Rental completed!");
     window.location.href = "bookings.html";
-    // location.reload();
 
 }
 
 
 function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
-    console.log("here~!!!");
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
@@ -637,7 +628,7 @@ function sendMessage(senderId, receiverId, carIdRef, msg, bookingId) {
 
     xhr.open('POST', "https://fcm.googleapis.com/fcm/send", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bENkRgqPANjMwEuYQWPxl9EC0-0S5FU4KfDPK_Yucd3-oZy2UsDPMdx6l5AHfL5dvWCi5wbBrV6vDxOGNUwLoCWrQtZecCJmA3R7Zf8ful8xNNNYW4cCX__4yVfSaCxSTyvIBa8');
+    xhr.setRequestHeader('Authorization', 'key=AAAABEaOkMI:APA91bFIpi80DSkKYLVO2umkE_3FZPLbFtHPQ5i8RoFh3aH3wtRLAUoLQf6hEVDbXOJM1lf1cyC8LZppNqtjI8RRNfXarrMnXThtvHOuDO5sUHH9r5nOo62AuagZ-VP30CdfTzixRdSG');
     xhr.send(JSON.stringify(data));
 }
 
@@ -671,41 +662,3 @@ function deleteCar(carID) {
             console.error(error);
         });
 }
-
-
-
-
-
-
-
-/*
-            //writing into db
-            try {
-                const docRef = await addDoc(collection(db, "TestCars"), {
-                    first: "Alan",
-                    last: "Mathison",
-                    born: 1912
-            });
-            console.log("Document written with ID: ", docRef.id);
-            } catch (e) {
-                console.error("Error adding document: ", e);
-            }
-           
-
-            //reading from db
-            const querySnapshot = await getDocs(collection(db, "TestCars"));
-            querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data()}`);
-            });
-
-
-            //update db
-            import { doc, updateDoc } from "firebase/firestore";
-
-            const washingtonRef = doc(db, "cities", "DC");
-
-            // Set the "capital" field of the city 'DC'
-            await updateDoc(washingtonRef, {
-                capital: true
-            });
-*/

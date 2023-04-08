@@ -15,14 +15,15 @@
     <!-- Custom styles for this template-->
     <link href="./css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/styles.css" />
-    <script src="./js/common.js"></script>
-    <!-- <script type="module" src="./js/message.js"></script> -->
 
     <script src="/__/firebase/9.17.1/firebase-app-compat.js"></script>
-    <script src="/__/firebase/9.17.1/firebase-auth-compat.js">//important</script>
+    <script src="/__/firebase/9.17.1/firebase-auth-compat.js"></script>
     <script src="/__/firebase/9.17.1/firebase-firestore-compat.js"></script>
-    <!-- <script defer src="/__/firebase/9.17.1/firebase-messaging-compat.js"></script> -->
     <script src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <script defer async src="./js/nav.js"></script>
+    <script src="./js/common.js"></script>
+    <script type="module" src="./js/message.js"></script>
 </head>
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-3 static-top shadow">
@@ -47,7 +48,6 @@
                     Messages Center
                 </h6>
                 <div id="alertContainer"></div>
-                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
                 <div class="text-center small text-gray-500" style="padding-top: 10px; padding-bottom: 10px;"
                     id="noAlert">
                     No Messages
@@ -86,64 +86,5 @@
                 </a>
             </div>
         </li>
-        <!-- Can add more links here for extensibility to more pages next time -->
     </ul>
 </nav>
-
-<script>
-    const db = firebase.firestore();
-
-    //get user's ID
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-            // User is signed in.
-            const userID = user.uid;
-            //console.log("UID: ", userID); DEBUG
-
-            //get user's doc from "Users" collection
-            db.collection("Users").doc(userID).get().then((doc) => {
-                if (doc.exists) {
-                    //retrieve user data from doc
-                    const userData = doc.data();
-                    const firstName = userData.FirstName;
-
-                    //update DOM with retrieved data
-                    document.getElementById("nav-name").innerHTML = firstName;
-                } else {
-                    console.log("No such document!", doc);
-                }
-            }).catch((error) => {
-                console.log("Error getting document:", error);
-            });
-
-            db.collection("Messages").where("ReceiverId", "==", userID).orderBy("DateTime", "desc").get()
-                .then((msgSnapshot) => {
-                    const msgDocs = msgSnapshot.docs; //need js array since the snapshot does not have a index for forEach 
-                    msgDocs.forEach((doc, index) => {
-                        const alerts = document.getElementById('alertContainer');
-                        alerts.innerHTML += `<a class="dropdown-item d-flex align-items-center" href="car-detail.html?carId=${doc.data().CarId}">
-                            <div class="mr-3">
-                                <div class="icon-circle bg-primary">
-                                    <i class="fas fa-envelope text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="small text-gray-500">${doc.data().DateTime}</div>
-                                <span class="font-weight-bold">${doc.data().Message}</span>
-                            </div>
-                        </a>`
-                    });
-                }).catch((error) => {
-                    console.log("Error getting document:", error);
-                });
-        }
-        else {
-            // User is signed out.
-            console.log(firebase.auth().currentUser);
-        }
-    })
-
-    function unhideLogout() {
-        document.getElementById("logoutModal").removeAttribute("hidden");
-    }
-</script>
