@@ -41,54 +41,25 @@ resetBtn.addEventListener('click', function () { resetPassword() });
 function resetPassword() {
     const email = document.getElementById("resetEmailInput").value;
     if (email) {
-        clearEmailError();
+        clearInputError("resetEmailInput", "resetEmailError");
         // [START auth_send_password_reset]
         firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
                 document.getElementById("resetPwForm").setAttribute("hidden", true);
                 document.getElementById("resetDone").removeAttribute("hidden");
-                console.log("success");
             })
             .catch((error) => {
-                // console.log(error.code);
                 switch (error.code) {
                     case "auth/invalid-email":
-                        getEmailError(error.code);
+                        handleInputError("resetEmailInput", "resetEmailError", error.code);
                         break;
                     case "auth/user-not-found":
-                        getEmailError(error.code);
+                        handleInputError("resetEmailInput", "resetEmailError", error.code);
                         break;
                 }
             });
         // [END auth_send_password_reset]
     } else {
-        getEmailError();
+        handleInputError("resetEmailInput", "resetEmailError");
     }
-}
-
-/**
- * The function displays an error message and changes the border color of an email input field.
- * @param {String} errorMsg - The errorMsg parameter is a string that contains an error message related to an
- * email input field.
- */
-function getEmailError(errorMsg) {
-    let emailTb = document.getElementById("resetEmailInput");
-    var emailError = document.getElementById("resetEmailError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        emailError.innerHTML = eMsg;
-    }
-
-    emailError.removeAttribute("hidden");
-    emailTb.style.borderColor = "red";
-}
-
-/**
- * The function clears the error message and border color of an email input field.
- */
-function clearEmailError() {
-    let emailTb = document.getElementById("resetEmailInput");
-    var emailError = document.getElementById("resetEmailError");
-    emailError.setAttribute("hidden", true);
-    emailTb.style.borderColor = "";
 }

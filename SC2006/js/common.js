@@ -87,3 +87,34 @@ function checkAlertEmpty() {
         alertItemIcon.style.visibility = 'hidden';
     }
 }
+
+/**
+ * The function handles input errors by displaying an error message and changing the border color of
+ * the input field to red.
+ * @param {String} inputField - The ID of the input field that has an error.
+ * @param {String} errorField - The ID of the HTML element where the error message will be displayed.
+ * @param {String} errorMsg - The error message to be displayed in the errorField.
+ */
+function handleInputError(inputField, errorField, errorMsg) {
+    let inputF = document.getElementById(inputField);
+    var errorF = document.getElementById(errorField);
+    if (errorMsg) {
+        const eMsg = reformatErrorStr(errorMsg);
+        errorF.innerHTML = eMsg;
+    }
+
+    errorF.removeAttribute("hidden");
+    inputF.style.borderColor = "red";
+}
+
+/**
+ * The function clears input errors and resets the style of the input field.
+ * @param {String} inputField - The ID of the input field that needs to be cleared of errors.
+ * @param {String} errorField - The ID of the HTML element that displays the error message for the input field.
+ */
+function clearInputError(inputField, errorField) {
+    let inputF = document.getElementById(inputField);
+    var errorF = document.getElementById(errorField);
+    errorF.setAttribute("hidden", true);
+    inputF.style.borderColor = "";
+}

@@ -39,18 +39,18 @@ loginBtn.addEventListener('click', function () { getEmailInput() });
  * necessary, and attempts to sign in the user using Firebase authentication.
  */
 function getEmailInput() {
-    let email = document.getElementById("exampleInputEmail").value;
-    let password = document.getElementById("exampleInputPassword").value;
+    let email = document.getElementById("emailInput").value;
+    let password = document.getElementById("passwordInput").value;
     if (!email) {
-        getEmailError();
+        handleInputError("emailInput", "emailError");
     } else {
-        clearEmailError();
+        clearInputError("emailInput", "emailError");
     }
 
     if (!password) {
-        getPasswordError();
+        handleInputError("passwordInput", "passwordError");
     } else {
-        clearPasswordError();
+        clearInputError("passwordInput", "passwordError");
     }
 
     if (email && password) {
@@ -63,69 +63,15 @@ function getEmailInput() {
             .catch((error) => {
                 switch (error.code) {
                     case "auth/invalid-email":
-                        getEmailError(error.code);
+                        handleInputError("emailInput", "emailError", error.code);
                         break;
                     case "auth/user-not-found":
-                        getEmailError(error.code);
+                        handleInputError("emailInput", "emailError", error.code);
                         break;
                     case "auth/wrong-password":
-                        getPasswordError(error.code);
+                        handleInputError("passwordInput", "passwordError", error.code);
                         break;
                 }
             });
     }
-}
-
-/**
- * The function displays an error message for an email input field and changes its border color to red.
- * @param {String} errorMsg - errorMsg is a string parameter that represents an error message related to an
- * email input field.
- */
-function getEmailError(errorMsg) {
-    let emailTb = document.getElementById("exampleInputEmail");
-    var emailError = document.getElementById("emailError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        emailError.innerHTML = eMsg;
-    }
-
-    emailError.removeAttribute("hidden");
-    emailTb.style.borderColor = "red";
-}
-
-/**
- * The function displays an error message and changes the border color of a password input field.
- * @param {String} errorMsg - errorMsg is a string parameter that represents an error message to be displayed if
- * there is an issue with the password input field.
- */
-function getPasswordError(errorMsg) {
-    let passwordTb = document.getElementById("exampleInputPassword");
-    var passwordError = document.getElementById("passwordError");
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        passwordError.innerHTML = eMsg;
-    }
-
-    passwordError.removeAttribute("hidden");
-    passwordTb.style.borderColor = "red";
-}
-
-/**
- * The function clears the error message and border color of an email input field.
- */
-function clearEmailError() {
-    let emailTb = document.getElementById("exampleInputEmail");
-    var emailError = document.getElementById("emailError");
-    emailError.setAttribute("hidden", true);
-    emailTb.style.borderColor = "";
-}
-
-/**
- * The function clears the error message and border color of a password input field.
- */
-function clearPasswordError() {
-    let passwordTb = document.getElementById("exampleInputPassword");
-    var passwordError = document.getElementById("passwordError");
-    passwordError.setAttribute("hidden", true);
-    passwordTb.style.borderColor = "";
 }

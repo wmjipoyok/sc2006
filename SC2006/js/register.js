@@ -51,38 +51,38 @@ function signUpWithEmailPassword() {
     var repeatPw = repeatPwTb.value;
 
     if (!fname) {
-        handleFieldError("registerFName", "regFnError");
+        handleInputError("registerFName", "regFnError");
         return;
     } else {
-        clearFieldError("registerFName", "regFnError");
+        clearInputError("registerFName", "regFnError");
     }
 
     if (!lname) {
-        handleFieldError("registerLName", "regLnError");
+        handleInputError("registerLName", "regLnError");
         return;
     } else {
-        clearFieldError("registerLName", "regLnError");
+        clearInputError("registerLName", "regLnError");
     }
 
     if (!email) {
-        handleFieldError("registerEmail", "regEmailError");
+        handleInputError("registerEmail", "regEmailError");
         return;
     } else {
-        clearFieldError("registerEmail", "regEmailError");
+        clearInputError("registerEmail", "regEmailError");
     }
 
     if (!regPw) {
-        handleFieldError("registerPassword", "regPwError");
+        handleInputError("registerPassword", "regPwError");
         return;
     } else {
-        clearFieldError("registerPassword", "regPwError");
+        clearInputError("registerPassword", "regPwError");
     }
 
     if (!repeatPw) {
-        handleFieldError("repeatPassword", "repPwError");
+        handleInputError("repeatPassword", "repPwError");
         return;
     } else {
-        clearFieldError("repeatPassword", "repPwError");
+        clearInputError("repeatPassword", "repPwError");
     }
 
     if (fname && lname && email && regPw && repeatPw) {
@@ -129,54 +129,22 @@ function signUpWithEmailPassword() {
                     console.log(error);
                     switch (error.code) {
                         case "auth/weak-password":
-                            handleFieldError("registerPassword", "regPwError", error.code);
-                            handleFieldError("repeatPassword", "repPwError", error.code);
+                            handleInputError("registerPassword", "regPwError", error.code);
+                            handleInputError("repeatPassword", "repPwError", error.code);
                             break;
                         case "auth/invalid-email":
-                            handleFieldError("registerEmail", "regEmailError", error.code);
+                            handleInputError("registerEmail", "regEmailError", error.code);
                             break;
                         case "auth/email-already-in-use":
-                            handleFieldError("registerEmail", "regEmailError", error.code);
+                            handleInputError("registerEmail", "regEmailError", error.code);
                             break;
                     }
                 });
             // [END auth_signup_password]
 
         } else {
-            handleFieldError("registerPassword", "regPwError", "Password not match");
-            handleFieldError("repeatPassword", "repPwError", "Password not match");
+            handleInputError("registerPassword", "regPwError", "Password not match");
+            handleInputError("repeatPassword", "repPwError", "Password not match");
         }
     }
-}
-
-
-/**
- * The function handles field errors by displaying an error message and changing the border color of
- * the input field to red.
- * @param {String} inputField - The ID of the input field that has an error.
- * @param {String} errorField - The ID of the HTML element where the error message will be displayed.
- * @param {String} errorMsg - The error message that will be displayed in the errorField element.
- */
-function handleFieldError(inputField, errorField, errorMsg) {
-    let inputF = document.getElementById(inputField);
-    var ErrorF = document.getElementById(errorField);
-    if (errorMsg) {
-        const eMsg = reformatErrorStr(errorMsg);
-        ErrorF.innerHTML = eMsg;
-    }
-
-    ErrorF.removeAttribute("hidden");
-    inputF.style.borderColor = "red";
-}
-
-/**
- * The function clears the error message and resets the border color of an input field.
- * @param {String} inputField - The ID of the input field that needs to be cleared of errors.
- * @param {String} errorField - The ID of the HTML element that displays the error message for the input field.
- */
-function clearFieldError(inputField, errorField) {
-    let inputF = document.getElementById(inputField);
-    var ErrorF = document.getElementById(errorField);
-    ErrorF.setAttribute("hidden", true);
-    inputF.style.borderColor = "";
 }
