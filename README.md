@@ -26,7 +26,7 @@ As Google Chrome is enforcing Same-origin policy, it is blocking access to our U
 To solve this, we can launch an instance of Google Chrome that disables this security check. 
 
 
-For Mac Users: <br />
+For Mac Users, open terminal and run this command: <br />
 open -na Google\ Chrome --args --user-data-dir=$HOME/Developer/chrome-dev-session --disable-web-security --disable-site-isolation-trials
 
 For Windows Users, use "Run" in windows to run this command:<br />
