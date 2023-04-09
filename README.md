@@ -1,4 +1,4 @@
-# CZ2006 : Software Engineering
+# CZ2006/SC2006 : Software Engineering
 
 ## Setup Instructions
 The project is a Firebase project which requires Firebase to be installed in local PC. <br />
