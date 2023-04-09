@@ -7,7 +7,7 @@ It also provide the link for car owner to edit the car information.
 */
 
 
-/* The below code is importing necessary modules from Firebase SDK version 9.17.2 for initializing and
+/* The code is importing necessary modules from Firebase SDK version 9.17.2 for initializing and
 accessing Firestore database. It includes functions for creating, reading, updating, and deleting
 documents and collections in Firestore. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
@@ -15,33 +15,20 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.2/firebase
 import { collection, doc, addDoc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 
 
-/* The below code is defining a JavaScript object called `firebaseConfig` which contains the
-configuration settings for a Firebase project. These settings include the API key, authentication
-domain, database URL, project ID, storage bucket, messaging sender ID, app ID, and measurement ID. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-};
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+const app = initializeApp(getFirebaseConfig());
 
-/* The below code is initializing a Firebase app using the configuration object `firebaseConfig`. This
-is typically done at the beginning of a Firebase project to set up the necessary connection to the
-Firebase services. */
-const app = initializeApp(firebaseConfig);
-
-/* The below code is initializing a Firestore database instance using the Firebase SDK for JavaScript.
+/* The code is initializing a Firestore database instance using the Firebase SDK for JavaScript.
 It is assuming that the `app` variable has been previously defined and contains a valid Firebase app
 instance. The `getFirestore()` function is a method provided by the Firebase SDK that returns a
 Firestore database instance associated with the specified Firebase app. The resulting database
 instance is stored in the `db` constant for later use. */
 const db = getFirestore(app);
 
-/* The below code is using JavaScript to get the value of the "carId" parameter from the URL query
+/* The code is using JavaScript to get the value of the "carId" parameter from the URL query
 string of the current page. It first gets the query string using the "window.location.search"
 property, and then creates a new URLSearchParams object from it. It then uses the "get" method of
 the URLSearchParams object to retrieve the value of the "carId" parameter. */
@@ -49,7 +36,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const carId = urlParams.get('carId');
 
-/* The below code is adding an event listener to the window object that waits for the page to load.
+/* The code is adding an event listener to the window object that waits for the page to load.
 Once the page is loaded, it sets the href attribute of an anchor tag with the id "editCarUrl" to a
 URL that includes a query string parameter "carId". It also loads the content of two HTML files into
 two different elements on the page using jQuery's load() method. Finally, it calls a function called
@@ -67,7 +54,7 @@ window.addEventListener('load', function () {
 }, false);
 
 
-/* The below code is declaring variables and selecting HTML elements using their IDs. It is selecting
+/* The code is declaring variables and selecting HTML elements using their IDs. It is selecting
 buttons with IDs "bookBtn", "acceptBtn", "rejectBtn", "cancelBtn", "completeBtn", and
 "delete-confirm-button". These buttons are likely used for some kind of functionality in a web
 application or website. */
@@ -78,7 +65,7 @@ var cancelBtn = document.querySelector("#cancelBtn");
 var completeBtn = document.querySelector("#completeBtn");
 var delConfirmBtn = document.getElementById("delete-confirm-button");
 
-/* The below code is adding event listeners to different buttons (bookBtn, acceptBtn, rejectBtn,
+/* The code is adding event listeners to different buttons (bookBtn, acceptBtn, rejectBtn,
 cancelBtn, completeBtn, delConfirmBtn) and calling different functions (bookCar, acceptCar,
 rejectCar, cancelCar, completeCar, deleteCar) with a parameter (carId) when the buttons are clicked. */
 bookBtn.addEventListener('click', function () { bookCar(carId) });

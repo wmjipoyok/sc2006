@@ -7,25 +7,12 @@
 to initialize a Firebase app with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 
-/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
-a Firebase app. It includes the API key, authentication domain, database URL, project ID, storage
-bucket, messaging sender ID, app ID, and measurement ID. This object is used as an argument in the
-`initializeApp()` function to initialize the Firebase app with the provided configuration. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "gs://sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-};
 
-/* `initializeApp(firebaseConfig);` is initializing a Firebase app with the provided configuration
-object `firebaseConfig`. This function is imported from the Firebase App module and is used to
-initialize a Firebase app with the provided configuration. */
-initializeApp(firebaseConfig);
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
 /* `const db = firebase.firestore();` is initializing a Firestore database instance and assigning it to
 the constant variable `db`. This allows the code to interact with the Firestore database and perform

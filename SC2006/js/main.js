@@ -9,24 +9,11 @@ on the URL "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js". This fun
 initialize a Firebase app with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 
-/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
-a Firebase app. It includes the API key, authentication domain, database URL, project ID, storage
-bucket, messaging sender ID, app ID, and measurement ID. This object is used as an argument in the
-`initializeApp()` function to initialize the Firebase app. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-};
-
-/* `initializeApp(firebaseConfig);` is initializing a Firebase app with the provided configuration
-object `firebaseConfig`. This function is imported from the Firebase App module version 9.17.2. */
-initializeApp(firebaseConfig);
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
 /* `let infoWindow, map; var prev_infowindow = false;` is declaring three variables: `infoWindow`,
 `map`, and `prev_infowindow`. */
@@ -242,7 +229,7 @@ function getData() {
 
     xhr.open("GET", "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=Car_Park_Details");
     xhr.setRequestHeader("AccessKey", "d42d13f1-6cfa-489b-9940-508afe48dcf8");
-    xhr.setRequestHeader("Token", "dAK984Pjc8f5f6acUfh96P940@KBn4mZ37S7jtvhf-HPfXuWg-1cf86qgG98Wup59Dvy5wSj49f18s44914fTJcQ8fd9p8y@QBc9");
+    xhr.setRequestHeader("Token", "n1PWhfG7wj-8-JuPf9c94f4wuygkx996442bDmMeGjuY4-NcfSfx28hM88cb3ZmdJKdfk2P85ZcdQ@NV@TSCVB4uAf6teJSwND14");
 
     xhr.send();
 }

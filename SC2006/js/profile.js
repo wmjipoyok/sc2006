@@ -8,24 +8,11 @@ including first name, last name, email, ratings and cars uploaded for rent.
 9.17.1. This function is used to initialize a Firebase app with the provided configuration object. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
-/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
-a Firebase app. It includes the API key, authentication domain, project ID, storage bucket,
-messaging sender ID, app ID, and measurement ID. This information is used to connect the app to the
-Firebase services and resources specified in the configuration. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-};
-
-/* `initializeApp(firebaseConfig);` is initializing a Firebase app with the provided configuration
-object `firebaseConfig`. This function is imported from the Firebase App SDK version 9.17.1 and is
-used to connect the app to the Firebase services and resources specified in the configuration. */
-initializeApp(firebaseConfig);
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
 /* This code is adding an event listener to the window object that waits for the page to fully load
 before executing a function. The function uses jQuery to load the contents of two HTML files,

@@ -8,25 +8,11 @@ A reset password email will be sent to users and users can follow the instructio
 to initialize a Firebase app instance with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
-/* `const firebaseConfig` is an object that contains the configuration information required to
-initialize a Firebase app instance. It includes the API key, authentication domain, project ID,
-storage bucket, messaging sender ID, app ID, and measurement ID. This information is used to
-authenticate and connect to the Firebase services. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    projectId: "sc2006-1d9b8",
-    storageBucket: "sc2006-1d9b8.appspot.com",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ"
-};
-
-/* `initializeApp(firebaseConfig);` is initializing a Firebase app instance with the provided
-configuration object `firebaseConfig`. This configuration object contains the necessary information
-to authenticate and connect to Firebase services such as the API key, authentication domain, project
-ID, storage bucket, messaging sender ID, app ID, and measurement ID. */
-initializeApp(firebaseConfig);
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
 /* This code is selecting the HTML element with the ID "resetBtn" and assigning it to the variable
 `resetBtn`. It then adds an event listener to the `resetBtn` element that listens for a "click"

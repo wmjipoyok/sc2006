@@ -9,22 +9,14 @@ on the URL "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js". This fun
 initialize a Firebase app with the provided configuration. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 
-/* `const firebaseConfig` is an object that contains the configuration information needed to initialize
-a Firebase app. It includes the API key, authentication domain, database URL, project ID, storage
-bucket, messaging sender ID, and app ID. The `storageBucket` property is included twice, which may
-be a mistake. */
-const firebaseConfig = {
-    apiKey: "AIzaSyD4zU0-igHFj_TDWXuTZ9BMwbtr8Z_kHkM",
-    authDomain: "fir-c9c47.firebaseapp.com",
-    databaseURL: "https://fir-c9c47.firebaseio.com",
-    projectId: "fir-c9c47",
-    storageBucket: "fir-c9c47.appspot.com",
-    messagingSenderId: "732611892783",
-    appId: "1:732611892783:web:518baf14f8076858af18da",
-    storageBucket: "gs://fir-c9c47.appspot.com"
-};
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
-initializeApp(firebaseConfig);
+/* `const db = firebase.firestore();` initializes a Firestore database instance that allows the code to
+interact with the database. */
 const db = firebase.firestore();
 const starsTotal = 5;
 

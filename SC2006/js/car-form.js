@@ -5,7 +5,7 @@
 'Edit Car' page allows car owners to edit the car information they have uploaded to the system for rent.
 */
 
-/* The below code is importing the necessary modules from Firebase to initialize a Firebase app and use
+/* The code is importing the necessary modules from Firebase to initialize a Firebase app and use
 Firebase Storage. It is using ES6 module syntax to import the `initializeApp` function from the
 `firebase-app.js` module and the `getStorage`, `ref`, `uploadBytes`, and `getDownloadURL` functions
 from the `firebase-storage.js` module. These functions will be used to interact with Firebase
@@ -13,27 +13,17 @@ Storage to upload and download files. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js";
 
-/* The below code is defining a JavaScript object called `firebaseConfig` which contains the
-configuration settings for a Firebase project. These settings include the API key, authentication
-domain, database URL, project ID, messaging sender ID, app ID, measurement ID, and storage bucket. */
-const firebaseConfig = {
-    apiKey: "AIzaSyClbXP8Ka7huRW2YkQEUGpT9Of6_bAIWCw",
-    authDomain: "sc2006-1d9b8.firebaseapp.com",
-    databaseURL: "https://sc2006-1d9b8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sc2006-1d9b8",
-    messagingSenderId: "18363617474",
-    appId: "1:18363617474:web:de5535d545b6169e532b5b",
-    measurementId: "G-NCKVJ8K4JJ",
-    storageBucket: "gs://sc2006-1d9b8.appspot.com"
-};
+/* `initializeApp(getFirebaseConfig());` is initializing a Firebase app with the provided
+configuration. The `getFirebaseConfig()` function is defined common.js which returns an object 
+containing the configuration settings for the Firebase app, such as the API key,
+project ID, and messaging sender ID. */
+initializeApp(getFirebaseConfig());
 
-/* The below code is initializing a Firebase app with the provided configuration object, and then
-creating a Firestore database instance and a Cloud Storage instance. */
-initializeApp(firebaseConfig);
+/* The code is creating a Firestore database instance and a Cloud Storage instance. */
 const db = firebase.firestore();
 const storage = getStorage();
 
-/* The below code is written in JavaScript and it is using the URLSearchParams API to extract query
+/* The code is written in JavaScript and it is using the URLSearchParams API to extract query
 parameters from the current URL. It is getting the values of three query parameters: 'request',
 'carId', and 'lat'/'lng' (latitude and longitude). The values of these parameters are then stored in
 variables 'request', 'carId', and 'carparkLocation' respectively. The 'carparkLocation' variable is
@@ -44,7 +34,7 @@ const request = urlParams.get('request');
 const carId = urlParams.get('carId');
 const carparkLocation = [parseFloat(urlParams.get('lat')), parseFloat(urlParams.get('lng'))];
 
-/* The below code is declaring and initializing several variables in JavaScript. */
+/* The code is declaring and initializing several variables in JavaScript. */
 const imageLimit = 5;
 let imageArray = [];
 let imgToUpload = [];
@@ -115,7 +105,7 @@ function unhideContent() {
     document.getElementById("loading").setAttribute('hidden', true);
 }
 
-/* The below code is a JavaScript code that is adding an event listener to the window object for the
+/* The code is a JavaScript code that is adding an event listener to the window object for the
 'load' event. When the page is loaded, it is loading the navigation and logout model HTML files
 using jQuery's load() method. */
 window.addEventListener('load', function () {
