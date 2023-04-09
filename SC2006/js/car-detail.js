@@ -56,8 +56,7 @@ window.addEventListener('load', function () {
 
 /* The code is declaring variables and selecting HTML elements using their IDs. It is selecting
 buttons with IDs "bookBtn", "acceptBtn", "rejectBtn", "cancelBtn", "completeBtn", and
-"delete-confirm-button". These buttons are likely used for some kind of functionality in a web
-application or website. */
+"delete-confirm-button". */
 var bookBtn = document.querySelector("#bookBtn");
 var acceptBtn = document.querySelector("#acceptBtn");
 var rejectBtn = document.querySelector("#rejectBtn");
